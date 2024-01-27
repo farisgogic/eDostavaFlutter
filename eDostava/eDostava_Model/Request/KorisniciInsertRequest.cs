@@ -37,7 +37,7 @@ namespace eDostava.Model.Request
 
         public List<int> UlogeIdList { get; set; } = new List<int> { };
 
-        public int RestoranId { get; set; }
+        public int? RestoranId { get; set; }
 
     }
 }

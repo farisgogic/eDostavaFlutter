@@ -1,3 +1,4 @@
+import 'package:edostavaadmin/features/Auth/registracija_korisnika_screen.dart';
 import 'package:edostavaadmin/providers/korisnik_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -123,11 +124,19 @@ class _LoginAdminScreen extends State<LoginAdminScreen> {
                       hintText: 'Lozinka',
                       obscureText: true,
                     ),
-                    const SizedBox(height: 20),
-                    const SizedBox(height: 200),
+                    const SizedBox(height: 150),
                     CustomButton(
                       text: 'Login',
                       onTap: _handleLogin,
+                      color: GlobalVariables.buttonColor,
+                    ),
+                    const SizedBox(height: 20),
+                    CustomButton(
+                      text: 'Registracija',
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, RegistracijaKorisnikaScreen.routeName);
+                      },
                       color: GlobalVariables.buttonColor,
                     )
                   ],

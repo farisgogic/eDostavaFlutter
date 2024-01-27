@@ -43,6 +43,7 @@ namespace eDostava.Services.Services.Korisnik
             {
                 throw new UserException("Lozinke se ne poklapaju!");
             }
+
             var entity = base.Insert(insert);
 
             foreach (var ulogId in insert.UlogeIdList)

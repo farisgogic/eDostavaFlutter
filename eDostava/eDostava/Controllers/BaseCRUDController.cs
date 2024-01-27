@@ -22,9 +22,10 @@ namespace eDostava.Controllers
         public virtual T Insert([FromBody] TInsert insert)
         {
             var result = ((ICRUDService<T, TSearch, TInsert, TUpdate>)this.Service).Insert(insert);
-
-            _webSocketHandler.SendToAllAsync("Novi podatak je dodan!");
-
+            if (_webSocketHandler != null)
+            {
+                _webSocketHandler.SendToAllAsync("Novi podatak je dodan!");
+            }
             return result;
         }
 
@@ -34,7 +35,10 @@ namespace eDostava.Controllers
         {
             var result = ((ICRUDService<T, TSearch, TInsert, TUpdate>)this.Service).Update(id, update);
 
-            _webSocketHandler.SendToAllAsync("Podatak je editovan!");
+            if (_webSocketHandler != null)
+            {
+                _webSocketHandler.SendToAllAsync("Podatak je editovan!");
+            }
 
             return result;
         }
@@ -46,7 +50,10 @@ namespace eDostava.Controllers
             {
                 ((ICRUDService<T, TSearch, TInsert, TUpdate>)this.Service).Delete(id);
 
-                _webSocketHandler.SendToAllAsync("Podatak je izbrisan!");
+                if (_webSocketHandler != null)
+                {
+                    _webSocketHandler.SendToAllAsync("Podatak je izbrisan!");
+                }
 
                 return Ok();
             }
