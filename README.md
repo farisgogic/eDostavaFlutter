@@ -1,11 +1,11 @@
 # KLOPA - Aplikacija za dostavu hrane
 
-Aplikacija KLOPA je projekat rađen kao seminarski rad za predmet Razvoj softvera 2. Ova aplikacija omogućava dostavu hrane i pruža funkcionalnosti za 4 tipa korisnika: Uposlenike poslovnica, Dostavljače i Kupce. Uposlenici poslovnica koriste desktop aplikaciju, dok Dostavljači i Kupci koriste mobilnu aplikaciju.
+Aplikacija KLOPA je projekat rađen kao seminarski rad za predmet Razvoj softvera 2. Ova aplikacija omogućava dostavu hrane i pruža funkcionalnosti za 3 tipa korisnika: Uposlenike poslovnica, Dostavljače i Kupce. Uposlenici poslovnica koriste desktop aplikaciju, dok Dostavljači i Kupci koriste mobilnu aplikaciju.
 
 ## Tehnologije
 
 - Backend: C#, .NET 6.0
-- Desktop aplikacija (Administrator i Uposlenici poslovnica): Flutter
+- Desktop aplikacija (Uposlenici poslovnica): Flutter
 - Mobilna aplikacija (Dostavljači i Kupci): Flutter
 
 ## Upute za instalaciju
@@ -68,8 +68,7 @@ Aplikacija KLOPA je projekat rađen kao seminarski rad za predmet Razvoj softver
     1. Otvoriti solution u Visual Studiu 2022
     2. CTRL + F5
     ```    
-    
-
+   
 ## Kredencijali za prijavu   
 
 ### Desktop aplikacija
@@ -91,8 +90,6 @@ Aplikacija KLOPA je projekat rađen kao seminarski rad za predmet Razvoj softver
     Lozinka: Kula                                    
     ```     
     
-    
-
 ### Mobilna aplikacija
 
 - Kupac
@@ -124,4 +121,14 @@ Aplikacija KLOPA je projekat rađen kao seminarski rad za predmet Razvoj softver
 
     ```
     Broj kartice: 4242 4242 4242 4242 
+    ```
+
+## NAPOMENA
+Prilikom testiranja aplikacije, molimo Vas da koristite kupca s korisničkim imenom "kupac" kako biste mogli proaktivno evaluirati funkcionalnost slanja e-mail poruka nakon uspešne narudžbe.
+
+## E-mail
+
+```
+    E-mail: edostavatest@gmail.com
+    Lozinka: Razvojsoftvera2!  
     ```
