@@ -119,9 +119,9 @@ Aplikacija KLOPA je projekat rađen kao seminarski rad za predmet Razvoj softver
     
 ## KARTICA ZA NARUDŽBU
 
-    ```
-    Broj kartice: 4242 4242 4242 4242 
-    ```
+```
+Broj kartice: 4242 4242 4242 4242
+```
 
 ## NAPOMENA
 Prilikom testiranja aplikacije, molimo Vas da koristite kupca s korisničkim imenom "kupac" kako biste mogli proaktivno evaluirati funkcionalnost slanja e-mail poruka nakon uspešne narudžbe.
@@ -129,6 +129,6 @@ Prilikom testiranja aplikacije, molimo Vas da koristite kupca s korisničkim ime
 ## E-mail
 
 ```
-    E-mail: edostavatest@gmail.com
-    Lozinka: Razvojsoftvera2!  
-    ```
+E-mail: edostavatest@gmail.com
+Lozinka: Razvojsoftvera2!  
+```
