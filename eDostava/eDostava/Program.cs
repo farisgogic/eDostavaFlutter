@@ -2,6 +2,7 @@
 using eDostava;
 using eDostava.Controllers;
 using eDostava.Filter;
+using eDostava.Model;
 using eDostava.Services;
 using eDostava.Services.Database;
 using eDostava.Services.Dostavljac;
@@ -19,6 +20,7 @@ using eDostava.Services.Uloga;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -91,6 +93,7 @@ builder.Services.AddTransient<NarudzbaController>(provider =>
 });
 
 
+
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<WebSocketHandler>();
 
@@ -100,7 +103,7 @@ builder.Services.AddAuthentication("BasicAuthentication").AddScheme<Authenticati
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<DostavaContext>(options =>
-    options.UseSqlServer(connectionString));
+options.UseSqlServer(connectionString));
 
 
 var app = builder.Build();

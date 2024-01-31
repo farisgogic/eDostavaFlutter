@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   double bottomBarBorderWidth = 5;
 
   WebSocketHandler webSocketHandler =
-      WebSocketHandler('ws://localhost:7068/api');
+      WebSocketHandler('ws://${Constants.baseUrl.replaceAll('http://', '')}');
 
   List<Widget> pages = [];
 

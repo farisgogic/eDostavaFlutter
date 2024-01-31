@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "eDostava.Services": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "GMAIL_USERNAME": "edostava9@gmail.com",
+        "GMAIL_PASSWORD": "Razvojsoftvera2!"
+      }
+    }
+  }
+}

@@ -39,7 +39,7 @@ class _AboutRestaurantScreenState extends State<AboutRestaurantScreen> {
   List<Kategorija> kategorije = [];
 
   WebSocketHandler webSocketHandler =
-      WebSocketHandler('ws://localhost:7068/api');
+      WebSocketHandler('ws://${Constants.baseUrl.replaceAll('http://', '')}');
 
   @override
   void initState() {
@@ -52,6 +52,7 @@ class _AboutRestaurantScreenState extends State<AboutRestaurantScreen> {
     loadRecommendedJela(widget.kupacId, widget._restoranId!);
 
     webSocketHandler.onMessage.listen((message) {
+      // ignore: avoid_print
       print('Stigla poruka sa servera: $message');
       if (mounted) {
         getJela();

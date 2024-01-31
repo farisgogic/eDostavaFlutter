@@ -234,3 +234,6 @@ C:\Users\User\OneDrive\Desktop\eDostava\eDostavaFlutter\eDostava\eDostava\obj\De
 C:\Users\User\OneDrive\Desktop\eDostava\eDostavaFlutter\eDostava\eDostava\obj\Debug\net6.0\eDostava.pdb
 C:\Users\User\OneDrive\Desktop\eDostava\eDostavaFlutter\eDostava\eDostava\obj\Debug\net6.0\eDostava.genruntimeconfig.cache
 C:\Users\User\OneDrive\Desktop\eDostava\eDostavaFlutter\eDostava\eDostava\obj\Debug\net6.0\ref\eDostava.dll
+C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava\bin\Debug\net6.0\EasyNetQ.dll
+C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava\bin\Debug\net6.0\RabbitMQ.Client.dll
+C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava\bin\Debug\net6.0\System.Threading.Channels.dll

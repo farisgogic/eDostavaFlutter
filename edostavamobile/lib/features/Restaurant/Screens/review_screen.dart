@@ -192,6 +192,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                     .updateReview(matchingReview.recenzijaId,
                                         updateReview)
                                     .then((_) {
+                                  setState(() {});
+                                  
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -202,6 +204,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                         actions: [
                                           TextButton(
                                             onPressed: () {
+                                              setState(() {});
                                               Navigator.pop(
                                                   context, updateReview);
 
@@ -234,6 +237,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                       );
                                     },
                                   );
+                                  setState(() {});
                                 });
                               } else {
                                 final review = Review(
@@ -255,6 +259,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                         actions: [
                                           TextButton(
                                             onPressed: () {
+                                              setState(() {});
                                               Navigator.pop(context, review);
                                               Navigator.pop(context, review);
                                             },

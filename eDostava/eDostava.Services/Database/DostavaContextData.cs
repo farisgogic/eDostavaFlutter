@@ -293,7 +293,7 @@ namespace eDostava.Services.Database
                 KupacId = 1,
                 Ime = "kupac",
                 Prezime = "kupac",
-                Email = "kupac@hotmail.com",
+                Email = "edostavatest@gmail.com",
                 Adresa = "Kolonija bb",
                 KorisnickoIme = "kupac",
                 LozinkaHash = "IsyISvRuO3jEEFrR/3/Ns8KK3u8=",

@@ -3,6 +3,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
@@ -104,26 +105,38 @@ class _CartScreenState extends State<CartScreen> {
                             Icons.check_circle,
                             color: Colors.green,
                           ),
-                          Text("Placanje uspjesno!"),
+                          Expanded(
+                            child: Text(
+                              "Molimo Vas potvrdite plaćanje klikom na dugme!",
+                              overflow: TextOverflow.visible,
+                            ),
+                          ),
                         ],
                       ),
                     ],
                   ),
                 ));
-        webSocketHandler.sendToAllAsync("Novi podatak je dodan!");
-        paymentIntent = null;
-        placeno = true;
+
+        // Premjestite setState ovamo
+        setState(() {
+          webSocketHandler.sendToAllAsync("Novi podatak je dodan!");
+          paymentIntent = null;
+          placeno = true;
+        });
       }).onError((error, stackTrace) {
         print('Error is:--->$error $stackTrace');
       });
     } on StripeException catch (e) {
       print('Error is:---> $e');
-      // ignore: use_build_context_synchronously
-      showDialog(
+      if (!kDebugMode) {
+        // ignore: use_build_context_synchronously
+        showDialog(
           context: context,
           builder: (_) => const AlertDialog(
-                content: Text("Otkazano "),
-              ));
+            content: Text("Otkazano "),
+          ),
+        );
+      }
     } catch (e) {
       print('$e');
     }
@@ -374,31 +387,34 @@ class _CartScreenState extends State<CartScreen> {
                                 color: GlobalVariables.buttonColor,
                                 text: placeno ? 'POTVRDI' : 'PLAĆANJE',
                                 onTap: () async {
-                                  makePayment(calculateAmount(
-                                      korpaProvider.ukupnaCijena.toString()));
+                                  if (!placeno) {
+                                    makePayment(calculateAmount(
+                                        korpaProvider.ukupnaCijena.toString()));
+                                  } else {
+                                    // Ovdje dodajte kod koji želite izvršiti kada je placeno
+                                    var request = NarudzbaInsertRequest(
+                                      items: cart.items
+                                          .map((item) => NarudzbaStavka(
+                                              naziv: item.jelo.naziv,
+                                              kolicina: item.brojac,
+                                              cijena: item.jelo.cijena,
+                                              jeloId: item.jelo.jeloId))
+                                          .toList(),
+                                      kupacId: k!.kupacId,
+                                      restoranId:
+                                          cart.items.first.jelo.restoranId,
+                                    );
 
-                                  var request = NarudzbaInsertRequest(
-                                    items: cart.items
-                                        .map((item) => NarudzbaStavka(
-                                            naziv: item.jelo.naziv,
-                                            kolicina: item.brojac,
-                                            cijena: item.jelo.cijena,
-                                            jeloId: item.jelo.jeloId))
-                                        .toList(),
-                                    kupacId: k!.kupacId,
-                                    restoranId:
-                                        cart.items.first.jelo.restoranId,
-                                  );
-
-                                  try {
-                                    if (placeno) {
-                                      await NarudzbaProvider()
-                                          .insertNarudzba(request);
-                                      korpaProvider.clear();
-                                      setState(() {});
-                                    }
-                                    // ignore: empty_catches
-                                  } catch (e) {}
+                                    try {
+                                      if (placeno) {
+                                        await NarudzbaProvider()
+                                            .insertNarudzba(request);
+                                        korpaProvider.clear();
+                                        setState(() {});
+                                      }
+                                      // ignore: empty_catches
+                                    } catch (e) {}
+                                  }
                                 },
                               ),
                             ),
