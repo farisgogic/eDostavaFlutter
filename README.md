@@ -21,52 +21,65 @@ Aplikacija KLOPA je projekat rađen kao seminarski rad za predmet Razvoj softver
 3. Pokretanje dokerizovanog API-ja i DB-a
 
     ```
-    docker-compose build
-    docker-compose up
+    docker-compose up --build
+    ```
+
+4. Otvoriti konzolu
+
+    ```
+    docker pull rabbitmq:3-management
+    ```
+    ```
+    docker run -d -p 15672:15672 -p 5672:5672 --name rabbit-test-for-medium rabbitmq:3-management
     ```
     
-    
-4. Otvoriti edostavamobile folder
+5. Otvoriti edostavamobile folder
 
     ```
     cd edostavamobile
     ```
 
-5. Dohvatanje dependecy-a
+6. Dohvatanje dependecy-a
 
     ```
     flutter pub get
     ```
     
-6. Pokretanje mobilne aplikacije
+7. Pokretanje mobilne aplikacije
 
     ```
     flutter run
     ```   
 
-7. Otvoriti edostavaadmin folder
+8. Otvoriti edostavaadmin folder
 
     ```
     cd edostavaadmin
     ```
 
-8. Dohvatanje dependecy-a
+9. Dohvatanje dependecy-a
 
     ```
     flutter pub get
     ```
     
-9. Pokretanje mobilne aplikacije
+10. Pokretanje mobilne aplikacije
 
     ```
     flutter run
     ```   
     
-10. Pokretanje desktop aplikacije
+11. Pokretanje desktop aplikacije
 
     ```
     1. Otvoriti solution u Visual Studiu 2022
-    2. CTRL + F5
+    2. Desni klik na solution
+    3. Configure Startup Projects
+    4. Multiple startup projects
+    5. eDostava - Start
+    6. eDostava.Subscriber - Start
+    7. OK
+    8. CTRL + F5
     ```    
    
 ## Kredencijali za prijavu   
