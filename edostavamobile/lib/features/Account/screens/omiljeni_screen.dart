@@ -101,7 +101,27 @@ class _OmiljeniScreenState extends State<OmiljeniScreen> {
         ),
       ),
       body: jela.isEmpty
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/omiljeni.png',
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'Dodajte vaše jelo u omiljeni listu',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  const Text('Nema omiljenih jela.'),
+                ],
+              ),
+            )
           : SizedBox(
               height: 750,
               child: ListView.builder(

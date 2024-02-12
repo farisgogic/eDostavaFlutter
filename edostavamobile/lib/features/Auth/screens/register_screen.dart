@@ -168,6 +168,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           onTap: () async {
                             if (_formKey.currentState != null &&
                                 _formKey.currentState!.validate()) {
+                              if (!isValidEmail(_emailController.text)) {
+                                showInvalidEmailAlertDialog(context);
+                                return;
+                              }
                               final kupac = Kupci(
                                 ime: _nameController.text,
                                 prezime: _lastnameController.text,
@@ -176,7 +180,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 email: _emailController.text,
                                 lozinka: _passwordController.text,
                                 lozinkaPotvrda: _passwordController.text,
-                                ulogeIdList: [1],
                               );
                               await _kupacProvider.register(kupac);
                               ocistiFormu();
@@ -217,4 +220,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
+}
+
+void showInvalidEmailAlertDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Neispravna email adresa'),
+        content: Text('Unesite ispravnu email adresu.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+bool isValidEmail(String email) {
+  final RegExp emailRegex = RegExp(
+    r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$',
+  );
+  return emailRegex.hasMatch(email);
 }

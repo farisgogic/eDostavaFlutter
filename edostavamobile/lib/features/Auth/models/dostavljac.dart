@@ -6,7 +6,7 @@ class Dostavljac {
   final String korisnickoIme;
   final String? lozinka;
   final String? lozinkaPotvrda;
-  List<int> ulogeIdList;
+  List<int>? ulogeIdList;
 
   Dostavljac({
     this.dostavljacId = 0,
@@ -16,7 +16,7 @@ class Dostavljac {
     required this.korisnickoIme,
     this.lozinka,
     this.lozinkaPotvrda,
-    required this.ulogeIdList,
+    this.ulogeIdList,
   });
 
   factory Dostavljac.fromJson(Map<String, dynamic> json) {

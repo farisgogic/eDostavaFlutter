@@ -2,6 +2,7 @@
 import 'package:edostavaadmin/models/korisnik.dart';
 import 'package:edostavaadmin/providers/korisnik_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../common/widgets/custom_textfield.dart';
 import '../../../constants/global_variables.dart';
@@ -110,6 +111,8 @@ class _RegistracijaKorisnikaScreenState
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Korisnicko ime ne može ostati prazno';
+                          } else if (value.length < 4) {
+                            return 'Korisničko ime mora imati barem 4 karaktera';
                           }
                           return null;
                         },
@@ -129,11 +132,43 @@ class _RegistracijaKorisnikaScreenState
                       CustomTextField(
                         controller: _telefonController,
                         hintText: 'Broj telefona',
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          TextInputFormatter.withFunction((oldValue, newValue) {
+                            final maskedValue =
+                                (_telefonController.text.startsWith('060'))
+                                    ? applyMask(newValue.text, '###-###-####')
+                                    : applyMask(newValue.text, '###-###-###');
+
+                            return TextEditingValue(
+                              text: maskedValue,
+                              selection: TextSelection.collapsed(
+                                  offset: maskedValue.length),
+                            );
+                          }),
+                        ],
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Telefon ne može ostati prazan';
                           }
-                          return null;
+                          final phoneNumber =
+                              value.replaceAll(RegExp(r'\D'), '');
+
+                          if (!isNumeric(phoneNumber)) {
+                            return 'Telefon može sadržavati samo brojeve';
+                          }
+
+                          if ((phoneNumber.startsWith('036') ||
+                                  phoneNumber.startsWith('061') ||
+                                  phoneNumber.startsWith('062')) &&
+                              phoneNumber.length == 9) {
+                            return null;
+                          } else if (phoneNumber.startsWith('060') &&
+                              phoneNumber.length == 10) {
+                            return null;
+                          } else {
+                            return 'Nevažeći broj telefona';
+                          }
                         },
                       ),
                       const SizedBox(height: 20),
@@ -169,6 +204,10 @@ class _RegistracijaKorisnikaScreenState
                           onTap: () async {
                             if (_formKey.currentState != null &&
                                 _formKey.currentState!.validate()) {
+                              if (!isValidEmail(_emailController.text)) {
+                                showInvalidEmailAlertDialog(context);
+                                return;
+                              }
                               final korisnik = Korisnik(
                                 ime: _nameController.text,
                                 prezime: _lastnameController.text,
@@ -178,11 +217,11 @@ class _RegistracijaKorisnikaScreenState
                                 lozinka: _passwordController.text,
                                 lozinkaPotvrda: _passwordController.text,
                               );
-                              await _korisnikProvider.register(korisnik);
 
+                              await _korisnikProvider.register(korisnik);
                               ocistiFormu();
                               // ignore: use_build_context_synchronously
-                              Navigator.pushNamed(
+                              Navigator.pushReplacementNamed(
                                   context, LoginAdminScreen.routeName);
                             }
                           }),
@@ -218,4 +257,56 @@ class _RegistracijaKorisnikaScreenState
       ),
     );
   }
+}
+
+void showInvalidEmailAlertDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Neispravna email adresa'),
+        content: const Text('Unesite ispravnu email adresu.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+bool isValidEmail(String email) {
+  final RegExp emailRegex = RegExp(
+    r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$',
+  );
+  return emailRegex.hasMatch(email);
+}
+
+bool isNumeric(String s) {
+  return double.tryParse(s) != null;
+}
+
+String applyMask(String value, String mask) {
+  final result = StringBuffer();
+  var valueIndex = 0;
+
+  for (var i = 0; i < mask.length; i++) {
+    final maskChar = mask[i];
+    if (maskChar == '#') {
+      if (valueIndex < value.length) {
+        result.write(value[valueIndex]);
+        valueIndex++;
+      } else {
+        break;
+      }
+    } else {
+      result.write(maskChar);
+    }
+  }
+
+  return result.toString();
 }

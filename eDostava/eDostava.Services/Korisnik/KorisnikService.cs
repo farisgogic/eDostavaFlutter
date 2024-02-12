@@ -65,7 +65,7 @@ namespace eDostava.Services.Services.Korisnik
                 Opis = " ",
                 RadnoVrijeme = " ",
                 Slika = null,
-                Telefon = "",
+                Telefon = entity.Telefon,
             };
 
             context.Restoran.Add(restoran);

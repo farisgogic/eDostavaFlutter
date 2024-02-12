@@ -193,7 +193,6 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                         updateReview)
                                     .then((_) {
                                   setState(() {});
-                                  
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -204,12 +203,11 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                         actions: [
                                           TextButton(
                                             onPressed: () {
-                                              setState(() {});
                                               Navigator.pop(
                                                   context, updateReview);
+                                              Navigator.pop(context);
 
-                                              Navigator.pop(
-                                                  context, updateReview);
+                                              setState(() {});
                                             },
                                             child: const Text('U redu'),
                                           ),
@@ -262,6 +260,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                               setState(() {});
                                               Navigator.pop(context, review);
                                               Navigator.pop(context, review);
+                                              setState(() {});
                                             },
                                             child: const Text('U redu'),
                                           ),
@@ -320,6 +319,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
                             ocjenjen
                                 ? 'Uredi ocjenu'.toUpperCase()
                                 : 'Ocijeni'.toUpperCase(),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
                       ],

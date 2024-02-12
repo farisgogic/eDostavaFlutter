@@ -40,7 +40,7 @@ namespace eDostava.Services.Database
                 JeloId = 1,
                 Naziv = "Sendvic",
                 Cijena = 8,
-                Ocjena = null,
+                Ocjena = (decimal?)3.5,
                 Opis = "Sendvic sa suhim mesom i dimljenim sirom",
                 Slika = slika,
                 RestoranId = 1,
@@ -51,7 +51,7 @@ namespace eDostava.Services.Database
                 JeloId = 2,
                 Naziv = "Pizza Margarita",
                 Cijena = 10,
-                Ocjena = null,
+                Ocjena = (decimal?)5,
                 Opis = "Mozzarella sir, sos",
                 Slika = slika,
                 RestoranId = 1,
@@ -220,7 +220,7 @@ namespace eDostava.Services.Database
                 Opis = "Restoran Intermezzo",
                 Slika = slika,
                 RadnoVrijeme = "07-23",
-                Ocjena = null,
+                Ocjena = (decimal?)4,
                 KorisnikId = 1
             });
             modelBuilder.Entity<Restoran>().HasData(new Restoran
@@ -232,7 +232,7 @@ namespace eDostava.Services.Database
                 Opis = "Restoran Divan",
                 Slika = slika,
                 RadnoVrijeme = "07-23",
-                Ocjena = null,
+                Ocjena = (decimal?)4.5,
                 KorisnikId = 2
             });
             modelBuilder.Entity<Restoran>().HasData(new Restoran
@@ -244,7 +244,7 @@ namespace eDostava.Services.Database
                 Opis = "Restoran Novalic Kula",
                 Slika = slika,
                 RadnoVrijeme = "07-23",
-                Ocjena = null,
+                Ocjena = (decimal?)5,
                 KorisnikId = 3
             });
 

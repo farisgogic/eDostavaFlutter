@@ -7,7 +7,7 @@ class Kupci {
   final String korisnickoIme;
   final String? lozinka;
   final String? lozinkaPotvrda;
-  List<int> ulogeIdList;
+  List<int>? ulogeIdList;
 
   Kupci({
     this.kupacId = 0,
@@ -18,7 +18,7 @@ class Kupci {
     required this.korisnickoIme,
     this.lozinka,
     this.lozinkaPotvrda,
-    required this.ulogeIdList,
+    this.ulogeIdList,
   });
 
   factory Kupci.fromJson(Map<String, dynamic> json) {

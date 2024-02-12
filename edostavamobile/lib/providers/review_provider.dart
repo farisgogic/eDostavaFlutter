@@ -70,6 +70,7 @@ class ReviewProvider with ChangeNotifier {
       );
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
+
         notifyListeners();
 
         return Review.fromJson(responseData);

@@ -39,18 +39,12 @@ class OmiljeniProvider with ChangeNotifier {
     var url = Uri.parse("${Constants.baseUrl}/Omiljeni");
 
     if (searchObject != null) {
-      final restoranId = searchObject['RestoranId'];
       final kupacId = searchObject['KupacId'];
 
-      if (restoranId != null) {
-        url = Uri.parse("${Constants.baseUrl}/Omiljeni?RestoranId=$restoranId");
-
-        if (kupacId != null) {
-          url = url.replace(queryParameters: {
-            'RestoranId': restoranId.toString(),
-            'kupacId': kupacId.toString(),
-          });
-        }
+      if (kupacId != null) {
+        url = url.replace(queryParameters: {
+          'KupacId': kupacId.toString(),
+        });
       }
     }
 

@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:edostavaadmin/common/widgets/custom_button.dart';
+import 'package:edostavaadmin/common/widgets/custom_textfield.dart';
 import 'package:edostavaadmin/models/korisnik.dart';
 import 'package:edostavaadmin/providers/korisnik_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../constants/global_variables.dart';
@@ -39,6 +40,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
   Uint8List? imageBytes;
   Uint8List? newImage;
+  String newImagePath = '';
 
   Future<String?> _pickImage() async {
     try {
@@ -95,6 +97,32 @@ class _AccountScreenState extends State<AccountScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    const SizedBox(height: 10),
+                    Column(
+                      children: [
+                        newImagePath.isNotEmpty
+                            ? Image.memory(
+                                base64Decode(newImagePath),
+                                height: 90,
+                              )
+                            : Image.asset(
+                                'assets/images/unknown.png',
+                                height: 90,
+                              ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            var pickedImage = await _pickImage();
+                            if (pickedImage != null) {
+                              setState(() {
+                                newImagePath = pickedImage;
+                              });
+                            }
+                          },
+                          child: const Text('Zamijeni sliku'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
                     _buildTextFieldWithStar(
                       label: 'Ime',
                       onChanged: (value) {
@@ -123,12 +151,49 @@ class _AccountScreenState extends State<AccountScreen> {
                       },
                       initialValue: restoran.naziv,
                     ),
-                    _buildTextFieldWithStar(
-                      label: 'Telefon',
-                      onChanged: (value) {
-                        newTelefon = value;
+                    CustomTextField(
+                      label: 'Broj telefona*',
+                      controller: telefonRestoranaController,
+                      hintText: 'Broj telefona',
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        TextInputFormatter.withFunction((oldValue, newValue) {
+                          final maskedValue = (telefonRestoranaController.text
+                                  .startsWith('060'))
+                              ? applyMask(newValue.text, '###-###-####')
+                              : applyMask(newValue.text, '###-###-###');
+
+                          newTelefon = maskedValue;
+
+                          return TextEditingValue(
+                            text: maskedValue,
+                            selection: TextSelection.collapsed(
+                                offset: maskedValue.length),
+                          );
+                        }),
+                      ],
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Telefon ne može ostati prazan';
+                        }
+                        final phoneNumber = value.replaceAll(RegExp(r'\D'), '');
+
+                        if (!isNumeric(phoneNumber)) {
+                          return 'Telefon može sadržavati samo brojeve';
+                        }
+
+                        if ((phoneNumber.startsWith('036') ||
+                                phoneNumber.startsWith('061') ||
+                                phoneNumber.startsWith('062')) &&
+                            phoneNumber.length == 9) {
+                          return null;
+                        } else if (phoneNumber.startsWith('060') &&
+                            phoneNumber.length == 10) {
+                          return null;
+                        } else {
+                          return 'Nevažeći broj telefona';
+                        }
                       },
-                      initialValue: restoran.telefon,
                     ),
                     _buildTextFieldWithStar(
                       label: 'Adresa',
@@ -137,12 +202,23 @@ class _AccountScreenState extends State<AccountScreen> {
                       },
                       initialValue: restoran.adresa,
                     ),
-                    _buildTextFieldWithStar(
-                      label: 'Radno vrijeme',
-                      onChanged: (value) {
-                        newRadnoVrijeme = value;
-                      },
-                      initialValue: restoran.radnoVrijeme,
+                    CustomTextField(
+                      label: 'Radno vrijeme*',
+                      controller: radnoVrijemeController,
+                      hintText: 'Radno vrijeme',
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        TextInputFormatter.withFunction((oldValue, newValue) {
+                          final maskedValue = applyMask(newValue.text, '##-##');
+                          newRadnoVrijeme = maskedValue;
+
+                          return TextEditingValue(
+                            text: maskedValue,
+                            selection: TextSelection.collapsed(
+                                offset: maskedValue.length),
+                          );
+                        }),
+                      ],
                     ),
                     _buildTextFieldWithStar(
                       label: 'Opis',
@@ -150,26 +226,6 @@ class _AccountScreenState extends State<AccountScreen> {
                         newOpis = value;
                       },
                       initialValue: restoran.opis,
-                    ),
-                    const SizedBox(height: 10),
-                    Column(
-                      children: [
-                        const SizedBox(height: 16),
-                        Image.memory(
-                          base64Decode(newImagePath),
-                          height: 90,
-                        ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            var pickedImage = await _pickImage();
-                            if (pickedImage != null) {
-                              newImagePath = pickedImage;
-                              setState(() {});
-                            }
-                          },
-                          child: const Text('Zamijeni sliku'),
-                        ),
-                      ],
                     ),
                   ],
                 ),
@@ -195,6 +251,11 @@ class _AccountScreenState extends State<AccountScreen> {
                       _showAlertDialog('Popunite sva polja.');
                       return;
                     }
+                    if (!isValidEmail(newEmail)) {
+                      showInvalidEmailAlertDialog(context);
+                      return;
+                    }
+
                     await _updateRestoranDetails(
                       restoran.restoranId,
                       newName,
@@ -480,4 +541,56 @@ class _AccountScreenState extends State<AccountScreen> {
       ),
     );
   }
+}
+
+bool isNumeric(String s) {
+  return double.tryParse(s) != null;
+}
+
+String applyMask(String value, String mask) {
+  final result = StringBuffer();
+  var valueIndex = 0;
+
+  for (var i = 0; i < mask.length; i++) {
+    final maskChar = mask[i];
+    if (maskChar == '#') {
+      if (valueIndex < value.length) {
+        result.write(value[valueIndex]);
+        valueIndex++;
+      } else {
+        break;
+      }
+    } else {
+      result.write(maskChar);
+    }
+  }
+
+  return result.toString();
+}
+
+bool isValidEmail(String email) {
+  final RegExp emailRegex = RegExp(
+    r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$',
+  );
+  return emailRegex.hasMatch(email);
+}
+
+void showInvalidEmailAlertDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Neispravna email adresa'),
+        content: const Text('Unesite ispravnu email adresu.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
 }

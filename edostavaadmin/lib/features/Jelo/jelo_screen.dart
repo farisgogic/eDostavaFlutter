@@ -27,6 +27,7 @@ class JeloScreen extends StatefulWidget {
 
   @override
   State<JeloScreen> createState() =>
+      // ignore: no_logic_in_create_state
       _JeloScreenState(webSocketHandler: webSocketHandler);
 }
 
@@ -460,34 +461,13 @@ class _JeloScreenState extends State<JeloScreen> {
               ),
               content: Column(
                 children: [
-                  _buildTextFieldWithStar(
-                    label: 'Naziv jela',
-                    onChanged: (value) {
-                      newJeloName = value;
-                    },
-                  ),
-                  _buildTextFieldWithStar(
-                    label: 'Cijena',
-                    onChanged: (value) {
-                      newJeloPrice = double.tryParse(value) ?? 0.0;
-                    },
-                    keyboardType: TextInputType.number,
-                  ),
-                  _buildTextFieldWithStar(
-                    label: 'Opis',
-                    onChanged: (value) {
-                      newJeloDescription = value;
-                    },
-                    maxLines: 3,
-                  ),
-                  const SizedBox(height: 10),
                   const Text(
                     'Izaberite kategoriju',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 10),
                   DropdownButton<int>(
                     value: selectedKategorijaId,
                     onChanged: (int? value) {
@@ -528,6 +508,27 @@ class _JeloScreenState extends State<JeloScreen> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 10),
+                  _buildTextFieldWithStar(
+                    label: 'Naziv jela',
+                    onChanged: (value) {
+                      newJeloName = value;
+                    },
+                  ),
+                  _buildTextFieldWithStar(
+                    label: 'Cijena',
+                    onChanged: (value) {
+                      newJeloPrice = double.tryParse(value) ?? 0.0;
+                    },
+                    keyboardType: TextInputType.number,
+                  ),
+                  _buildTextFieldWithStar(
+                    label: 'Opis',
+                    onChanged: (value) {
+                      newJeloDescription = value;
+                    },
+                    maxLines: 3,
+                  ),
                 ],
               ),
               actions: [
@@ -543,7 +544,7 @@ class _JeloScreenState extends State<JeloScreen> {
                         newJeloPrice <= 0 ||
                         newJeloDescription.isEmpty ||
                         newJeloImageUrl.isEmpty) {
-                      _showAlertDialog('Obavezna polja nisu popunjena.');
+                      _showAlertDialog('Podaci nisu ispravno popunjeni.');
                       return;
                     }
 

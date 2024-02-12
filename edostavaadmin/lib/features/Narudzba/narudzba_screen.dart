@@ -35,6 +35,7 @@ class _NarudzbaScreenState extends State<NarudzbaScreen> {
     getNarudzbe();
 
     webSocketHandler.onMessage.listen((message) {
+      // ignore: avoid_print
       print('Stigla poruka sa servera: $message');
       if (mounted) {
         loadRestoranInfo();

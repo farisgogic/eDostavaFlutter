@@ -11,11 +11,11 @@ namespace eDostava.Services.Database
     {
         public DostavaContext()
         {
-
         }
         public DostavaContext(DbContextOptions options) : base(options)
         {
         }
+
 
         public virtual DbSet<Korisnik> Korisnik { get; set; }
         public virtual DbSet<Kupci> Kupci { get; set; }
