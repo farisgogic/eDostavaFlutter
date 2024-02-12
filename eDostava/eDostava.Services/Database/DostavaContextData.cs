@@ -220,7 +220,7 @@ namespace eDostava.Services.Database
                 Opis = "Restoran Intermezzo",
                 Slika = slika,
                 RadnoVrijeme = "07-23",
-                Ocjena = (decimal?)4,
+                Ocjena = 4m,
                 KorisnikId = 1
             });
             modelBuilder.Entity<Restoran>().HasData(new Restoran
@@ -232,7 +232,7 @@ namespace eDostava.Services.Database
                 Opis = "Restoran Divan",
                 Slika = slika,
                 RadnoVrijeme = "07-23",
-                Ocjena = (decimal?)4.5,
+                Ocjena = 4.5m,
                 KorisnikId = 2
             });
             modelBuilder.Entity<Restoran>().HasData(new Restoran
@@ -244,7 +244,7 @@ namespace eDostava.Services.Database
                 Opis = "Restoran Novalic Kula",
                 Slika = slika,
                 RadnoVrijeme = "07-23",
-                Ocjena = (decimal?)5,
+                Ocjena = 5m,
                 KorisnikId = 3
             });
 
