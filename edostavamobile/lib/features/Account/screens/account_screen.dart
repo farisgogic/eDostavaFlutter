@@ -7,6 +7,7 @@ import 'package:edostavamobile/constants/global_variables.dart';
 import 'package:edostavamobile/features/Account/screens/accout_settings.dart';
 import 'package:edostavamobile/features/Account/screens/omiljeni_screen.dart';
 
+import '../../../providers/korpa_provider.dart';
 import '../../../providers/kupci_provider.dart';
 import '../../Auth/models/kupac.dart';
 import 'narudzba_screen.dart';
@@ -38,7 +39,10 @@ class _AccountScreenState extends State<AccountScreen> {
     final kupac =
         Provider.of<KupciProvider>(context, listen: false).getById(k!.kupacId);
 
+    final korpaProvider = Provider.of<KorpaProvider>(context, listen: false);
+
     void logout() {
+      korpaProvider.clear();
       Provider.of<KupciProvider>(context, listen: false).logout();
       Navigator.of(context).pushNamedAndRemoveUntil(
         WelcomeScreen.routeName,
