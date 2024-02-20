@@ -1,6 +1,5 @@
 version: '3'
 services:
-#mssql docker
   dostava-sql:
     image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
     restart: unless-stopped
@@ -31,7 +30,16 @@ services:
       - dostava-sql
     depends_on:
       - dostava-sql
-      
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    container_name: rabbitmq
+    networks:
+      - dostavanet2023
+
 networks:
   dostavanet2023:
-    driver: bridge   
+    driver: bridge

@@ -398,10 +398,10 @@ namespace eDostava.Services.Migrations
                 columns: new[] { "RecenzijaId", "Datum", "Komentar", "KupacId", "Ocjena", "RestoranId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6300), "Vrlo lijep restoran", 1, 4, 1 },
-                    { 2, new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6315), "Odlican", 1, 5, 2 },
-                    { 3, new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6327), "Ugodan ambijent", 2, 4, 2 },
-                    { 4, new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6339), "Odlicno mjesto za uzivanje", 2, 5, 3 }
+                    { 1, new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2113), "Vrlo lijep restoran", 1, 4, 1 },
+                    { 2, new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2131), "Odlican", 1, 5, 2 },
+                    { 3, new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2140), "Ugodan ambijent", 2, 4, 2 },
+                    { 4, new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2149), "Odlicno mjesto za uzivanje", 2, 5, 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -420,13 +420,13 @@ namespace eDostava.Services.Migrations
                 columns: new[] { "KorisnikUlogaId", "DatumPromjene", "DostavljacId", "KorisnikId", "KupciId", "UlogaId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6122), 1, null, null, 2 },
-                    { 2, new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6162), 2, null, null, 2 },
-                    { 3, new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6189), null, 1, null, 3 },
-                    { 4, new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6217), null, 2, null, 3 },
-                    { 5, new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6244), null, 3, null, 3 },
-                    { 6, new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6260), null, null, 1, 1 },
-                    { 7, new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6284), null, null, 2, 1 }
+                    { 1, new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2041), 1, null, null, 2 },
+                    { 2, new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2056), 2, null, null, 2 },
+                    { 3, new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2064), null, 1, null, 3 },
+                    { 4, new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2072), null, 2, null, 3 },
+                    { 5, new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2081), null, 3, null, 3 },
+                    { 6, new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2091), null, null, 1, 1 },
+                    { 7, new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2099), null, null, 2, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -477,9 +477,9 @@ namespace eDostava.Services.Migrations
                 columns: new[] { "NarudzbaId", "BrojNarudzbe", "Datum", "DostavljacId", "KorisnikId", "KupacId", "Otkazano", "RestoranId", "Stanje", "Status" },
                 values: new object[,]
                 {
-                    { 1, "1", new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6358), null, null, 1, false, 1, 0, false },
-                    { 2, "2", new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6375), null, null, 1, false, 2, 2, false },
-                    { 3, "3", new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6387), null, null, 2, false, 1, 0, false }
+                    { 1, "1", new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2163), null, null, 1, false, 1, 0, false },
+                    { 2, "1", new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2175), null, null, 1, false, 2, 2, false },
+                    { 3, "2", new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2185), null, null, 2, false, 1, 0, false }
                 });
 
             migrationBuilder.InsertData(

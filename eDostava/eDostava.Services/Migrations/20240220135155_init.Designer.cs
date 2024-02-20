@@ -12,7 +12,7 @@ using eDostava.Services.Database;
 namespace eDostava.Services.Migrations
 {
     [DbContext(typeof(DostavaContext))]
-    [Migration("20240212230908_init")]
+    [Migration("20240220135155_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -602,49 +602,49 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             KorisnikUlogaId = 1,
-                            DatumPromjene = new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6122),
+                            DatumPromjene = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2041),
                             DostavljacId = 1,
                             UlogaId = 2
                         },
                         new
                         {
                             KorisnikUlogaId = 2,
-                            DatumPromjene = new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6162),
+                            DatumPromjene = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2056),
                             DostavljacId = 2,
                             UlogaId = 2
                         },
                         new
                         {
                             KorisnikUlogaId = 3,
-                            DatumPromjene = new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6189),
+                            DatumPromjene = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2064),
                             KorisnikId = 1,
                             UlogaId = 3
                         },
                         new
                         {
                             KorisnikUlogaId = 4,
-                            DatumPromjene = new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6217),
+                            DatumPromjene = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2072),
                             KorisnikId = 2,
                             UlogaId = 3
                         },
                         new
                         {
                             KorisnikUlogaId = 5,
-                            DatumPromjene = new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6244),
+                            DatumPromjene = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2081),
                             KorisnikId = 3,
                             UlogaId = 3
                         },
                         new
                         {
                             KorisnikUlogaId = 6,
-                            DatumPromjene = new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6260),
+                            DatumPromjene = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2091),
                             KupciId = 1,
                             UlogaId = 1
                         },
                         new
                         {
                             KorisnikUlogaId = 7,
-                            DatumPromjene = new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6284),
+                            DatumPromjene = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2099),
                             KupciId = 2,
                             UlogaId = 1
                         });
@@ -768,7 +768,7 @@ namespace eDostava.Services.Migrations
                         {
                             NarudzbaId = 1,
                             BrojNarudzbe = "1",
-                            Datum = new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6358),
+                            Datum = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2163),
                             KupacId = 1,
                             Otkazano = false,
                             RestoranId = 1,
@@ -778,8 +778,8 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             NarudzbaId = 2,
-                            BrojNarudzbe = "2",
-                            Datum = new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6375),
+                            BrojNarudzbe = "1",
+                            Datum = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2175),
                             KupacId = 1,
                             Otkazano = false,
                             RestoranId = 2,
@@ -789,8 +789,8 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             NarudzbaId = 3,
-                            BrojNarudzbe = "3",
-                            Datum = new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6387),
+                            BrojNarudzbe = "2",
+                            Datum = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2185),
                             KupacId = 2,
                             Otkazano = false,
                             RestoranId = 1,
@@ -879,7 +879,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             RecenzijaId = 1,
-                            Datum = new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6300),
+                            Datum = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2113),
                             Komentar = "Vrlo lijep restoran",
                             KupacId = 1,
                             Ocjena = 4,
@@ -888,7 +888,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             RecenzijaId = 2,
-                            Datum = new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6315),
+                            Datum = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2131),
                             Komentar = "Odlican",
                             KupacId = 1,
                             Ocjena = 5,
@@ -897,7 +897,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             RecenzijaId = 3,
-                            Datum = new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6327),
+                            Datum = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2140),
                             Komentar = "Ugodan ambijent",
                             KupacId = 2,
                             Ocjena = 4,
@@ -906,7 +906,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             RecenzijaId = 4,
-                            Datum = new DateTime(2024, 2, 12, 23, 9, 7, 944, DateTimeKind.Utc).AddTicks(6339),
+                            Datum = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2149),
                             Komentar = "Odlicno mjesto za uzivanje",
                             KupacId = 2,
                             Ocjena = 5,

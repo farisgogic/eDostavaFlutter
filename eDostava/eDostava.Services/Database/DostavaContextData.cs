@@ -550,7 +550,7 @@ namespace eDostava.Services.Database
             modelBuilder.Entity<Narudzba>().HasData(new Narudzba
             {
                 NarudzbaId = 2,
-                BrojNarudzbe = "2",
+                BrojNarudzbe = "1",
                 Datum = DateTime.UtcNow,
                 KupacId = 1,
                 RestoranId = 2,
@@ -561,7 +561,7 @@ namespace eDostava.Services.Database
             modelBuilder.Entity<Narudzba>().HasData(new Narudzba
             {
                 NarudzbaId = 3,
-                BrojNarudzbe = "3",
+                BrojNarudzbe = "2",
                 Datum = DateTime.UtcNow,
                 KupacId = 2,
                 RestoranId = 1,

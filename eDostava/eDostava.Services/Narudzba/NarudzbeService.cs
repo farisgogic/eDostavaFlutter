@@ -59,7 +59,8 @@ namespace eDostava.Services.Narudzba
                 <html>
                     <body>
                         <p>Poštovani,</p>
-                        <p>Vaša narudžba broj {brojNarudzbe} je zaprimljena.</p>
+                        <p>Vaša narudžba broj je zaprimljena.</p>
+                        <p>Broj narudžbe je {brojNarudzbe}.</p>
                         <p>Hvala Vam na povjerenju!</p>
                     </body>
                 </html>
@@ -89,7 +90,10 @@ namespace eDostava.Services.Narudzba
         public override void BeforeInsert(NarudzbaInsertRequest insert, Database.Narudzba entity)
         {
             entity.Datum = DateTime.Now;
-            entity.BrojNarudzbe = (context.Narudzba.Count() + 1).ToString();
+
+            int brojNarudzbiZaRestoran = context.Narudzba.Count(n => n.RestoranId == insert.RestoranId);
+            entity.BrojNarudzbe = (brojNarudzbiZaRestoran + 1).ToString();
+
             entity.Stanje = Database.StanjeNarudzbe.NaCekanju;
 
             base.BeforeInsert(insert, entity);
