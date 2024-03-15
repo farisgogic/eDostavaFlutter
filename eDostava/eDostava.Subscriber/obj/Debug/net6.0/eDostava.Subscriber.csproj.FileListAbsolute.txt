@@ -1,3 +1,8 @@
+C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\obj\Debug\net6.0\eDostava.Subscriber.csproj.AssemblyReference.cache
+C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\obj\Debug\net6.0\eDostava.Subscriber.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\obj\Debug\net6.0\eDostava.Subscriber.AssemblyInfoInputs.cache
+C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\obj\Debug\net6.0\eDostava.Subscriber.AssemblyInfo.cs
+C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\obj\Debug\net6.0\eDostava.Subscriber.csproj.CoreCompileInputs.cache
 C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\bin\Debug\net6.0\eDostava.Subscriber.exe
 C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\bin\Debug\net6.0\eDostava.Subscriber.deps.json
 C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\bin\Debug\net6.0\eDostava.Subscriber.runtimeconfig.json
@@ -9,11 +14,6 @@ C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\bin\Debug\n
 C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\bin\Debug\net6.0\System.Threading.Channels.dll
 C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\bin\Debug\net6.0\eDostava.Model.dll
 C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\bin\Debug\net6.0\eDostava.Model.pdb
-C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\obj\Debug\net6.0\eDostava.Subscriber.csproj.AssemblyReference.cache
-C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\obj\Debug\net6.0\eDostava.Subscriber.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\obj\Debug\net6.0\eDostava.Subscriber.AssemblyInfoInputs.cache
-C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\obj\Debug\net6.0\eDostava.Subscriber.AssemblyInfo.cs
-C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\obj\Debug\net6.0\eDostava.Subscriber.csproj.CoreCompileInputs.cache
 C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\obj\Debug\net6.0\eDostava.Subscriber.csproj.CopyComplete
 C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\obj\Debug\net6.0\eDostava.Subscriber.dll
 C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava.Subscriber\obj\Debug\net6.0\refint\eDostava.Subscriber.dll

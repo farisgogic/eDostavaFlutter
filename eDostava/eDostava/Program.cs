@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EasyNetQ;
 using eDostava;
 using eDostava.Controllers;
 using eDostava.Filter;
@@ -13,6 +14,7 @@ using eDostava.Services.Kategorija;
 using eDostava.Services.Kupci;
 using eDostava.Services.Narudzba;
 using eDostava.Services.Omiljeni;
+using eDostava.Services.RabbitMQ;
 using eDostava.Services.Review;
 using eDostava.Services.Services.Korisnik;
 using eDostava.Services.Services.Restoran;
@@ -70,6 +72,8 @@ builder.Services.AddTransient<IRecenzijaService, RecenzijaService>();
 builder.Services.AddTransient<IJelaOcjeneService, JelaOcjeneService>();
 builder.Services.AddTransient<IJelaKategorijaService, JelaKategorijaService>();
 builder.Services.AddTransient<JeloService>();
+builder.Services.AddTransient<IMailProducer, MailProducer>();
+
 
 builder.Services.AddTransient<KategorijaController>(provider =>
 {

@@ -9,13 +9,19 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using eDostava.Model;
+using Newtonsoft.Json;
+using eDostava.Services.RabbitMQ;
 
 namespace eDostava.Services.Narudzba
 {
     public class NarudzbeService : BaseCRUDService<Model.Narudzba, Database.Narudzba, NarudzbaSearchObject, NarudzbaInsertRequest, NarudzbaUpdateRequest>, INarudzbaService
     {
-        public NarudzbeService(DostavaContext context, IMapper mapper) : base(context, mapper)
-        { }
+        private readonly IMailProducer _rabbitMQProducer;
+
+        public NarudzbeService(DostavaContext context, IMapper mapper, IMailProducer rabbitMQProducer) : base(context, mapper)
+        {
+            _rabbitMQProducer = rabbitMQProducer;
+        }
 
 
         public override IQueryable<Database.Narudzba> AddFilter(IQueryable<Database.Narudzba> query, NarudzbaSearchObject search = null)
@@ -41,52 +47,6 @@ namespace eDostava.Services.Narudzba
         }
 
 
-        public void PosaljiPotvrduNarudzbe(string korisnikEmail, string brojNarudzbe)
-        {
-            
-            var smtpServer = "smtp.gmail.com"; 
-            var smtpPort = 587;
-            var smtpUsername = "edostava9@gmail.com";
-            var smtpPassword = "rnkb bzps lqwl fuhs";
-
-            
-            var fromAddress = new MailAddress("edostava9@gmail.com", "eDostava");
-            var toAddress = new MailAddress(korisnikEmail, "Korisnik");
-            var subject = "Potvrda narudžbe";
-
-            
-            var body = $@"
-                <html>
-                    <body>
-                        <p>Poštovani,</p>
-                        <p>Vaša narudžba broj je zaprimljena.</p>
-                        <p>Broj narudžbe je {brojNarudzbe}.</p>
-                        <p>Hvala Vam na povjerenju!</p>
-                    </body>
-                </html>
-                ";
-
-            
-            using (var smtpClient = new SmtpClient(smtpServer))
-            {
-                smtpClient.Port = smtpPort;
-                smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
-                smtpClient.EnableSsl = true;
-
-                
-                using (var message = new MailMessage(fromAddress, toAddress)
-                {
-                    Subject = subject,
-                    Body = body,
-                    IsBodyHtml = true 
-                })
-                {
-                    smtpClient.Send(message);
-                }
-            }
-        }
-
-
         public override void BeforeInsert(NarudzbaInsertRequest insert, Database.Narudzba entity)
         {
             entity.Datum = DateTime.Now;
@@ -98,6 +58,26 @@ namespace eDostava.Services.Narudzba
 
             base.BeforeInsert(insert, entity);
         }
+        public class OrderConfirmationEvent
+        {
+            public int OrderId { get; }
+            public string UserEmail { get; }
+
+            public OrderConfirmationEvent(int orderId, string userEmail)
+            {
+                OrderId = orderId;
+                UserEmail = userEmail;
+            }
+        }
+
+        public class EmailModel
+        {
+            public string Sender { get; set; }
+            public string Recipient { get; set; }
+            public string Subject { get; set; }
+            public string Content { get; set; }
+
+        }
 
         public override Model.Narudzba Insert(NarudzbaInsertRequest insert)
         {
@@ -108,7 +88,7 @@ namespace eDostava.Services.Narudzba
                 dbItem.NarudzbaId = result.NarudzbaId;
                 dbItem.JeloId = item.JeloId;
                 dbItem.Kolicina = item.Kolicina;
-                
+
 
                 context.NarudzbaStavke.Add(dbItem);
             }
@@ -116,23 +96,32 @@ namespace eDostava.Services.Narudzba
             context.SaveChanges();
 
             var mappedEntity = result;
-
-            using var bus = RabbitHutch.CreateBus("host=localhost");
-            
-            bus.PubSub.Publish(mappedEntity);
-
             var kupac = context.Kupci.Find(mappedEntity.KupacId);
-            var emailTo = kupac.Email;
 
-            PosaljiPotvrduNarudzbe(emailTo, mappedEntity.BrojNarudzbe);
+            var emailModel = new EmailModel
+            {
+                Sender = "edostava9@gmail.com",
+                Recipient = kupac.Email,
+                Subject = "Nova narudžba",
+                Content = $@"
+                        Poštovani,
+                        Vaša narudžba broj je zaprimljena.
+                        Broj narudžbe je {mappedEntity.BrojNarudzbe}.
+                        Hvala Vam na povjerenju!
+                ",
+            };
 
-            return mappedEntity; 
+            _rabbitMQProducer.SendMessage(emailModel);
+            Thread.Sleep(TimeSpan.FromSeconds(5));
+
+
+            return mappedEntity;
         }
         public override Model.Narudzba GetById(int id)
         {
             var dbNarudzba = context.Narudzba
                 .Include(n => n.NarudzbaStavke)
-                .ThenInclude(s=>s.Jelo)
+                .ThenInclude(s => s.Jelo)
                 .SingleOrDefault(n => n.NarudzbaId == id);
 
             var modelNarudzba = mapper.Map<Model.Narudzba>(dbNarudzba);
@@ -189,5 +178,7 @@ namespace eDostava.Services.Narudzba
             return mapper.Map<Model.Narudzba>(entity);
         }
 
+
     }
+
 }
