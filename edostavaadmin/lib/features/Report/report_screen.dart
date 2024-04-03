@@ -1,10 +1,10 @@
-import 'package:edostavaadmin/constants/global_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import '../../models/Narudzba.dart';
 import '../../providers/jelo_provider.dart';
 import '../../providers/narudzba_provider.dart';
+import 'package:edostavaadmin/constants/global_variables.dart';
 
 class ReportScreen extends StatefulWidget {
   final dynamic userData;
@@ -84,33 +84,41 @@ class _ReportScreenState extends State<ReportScreen> {
       Colors.teal,
     ];
 
-    double sumValues =
-        jelaIKolicine.values.fold(0, (prev, element) => prev + element);
+    List<MapEntry<int, int>> sortedJelaIKolicine = jelaIKolicine.entries
+        .toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
 
-    List<PieChartSectionData> sections = jelaIKolicine.entries.map((entry) {
-      double percent = (entry.value.toDouble() / sumValues) * 100;
+    double sumValues = sortedJelaIKolicine.isEmpty
+        ? 0
+        : sortedJelaIKolicine
+            .map((e) => e.value)
+            .reduce((a, b) => a + b)
+            .toDouble();
 
-      return PieChartSectionData(
-        title:
-            '${percent.toStringAsFixed(2)}%', // Prikazujemo procenat umesto količine
-        value: entry.value.toDouble(),
-        color:
-            boje[jelaIKolicine.keys.toList().indexOf(entry.key) % boje.length],
-        radius: 150,
-        titleStyle: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-        badgeWidget: null,
-        badgePositionPercentageOffset: 1.1,
-        titlePositionPercentageOffset: 0.7,
-        borderSide: BorderSide(
-          color: Colors.black.withOpacity(0.5),
-          width: 1,
-        ),
-      );
-    }).toList();
+    List<PieChartSectionData> sections = sumValues == 0
+        ? []
+        : sortedJelaIKolicine.map((entry) {
+            double percent = (entry.value.toDouble() / sumValues) * 100;
+
+            return PieChartSectionData(
+              title: '${percent.toStringAsFixed(2)}%',
+              value: entry.value.toDouble(),
+              color: boje[sortedJelaIKolicine.indexOf(entry) % boje.length],
+              radius: 150,
+              titleStyle: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+              badgeWidget: null,
+              badgePositionPercentageOffset: 1.1,
+              titlePositionPercentageOffset: 0.7,
+              borderSide: BorderSide(
+                color: Colors.black.withOpacity(0.5),
+                width: 1,
+              ),
+            );
+          }).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -150,12 +158,10 @@ class _ReportScreenState extends State<ReportScreen> {
               Expanded(
                 flex: 2,
                 child: ListView.builder(
-                  itemCount: naziviJela.length,
+                  itemCount: sortedJelaIKolicine.length,
                   itemBuilder: (context, index) {
-                    int jeloId = naziviJela.keys.elementAt(index);
-                    int kolicina = jelaIKolicine.containsKey(jeloId)
-                        ? jelaIKolicine[jeloId]!
-                        : 0;
+                    int jeloId = sortedJelaIKolicine[index].key;
+                    int kolicina = sortedJelaIKolicine[index].value;
 
                     String jeloNaziv = naziviJela.containsKey(jeloId)
                         ? naziviJela[jeloId]!

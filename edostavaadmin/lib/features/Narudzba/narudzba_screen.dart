@@ -110,106 +110,112 @@ class _NarudzbaScreenState extends State<NarudzbaScreen> {
           style: const TextStyle(fontWeight: FontWeight.bold),
         )),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: narudzbe.length,
-                itemBuilder: (context, index) {
-                  final narudzba = narudzbe[index];
-                  return Card(
-                    margin: const EdgeInsets.all(8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Broj narudžbe: ${narudzba.brojNarudzbe}',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const Spacer(),
-                              Column(
-                                children: [
-                                  Text(
-                                    'Status: ${narudzba.stanjeTekst}',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Visibility(
-                                    visible: narudzba.stanje == 0,
-                                    child: ElevatedButton(
-                                      onPressed: () =>
-                                          updateOrderStatus(narudzba),
-                                      child: const Text('Prihvati narudzbu'),
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: narudzba.stanje == 1,
-                                    child: ElevatedButton(
-                                      onPressed: () => orderReady(narudzba),
-                                      child: const Text('Narudzba spremna'),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                              'Datum: ${DateFormat('dd-MM-yyyy hh:mm').format(narudzba.datum)}'),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Stavke narudžbe:',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: narudzba.narudzbaStavke.length,
-                            itemBuilder: (context, index) {
-                              final stavka = narudzba.narudzbaStavke[index];
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 4),
-                                child: Row(
+      body: narudzbe.isEmpty
+          ? Center(child: Image.asset('assets/images/nothing-here.jpg'))
+          : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: narudzbe.length,
+                      itemBuilder: (context, index) {
+                        final narudzba = narudzbe[index];
+                        return Card(
+                          margin: const EdgeInsets.all(8),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
                                   children: [
-                                    Expanded(child: Text(stavka.naziv)),
-                                    Text('Količina: ${stavka.kolicina}'),
-                                    const SizedBox(width: 8),
                                     Text(
-                                        'Cijena: ${stavka.cijena / stavka.kolicina} KM'),
+                                      'Broj narudžbe: ${narudzba.brojNarudzbe}',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const Spacer(),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          'Status: ${narudzba.stanjeTekst}',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Visibility(
+                                          visible: narudzba.stanje == 0,
+                                          child: ElevatedButton(
+                                            onPressed: () =>
+                                                updateOrderStatus(narudzba),
+                                            child:
+                                                const Text('Prihvati narudzbu'),
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible: narudzba.stanje == 1,
+                                          child: ElevatedButton(
+                                            onPressed: () =>
+                                                orderReady(narudzba),
+                                            child:
+                                                const Text('Narudzba spremna'),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 10),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Text(
-                              'Ukupna cijena: ${izracunajUkupnaCijena(narudzba)} KM',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
+                                const SizedBox(height: 8),
+                                Text(
+                                    'Datum: ${DateFormat('dd-MM-yyyy hh:mm').format(narudzba.datum)}'),
+                                const SizedBox(height: 8),
+                                const Text(
+                                  'Stavke narudžbe:',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: narudzba.narudzbaStavke.length,
+                                  itemBuilder: (context, index) {
+                                    final stavka =
+                                        narudzba.narudzbaStavke[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4),
+                                      child: Row(
+                                        children: [
+                                          Expanded(child: Text(stavka.naziv)),
+                                          Text('Količina: ${stavka.kolicina}'),
+                                          const SizedBox(width: 8),
+                                          Text(
+                                              'Cijena: ${stavka.cijena / stavka.kolicina} KM'),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(height: 10),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Text(
+                                    'Ukupna cijena: ${izracunajUkupnaCijena(narudzba)} KM',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }
