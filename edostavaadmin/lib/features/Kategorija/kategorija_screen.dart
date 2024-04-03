@@ -369,8 +369,9 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Delete Confirmation'),
-          content: const Text('Are you sure you want to delete this item?'),
+          title: const Text('Potvrda'),
+          content:
+              const Text('Da li ste sigurni da želite izbrisati kategoriju?'),
           actions: <Widget>[
             ElevatedButton(
               onPressed: () {

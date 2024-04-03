@@ -11,7 +11,11 @@ namespace eDostava.Services.Database
         public int JelaOcjeneId { get; set; }
         public float Ocjena { get; set; }
         public string? Komentar { get; set; }
-        public int KupacId { get; set; }
         public int JeloId { get; set; }
+        public int KupacId { get; set; }
+
+        public virtual Jelo Jelo { get; set; } = null!;
+        public virtual Kupci Kupci{ get; set; } = null!;
+
     }
 }

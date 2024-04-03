@@ -14,5 +14,7 @@ namespace eDostava.Model.SearchObjects
         public int? RestoranId { get; set; }
         public int? KategorijaId { get; set; }
 
+        public bool? Arhivirano { get; set; }
+
     }
 }

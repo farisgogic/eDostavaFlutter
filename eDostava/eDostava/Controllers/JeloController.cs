@@ -30,6 +30,19 @@ namespace eDostava.Controllers
             return result;
         }
 
+        [HttpPut("{id}/UpdateArhivirano")]
+        public IActionResult UpdateArhivirano(int id, [FromBody] JeloUpsertRequest update)
+        {
+            var jelo = jeloService.UpdateArhivirano(id, update);
+
+            if (jelo != null)
+            {
+                return Ok(jelo);
+            }
+
+            return NotFound();
+        }
+
     }
 }
  

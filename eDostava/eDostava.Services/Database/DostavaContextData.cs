@@ -44,6 +44,7 @@ namespace eDostava.Services.Database
                 Opis = "Sendvic sa suhim mesom i dimljenim sirom",
                 Slika = slika,
                 RestoranId = 1,
+                Arhivirano = false,
             });
 
             modelBuilder.Entity<Jelo>().HasData(new Jelo
@@ -55,6 +56,7 @@ namespace eDostava.Services.Database
                 Opis = "Mozzarella sir, sos",
                 Slika = slika,
                 RestoranId = 1,
+                Arhivirano = false,
             });
 
             modelBuilder.Entity<Jelo>().HasData(new Jelo
@@ -66,6 +68,7 @@ namespace eDostava.Services.Database
                 Opis = "Gazirani sok",
                 Slika = slika,
                 RestoranId = 1,
+                Arhivirano = false,
             });
 
             modelBuilder.Entity<Jelo>().HasData(new Jelo
@@ -77,6 +80,7 @@ namespace eDostava.Services.Database
                 Opis = "Sendvic sa komadicima piletine i sosom",
                 Slika = slika,
                 RestoranId = 1,
+                Arhivirano = false,
             });
 
             modelBuilder.Entity<Jelo>().HasData(new Jelo
@@ -88,6 +92,7 @@ namespace eDostava.Services.Database
                 Opis = "Burger 100% juneće meso, umak, sir, zelena salata, paradajz",
                 Slika = slika,
                 RestoranId = 2,
+                Arhivirano = false,
             });
 
             modelBuilder.Entity<Jelo>().HasData(new Jelo
@@ -99,6 +104,7 @@ namespace eDostava.Services.Database
                 Opis = "Pizza tuna",
                 Slika = slika,
                 RestoranId = 2,
+                Arhivirano = false,
             });
 
             modelBuilder.Entity<Jelo>().HasData(new Jelo
@@ -110,6 +116,7 @@ namespace eDostava.Services.Database
                 Opis = "Palačinke Nutella",
                 Slika = slika,
                 RestoranId = 2,
+                Arhivirano = false,
             });
 
             modelBuilder.Entity<Jelo>().HasData(new Jelo
@@ -121,6 +128,7 @@ namespace eDostava.Services.Database
                 Opis = "Salata",
                 Slika = slika,
                 RestoranId = 3,
+                Arhivirano = false,
             });
 
             modelBuilder.Entity<Jelo>().HasData(new Jelo
@@ -132,6 +140,7 @@ namespace eDostava.Services.Database
                 Opis = "Torta sa 4 vrste čokolada",
                 Slika = slika,
                 RestoranId = 3,
+                Arhivirano = false,
             });
 
             modelBuilder.Entity<Jelo>().HasData(new Jelo
@@ -143,6 +152,7 @@ namespace eDostava.Services.Database
                 Opis = "Gazirani sok",
                 Slika = slika,
                 RestoranId = 3,
+                Arhivirano = false,
             });
 
 

@@ -13,6 +13,8 @@ namespace eDostava.Services.Database
         {
             Narudzbe = new HashSet<Narudzba>();
             Favoriti = new HashSet<Favoriti>();
+            JelaOcjene = new HashSet<JelaOcjene>();
+            Recenzija = new HashSet<Recenzija>();
         }
 
         [Key]
@@ -28,5 +30,7 @@ namespace eDostava.Services.Database
         public ICollection<KorisnikUloga> KorisnikUloga { get; set; }
         public virtual ICollection<Favoriti> Favoriti { get; set; }
         public virtual ICollection<Narudzba> Narudzbe { get; set; }
+        public virtual ICollection<JelaOcjene> JelaOcjene{ get; set; }
+        public virtual ICollection<Recenzija> Recenzija { get; set; }
     }
 }

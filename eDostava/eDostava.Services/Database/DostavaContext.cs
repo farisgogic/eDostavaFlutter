@@ -56,6 +56,18 @@ namespace eDostava.Services.Database
                 .HasForeignKey(jk => jk.KategorijaId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<JelaOcjene>()
+               .HasOne(j => j.Kupci)
+               .WithMany(k => k.JelaOcjene)
+               .HasForeignKey(j => j.KupacId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Recenzija>()
+               .HasOne(j => j.Kupci)
+               .WithMany(k => k.Recenzija)
+               .HasForeignKey(j => j.KupacId)
+               .OnDelete(DeleteBehavior.Cascade);
+
 
             onModelCreatingPartial(modelBuilder);
         }

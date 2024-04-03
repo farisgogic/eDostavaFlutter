@@ -150,6 +150,10 @@ namespace eDostava.Services.Migrations
 
                     b.HasKey("JelaOcjeneId");
 
+                    b.HasIndex("JeloId");
+
+                    b.HasIndex("KupacId");
+
                     b.ToTable("JelaOcjene");
 
                     b.HasData(
@@ -195,6 +199,9 @@ namespace eDostava.Services.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("JeloId"));
 
+                    b.Property<bool>("Arhivirano")
+                        .HasColumnType("bit");
+
                     b.Property<double>("Cijena")
                         .HasColumnType("float");
 
@@ -224,6 +231,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             JeloId = 1,
+                            Arhivirano = false,
                             Cijena = 8.0,
                             Naziv = "Sendvic",
                             Ocjena = 3.5m,
@@ -234,6 +242,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             JeloId = 2,
+                            Arhivirano = false,
                             Cijena = 10.0,
                             Naziv = "Pizza Margarita",
                             Ocjena = 5m,
@@ -244,6 +253,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             JeloId = 3,
+                            Arhivirano = false,
                             Cijena = 3.0,
                             Naziv = "Coca-Cola",
                             Opis = "Gazirani sok",
@@ -253,6 +263,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             JeloId = 4,
+                            Arhivirano = false,
                             Cijena = 12.0,
                             Naziv = "Pileci sendvic",
                             Opis = "Sendvic sa komadicima piletine i sosom",
@@ -262,6 +273,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             JeloId = 5,
+                            Arhivirano = false,
                             Cijena = 10.0,
                             Naziv = "American Classic Burger",
                             Opis = "Burger 100% juneće meso, umak, sir, zelena salata, paradajz",
@@ -271,6 +283,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             JeloId = 6,
+                            Arhivirano = false,
                             Cijena = 13.0,
                             Naziv = "Pizza Tuna",
                             Opis = "Pizza tuna",
@@ -280,6 +293,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             JeloId = 7,
+                            Arhivirano = false,
                             Cijena = 6.0,
                             Naziv = "Palačinke Nutella",
                             Opis = "Palačinke Nutella",
@@ -289,6 +303,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             JeloId = 8,
+                            Arhivirano = false,
                             Cijena = 8.5,
                             Naziv = "Pileća salata",
                             Opis = "Salata",
@@ -298,6 +313,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             JeloId = 9,
+                            Arhivirano = false,
                             Cijena = 4.0,
                             Naziv = "Čokoladna torta",
                             Opis = "Torta sa 4 vrste čokolada",
@@ -307,6 +323,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             JeloId = 10,
+                            Arhivirano = false,
                             Cijena = 10.0,
                             Naziv = "Fanta",
                             Opis = "Gazirani sok",
@@ -599,49 +616,49 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             KorisnikUlogaId = 1,
-                            DatumPromjene = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2041),
+                            DatumPromjene = new DateTime(2024, 4, 2, 12, 35, 2, 482, DateTimeKind.Utc).AddTicks(2342),
                             DostavljacId = 1,
                             UlogaId = 2
                         },
                         new
                         {
                             KorisnikUlogaId = 2,
-                            DatumPromjene = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2056),
+                            DatumPromjene = new DateTime(2024, 4, 2, 12, 35, 2, 482, DateTimeKind.Utc).AddTicks(2362),
                             DostavljacId = 2,
                             UlogaId = 2
                         },
                         new
                         {
                             KorisnikUlogaId = 3,
-                            DatumPromjene = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2064),
+                            DatumPromjene = new DateTime(2024, 4, 2, 12, 35, 2, 482, DateTimeKind.Utc).AddTicks(2374),
                             KorisnikId = 1,
                             UlogaId = 3
                         },
                         new
                         {
                             KorisnikUlogaId = 4,
-                            DatumPromjene = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2072),
+                            DatumPromjene = new DateTime(2024, 4, 2, 12, 35, 2, 482, DateTimeKind.Utc).AddTicks(2385),
                             KorisnikId = 2,
                             UlogaId = 3
                         },
                         new
                         {
                             KorisnikUlogaId = 5,
-                            DatumPromjene = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2081),
+                            DatumPromjene = new DateTime(2024, 4, 2, 12, 35, 2, 482, DateTimeKind.Utc).AddTicks(2395),
                             KorisnikId = 3,
                             UlogaId = 3
                         },
                         new
                         {
                             KorisnikUlogaId = 6,
-                            DatumPromjene = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2091),
+                            DatumPromjene = new DateTime(2024, 4, 2, 12, 35, 2, 482, DateTimeKind.Utc).AddTicks(2407),
                             KupciId = 1,
                             UlogaId = 1
                         },
                         new
                         {
                             KorisnikUlogaId = 7,
-                            DatumPromjene = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2099),
+                            DatumPromjene = new DateTime(2024, 4, 2, 12, 35, 2, 482, DateTimeKind.Utc).AddTicks(2417),
                             KupciId = 2,
                             UlogaId = 1
                         });
@@ -765,7 +782,7 @@ namespace eDostava.Services.Migrations
                         {
                             NarudzbaId = 1,
                             BrojNarudzbe = "1",
-                            Datum = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2163),
+                            Datum = new DateTime(2024, 4, 2, 12, 35, 2, 482, DateTimeKind.Utc).AddTicks(2502),
                             KupacId = 1,
                             Otkazano = false,
                             RestoranId = 1,
@@ -776,7 +793,7 @@ namespace eDostava.Services.Migrations
                         {
                             NarudzbaId = 2,
                             BrojNarudzbe = "1",
-                            Datum = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2175),
+                            Datum = new DateTime(2024, 4, 2, 12, 35, 2, 482, DateTimeKind.Utc).AddTicks(2522),
                             KupacId = 1,
                             Otkazano = false,
                             RestoranId = 2,
@@ -787,7 +804,7 @@ namespace eDostava.Services.Migrations
                         {
                             NarudzbaId = 3,
                             BrojNarudzbe = "2",
-                            Datum = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2185),
+                            Datum = new DateTime(2024, 4, 2, 12, 35, 2, 482, DateTimeKind.Utc).AddTicks(2539),
                             KupacId = 2,
                             Otkazano = false,
                             RestoranId = 1,
@@ -870,13 +887,17 @@ namespace eDostava.Services.Migrations
 
                     b.HasKey("RecenzijaId");
 
+                    b.HasIndex("KupacId");
+
+                    b.HasIndex("RestoranId");
+
                     b.ToTable("Recenzija");
 
                     b.HasData(
                         new
                         {
                             RecenzijaId = 1,
-                            Datum = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2113),
+                            Datum = new DateTime(2024, 4, 2, 12, 35, 2, 482, DateTimeKind.Utc).AddTicks(2434),
                             Komentar = "Vrlo lijep restoran",
                             KupacId = 1,
                             Ocjena = 4,
@@ -885,7 +906,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             RecenzijaId = 2,
-                            Datum = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2131),
+                            Datum = new DateTime(2024, 4, 2, 12, 35, 2, 482, DateTimeKind.Utc).AddTicks(2452),
                             Komentar = "Odlican",
                             KupacId = 1,
                             Ocjena = 5,
@@ -894,7 +915,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             RecenzijaId = 3,
-                            Datum = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2140),
+                            Datum = new DateTime(2024, 4, 2, 12, 35, 2, 482, DateTimeKind.Utc).AddTicks(2469),
                             Komentar = "Ugodan ambijent",
                             KupacId = 2,
                             Ocjena = 4,
@@ -903,7 +924,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             RecenzijaId = 4,
-                            Datum = new DateTime(2024, 2, 20, 13, 51, 54, 727, DateTimeKind.Utc).AddTicks(2149),
+                            Datum = new DateTime(2024, 4, 2, 12, 35, 2, 482, DateTimeKind.Utc).AddTicks(2482),
                             Komentar = "Odlicno mjesto za uzivanje",
                             KupacId = 2,
                             Ocjena = 5,
@@ -1066,6 +1087,25 @@ namespace eDostava.Services.Migrations
                     b.Navigation("Restoran");
                 });
 
+            modelBuilder.Entity("eDostava.Services.Database.JelaOcjene", b =>
+                {
+                    b.HasOne("eDostava.Services.Database.Jelo", "Jelo")
+                        .WithMany("JelaOcjene")
+                        .HasForeignKey("JeloId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("eDostava.Services.Database.Kupci", "Kupci")
+                        .WithMany("JelaOcjene")
+                        .HasForeignKey("KupacId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Jelo");
+
+                    b.Navigation("Kupci");
+                });
+
             modelBuilder.Entity("eDostava.Services.Database.Jelo", b =>
                 {
                     b.HasOne("eDostava.Services.Database.Restoran", "Restoran")
@@ -1182,6 +1222,23 @@ namespace eDostava.Services.Migrations
                     b.Navigation("Narudzba");
                 });
 
+            modelBuilder.Entity("eDostava.Services.Database.Recenzija", b =>
+                {
+                    b.HasOne("eDostava.Services.Database.Kupci", "Kupci")
+                        .WithMany("Recenzija")
+                        .HasForeignKey("KupacId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("eDostava.Services.Database.Restoran", "Restoran")
+                        .WithMany("Recenzije")
+                        .HasForeignKey("RestoranId");
+
+                    b.Navigation("Kupci");
+
+                    b.Navigation("Restoran");
+                });
+
             modelBuilder.Entity("eDostava.Services.Database.Restoran", b =>
                 {
                     b.HasOne("eDostava.Services.Database.Korisnik", "Korisnik")
@@ -1200,6 +1257,8 @@ namespace eDostava.Services.Migrations
 
             modelBuilder.Entity("eDostava.Services.Database.Jelo", b =>
                 {
+                    b.Navigation("JelaOcjene");
+
                     b.Navigation("JeloKategorijas");
                 });
 
@@ -1222,9 +1281,13 @@ namespace eDostava.Services.Migrations
                 {
                     b.Navigation("Favoriti");
 
+                    b.Navigation("JelaOcjene");
+
                     b.Navigation("KorisnikUloga");
 
                     b.Navigation("Narudzbe");
+
+                    b.Navigation("Recenzija");
                 });
 
             modelBuilder.Entity("eDostava.Services.Database.Narudzba", b =>
@@ -1237,6 +1300,8 @@ namespace eDostava.Services.Migrations
                     b.Navigation("Jela");
 
                     b.Navigation("Kategorija");
+
+                    b.Navigation("Recenzije");
                 });
 
             modelBuilder.Entity("eDostava.Services.Database.Uloga", b =>

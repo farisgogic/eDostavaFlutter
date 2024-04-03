@@ -212,14 +212,14 @@ void showInvalidEmailAlertDialog(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Neispravna email adresa'),
-        content: Text('Unesite ispravnu email adresu.'),
+        title: const Text('Neispravna email adresa'),
+        content: const Text('Unesite ispravnu email adresu.'),
         actions: <Widget>[
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text('OK'),
+            child: const Text('OK'),
           ),
         ],
       );

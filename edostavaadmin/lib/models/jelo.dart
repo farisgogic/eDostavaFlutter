@@ -13,6 +13,7 @@ class Jelo {
   double? ocjena;
   int restoranId;
   List<int> kategorijaId = [];
+  bool arhivirano;
 
   Jelo({
     this.jeloId = 0,
@@ -23,6 +24,7 @@ class Jelo {
     this.ocjena,
     this.restoranId = 0,
     required this.kategorijaId,
+    this.arhivirano = false,
   });
 
   factory Jelo.fromJson(Map<String, dynamic> json) => _$JeloFromJson(json);

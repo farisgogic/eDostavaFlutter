@@ -98,58 +98,33 @@ class _AccountScreenState extends State<AccountScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 10),
-                    Column(
-                      children: [
-                        newImagePath.isNotEmpty
-                            ? Image.memory(
-                                base64Decode(newImagePath),
-                                height: 90,
-                              )
-                            : Image.asset(
-                                'assets/images/unknown.png',
-                                height: 90,
-                              ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            var pickedImage = await _pickImage();
-                            if (pickedImage != null) {
-                              setState(() {
-                                newImagePath = pickedImage;
-                              });
-                            }
-                          },
-                          child: const Text('Zamijeni sliku'),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
                     _buildTextFieldWithStar(
                       label: 'Ime',
                       onChanged: (value) {
                         newIme = value;
                       },
-                      initialValue: korisnik.ime,
+                      initialValue: newIme,
                     ),
                     _buildTextFieldWithStar(
                       label: 'Prezme',
                       onChanged: (value) {
                         newPrezime = value;
                       },
-                      initialValue: korisnik.prezime,
+                      initialValue: newPrezime,
                     ),
                     _buildTextFieldWithStar(
                       label: 'Email',
                       onChanged: (value) {
                         newEmail = value;
                       },
-                      initialValue: korisnik.email,
+                      initialValue: newEmail,
                     ),
                     _buildTextFieldWithStar(
                       label: 'Naziv restorana',
                       onChanged: (value) {
                         newName = value;
                       },
-                      initialValue: restoran.naziv,
+                      initialValue: newName,
                     ),
                     CustomTextField(
                       label: 'Broj telefona*',
@@ -200,7 +175,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       onChanged: (value) {
                         newAdresa = value;
                       },
-                      initialValue: restoran.adresa,
+                      initialValue: newAdresa,
                     ),
                     CustomTextField(
                       label: 'Radno vrijeme*',
@@ -225,7 +200,32 @@ class _AccountScreenState extends State<AccountScreen> {
                       onChanged: (value) {
                         newOpis = value;
                       },
-                      initialValue: restoran.opis,
+                      initialValue: newOpis,
+                    ),
+                    const SizedBox(height: 20),
+                    Column(
+                      children: [
+                        newImagePath.isNotEmpty
+                            ? Image.memory(
+                                base64Decode(newImagePath),
+                                height: 90,
+                              )
+                            : Image.asset(
+                                'assets/images/unknown.png',
+                                height: 90,
+                              ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            var pickedImage = await _pickImage();
+                            if (pickedImage != null) {
+                              setState(() {
+                                newImagePath = pickedImage;
+                              });
+                            }
+                          },
+                          child: const Text('Zamijeni sliku'),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -239,18 +239,35 @@ class _AccountScreenState extends State<AccountScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    if (newName.isEmpty ||
-                        newTelefon.isEmpty ||
-                        newAdresa.isEmpty ||
-                        newRadnoVrijeme.isEmpty ||
-                        newOpis.isEmpty ||
-                        newImagePath.isEmpty ||
-                        newIme.isEmpty ||
-                        newPrezime.isEmpty ||
-                        newEmail.isEmpty) {
-                      _showAlertDialog('Popunite sva polja.');
+                    if (newName.isEmpty) {
+                      _showAlertDialog('Naziv restorana je obavezan.');
+                      return;
+                    } else if (newTelefon.isEmpty) {
+                      _showAlertDialog('Broj telefona restorana je obavezan.');
+                      return;
+                    } else if (newAdresa.isEmpty) {
+                      _showAlertDialog('Lokacija restorana je obavezna.');
+                      return;
+                    } else if (newRadnoVrijeme.isEmpty) {
+                      _showAlertDialog('Radno vrijeme restorana je obavezno.');
+                      return;
+                    } else if (newOpis.isEmpty) {
+                      _showAlertDialog('Opis restorana je obavezan.');
+                      return;
+                    } else if (newImagePath.isEmpty) {
+                      _showAlertDialog('Slika restorana je obavezna.');
+                      return;
+                    } else if (newIme.isEmpty) {
+                      _showAlertDialog('Ime je obavezno.');
+                      return;
+                    } else if (newPrezime.isEmpty) {
+                      _showAlertDialog('Prezime je obavezno.');
+                      return;
+                    } else if (newEmail.isEmpty) {
+                      _showAlertDialog('Email je obavezan.');
                       return;
                     }
+
                     if (!isValidEmail(newEmail)) {
                       showInvalidEmailAlertDialog(context);
                       return;

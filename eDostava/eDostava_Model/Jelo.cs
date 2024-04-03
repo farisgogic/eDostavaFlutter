@@ -12,6 +12,8 @@ namespace eDostava.Model
         public byte[]? Slika { get; set; }
 
         public decimal Ocjena { get; set; }
+        public bool Arhivirano { get; set; }
+
         public int RestoranId { get; set; }
 
         public virtual ICollection<JeloKategorija> JeloKategorijas { get; set; }

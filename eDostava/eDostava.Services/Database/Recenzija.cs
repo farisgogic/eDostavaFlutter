@@ -14,5 +14,8 @@ namespace eDostava.Services.Database
         public string? Komentar { get; set; }
         public int KupacId { get; set; }
         public int? RestoranId { get; set; }
+
+        public virtual Kupci Kupci { get; set; } = null!;
+        public virtual Restoran Restoran { get; set; } = null!;
     }
 }

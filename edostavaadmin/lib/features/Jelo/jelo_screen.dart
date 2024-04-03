@@ -69,6 +69,7 @@ class _JeloScreenState extends State<JeloScreen> {
   Future<void> getJela() async {
     var searchObject = {
       'RestoranId': widget.userData.korisnikId,
+      'Arhivirano': false,
     };
 
     final result = await jeloProvider.get(searchObject);
@@ -210,7 +211,10 @@ class _JeloScreenState extends State<JeloScreen> {
                                       },
                                     ),
                                     IconButton(
-                                      icon: const Icon(Icons.delete),
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
                                       onPressed: () {
                                         _showDeleteConfirmationDialog(
                                             jela[index].jeloId);
@@ -277,7 +281,7 @@ class _JeloScreenState extends State<JeloScreen> {
                     onChanged: (value) {
                       newName = value;
                     },
-                    initialValue: jelo.naziv,
+                    initialValue: newName,
                   ),
                   _buildTextFieldWithStar(
                     label: 'Cijena*',
@@ -285,7 +289,7 @@ class _JeloScreenState extends State<JeloScreen> {
                       newCijena = double.tryParse(value) ?? jelo.cijena;
                     },
                     keyboardType: TextInputType.number,
-                    initialValue: jelo.cijena.toString(),
+                    initialValue: newCijena.toString(),
                   ),
                   _buildTextFieldWithStar(
                     label: 'Opis*',
@@ -293,7 +297,7 @@ class _JeloScreenState extends State<JeloScreen> {
                       newOpis = value;
                     },
                     maxLines: 3,
-                    initialValue: jelo.opis,
+                    initialValue: newOpis,
                   ),
                   const SizedBox(height: 10),
                   DropdownButton<int>(
@@ -342,13 +346,20 @@ class _JeloScreenState extends State<JeloScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    if (newName.isEmpty ||
-                        newOpis.isEmpty ||
-                        newCijena <= 0 ||
-                        newImagePath.isEmpty) {
-                      _showAlertDialog('Obavezna polja nisu popunjena.');
+                    if (newName.isEmpty) {
+                      _showAlertDialog('Naziv jela je obavezan.');
+                      return;
+                    } else if (newCijena <= 0) {
+                      _showAlertDialog('Unesite cijenu veću od 0 KM.');
+                      return;
+                    } else if (newImagePath.isEmpty) {
+                      _showAlertDialog('Slika jela je obavezna.');
+                      return;
+                    } else if (newOpis.isEmpty) {
+                      _showAlertDialog('Opis jela je obavezan.');
                       return;
                     }
+
                     await _updateJeloDetails(
                       jelo.jeloId,
                       newName,
@@ -461,6 +472,30 @@ class _JeloScreenState extends State<JeloScreen> {
               ),
               content: Column(
                 children: [
+                  _buildTextFieldWithStar(
+                    label: 'Naziv jela',
+                    onChanged: (value) {
+                      newJeloName = value;
+                    },
+                    initialValue: newJeloName,
+                  ),
+                  _buildTextFieldWithStar(
+                    label: 'Cijena',
+                    onChanged: (value) {
+                      newJeloPrice = double.tryParse(value) ?? 0.0;
+                    },
+                    keyboardType: TextInputType.number,
+                    initialValue: newJeloPrice.toString(),
+                  ),
+                  _buildTextFieldWithStar(
+                    label: 'Opis',
+                    onChanged: (value) {
+                      newJeloDescription = value;
+                    },
+                    maxLines: 2,
+                    initialValue: newJeloDescription,
+                  ),
+                  const SizedBox(height: 30),
                   const Text(
                     'Izaberite kategoriju',
                     style: TextStyle(
@@ -508,27 +543,6 @@ class _JeloScreenState extends State<JeloScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
-                  _buildTextFieldWithStar(
-                    label: 'Naziv jela',
-                    onChanged: (value) {
-                      newJeloName = value;
-                    },
-                  ),
-                  _buildTextFieldWithStar(
-                    label: 'Cijena',
-                    onChanged: (value) {
-                      newJeloPrice = double.tryParse(value) ?? 0.0;
-                    },
-                    keyboardType: TextInputType.number,
-                  ),
-                  _buildTextFieldWithStar(
-                    label: 'Opis',
-                    onChanged: (value) {
-                      newJeloDescription = value;
-                    },
-                    maxLines: 3,
-                  ),
                 ],
               ),
               actions: [
@@ -540,11 +554,17 @@ class _JeloScreenState extends State<JeloScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    if (newJeloName.isEmpty ||
-                        newJeloPrice <= 0 ||
-                        newJeloDescription.isEmpty ||
-                        newJeloImageUrl.isEmpty) {
-                      _showAlertDialog('Podaci nisu ispravno popunjeni.');
+                    if (newJeloName.isEmpty) {
+                      _showAlertDialog('Naziv jela je obavezan.');
+                      return;
+                    } else if (newJeloPrice <= 0) {
+                      _showAlertDialog('Unesite cijenu veću od 0 KM.');
+                      return;
+                    } else if (newJeloImageUrl.isEmpty) {
+                      _showAlertDialog('Slika jela je obavezna.');
+                      return;
+                    } else if (newJeloDescription.isEmpty) {
+                      _showAlertDialog('Opis jela je obavezan.');
                       return;
                     }
 
@@ -718,10 +738,10 @@ class _JeloScreenState extends State<JeloScreen> {
         jela.removeWhere((k) => k.jeloId == jeloId);
       });
       getJela();
-      webSocketHandler.sendToAllAsync("Podatak je izbrisan!");
+      webSocketHandler.sendToAllAsync("Podatak je arhiviran!");
     } catch (e) {
       // ignore: avoid_print
-      print('Error deleting Kategorija: $e');
+      print('Greska prilikom arhiviranja jela: $e');
     }
   }
 
@@ -730,8 +750,8 @@ class _JeloScreenState extends State<JeloScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Delete Confirmation'),
-          content: const Text('Are you sure you want to delete this item?'),
+          title: const Text('Potvrda'),
+          content: const Text('Da li ste sigurni da želite arhivirati jelo?'),
           actions: <Widget>[
             ElevatedButton(
               onPressed: () {

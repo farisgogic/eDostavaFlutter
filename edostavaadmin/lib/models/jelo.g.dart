@@ -18,6 +18,7 @@ Jelo _$JeloFromJson(Map<String, dynamic> json) => Jelo(
               ?.map((e) => e as int)
               .toList() ??
           [],
+      arhivirano: json['arhivirano'] as bool,
     );
 
 Map<String, dynamic> _$JeloToJson(Jelo instance) => <String, dynamic>{
@@ -29,4 +30,5 @@ Map<String, dynamic> _$JeloToJson(Jelo instance) => <String, dynamic>{
       'ocjena': instance.ocjena,
       'restoranId': instance.restoranId,
       'kategorijaId': instance.kategorijaId,
+      'arhivirano': instance.arhivirano,
     };

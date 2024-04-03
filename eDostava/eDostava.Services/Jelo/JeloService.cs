@@ -27,8 +27,9 @@ namespace eDostava.Services.Jelo
             var entity = base.Insert(insert);
 
             entity.RestoranId = insert.RestoranId;
+            entity.Arhivirano = false;
 
-            foreach(var kategorijaId in insert.KategorijaId)
+            foreach (var kategorijaId in insert.KategorijaId)
             {
                 Database.JeloKategorija jeloKategorija = new Database.JeloKategorija();
                 jeloKategorija.JeloId = entity.JeloId;
@@ -48,9 +49,10 @@ namespace eDostava.Services.Jelo
             if (jelo != null)
             {
                 jelo.Naziv = update.Naziv;
-                jelo.Cijena = update.Cijena;
+                jelo.Cijena = update.Cijena; 
                 jelo.Opis = update.Opis;
                 jelo.Slika = update.Slika;
+                jelo.Arhivirano = (bool)update.Arhivirano;
 
                 var existingKategorije = context.JeloKategorija.Where(jk => jk.JeloId == jelo.JeloId).ToList();
                 var kategorijeToRemove = existingKategorije.Where(jk => !update.KategorijaId.Contains(jk.KategorijaId)).ToList();
@@ -79,6 +81,29 @@ namespace eDostava.Services.Jelo
             return null;
         }
 
+        public Model.Jelo UpdateArhivirano(int id, JeloUpsertRequest update)
+        {
+            var jelo = context.Jelo.Find(id);
+
+            if (jelo != null)
+            {
+                jelo.Naziv = update.Naziv;
+                jelo.Cijena = update.Cijena;
+                jelo.Opis = update.Opis;
+                jelo.Slika = update.Slika;
+                jelo.Arhivirano = (bool)update.Arhivirano;
+                
+                var existingKategorije = context.JeloKategorija.Where(jk => jk.JeloId == jelo.JeloId).ToList();
+                jelo.JeloKategorijas = existingKategorije;
+
+                context.SaveChanges();
+
+                return GetById(id);
+            }
+
+            return null;
+        }
+
         public override IQueryable<Database.Jelo> AddFilter(IQueryable<Database.Jelo> query, JeloSearchObject search = null)
         {
             if (search?.KategorijaId != null)
@@ -93,6 +118,11 @@ namespace eDostava.Services.Jelo
             {
                 query = query.Include("JeloKategorijas.Kategorija");
             }
+            if (search?.Arhivirano != null)
+            {
+                query = query.Where(j => j.Arhivirano == search!.Arhivirano);
+            }
+
             return query;  
         }
 
@@ -160,6 +190,17 @@ namespace eDostava.Services.Jelo
 
                     context.SaveChanges();
                 }
+            }
+        }
+
+        public override void Delete(int id)
+        {
+            var jelo = context.Jelo.Find(id);
+
+            if (jelo != null)
+            {
+                jelo.Arhivirano = true;
+                context.SaveChanges();
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eDostava.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace eDostava.Services.Database
         public Jelo()
         {
             JeloKategorijas = new HashSet<JeloKategorija>();
+            JelaOcjene = new HashSet<JelaOcjene>();
         }
 
         public int JeloId { get; set; }
@@ -23,9 +25,13 @@ namespace eDostava.Services.Database
         [Range(1,5)]
         public decimal? Ocjena { get; set; }
 
+        public bool Arhivirano { get; set; }
+
         public virtual ICollection<JeloKategorija> JeloKategorijas { get; set; }
 
         public int RestoranId { get; set; }
         public Restoran Restoran { get; set; }
+        public virtual ICollection<JelaOcjene> JelaOcjene { get; set; }
+
     }
 }

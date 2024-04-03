@@ -32,6 +32,7 @@ class JeloProvider with ChangeNotifier {
     if (searchObject != null) {
       final restoranId = searchObject['RestoranId'];
       final kategorijaId = searchObject['KategorijaId'];
+      final arhivirano = searchObject['Arhivirano'];
 
       if (restoranId != null) {
         url = Uri.parse("${Constants.baseUrl}/Jelo?RestoranId=$restoranId");
@@ -42,6 +43,14 @@ class JeloProvider with ChangeNotifier {
             'KategorijaId': kategorijaId.toString(),
           });
         }
+        if (arhivirano != null) {
+          url = url.replace(queryParameters: {
+            'RestoranId': restoranId.toString(),
+            'Arhivirano': arhivirano.toString(),
+          });
+        }
+      } else if (arhivirano != null) {
+        url = Uri.parse("${Constants.baseUrl}/Jelo?Arhivirano=$arhivirano");
       }
     }
 
@@ -93,5 +102,22 @@ class JeloProvider with ChangeNotifier {
     final url = Uri.parse("${Constants.baseUrl}/Jelo/$jeloId");
 
     await http!.delete(url);
+  }
+
+  Future<Jelo> updateArhivirano(int jeloId, Jelo jelo) async {
+    var url = Uri.parse("${Constants.baseUrl}/Jelo/$jeloId/UpdateArhivirano");
+
+    var response = await http!.put(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(jelo.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      return Jelo.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed to update Jelo');
+    }
   }
 }

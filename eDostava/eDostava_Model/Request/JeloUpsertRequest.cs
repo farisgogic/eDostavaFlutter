@@ -12,5 +12,7 @@ namespace eDostava.Model.Request
         public List<int> KategorijaId { get; set; } = new List<int> { };
 
         public int RestoranId { get; set; }
+
+        public bool? Arhivirano { get; set; }     
     }
 }

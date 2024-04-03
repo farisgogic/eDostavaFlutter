@@ -13,5 +13,7 @@ namespace eDostava.Services.Jelo
         List<Model.Jelo> GetRecommendedJela(int kupacId, int restoranId);
         
         List<Model.Jelo> GetJeloByKategorijaId(int id);
+        Model.Jelo UpdateArhivirano(int id, JeloUpsertRequest update);
+
     }
 }

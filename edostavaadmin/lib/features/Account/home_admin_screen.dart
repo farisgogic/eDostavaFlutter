@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 
 import '../../constants/global_variables.dart';
 import '../../constants/websocket.dart';
+import '../Jelo/archive_jelo_screen.dart';
 import '../Jelo/jelo_screen.dart';
 import '../Kategorija/kategorija_screen.dart';
 import '../Narudzba/narudzba_screen.dart';
+import '../Report/report_screen.dart';
 import 'account_admin_screen.dart';
 
 class HomeAdminScreen extends StatefulWidget {
@@ -21,7 +23,7 @@ class HomeAdminScreen extends StatefulWidget {
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
   int _page = 0;
   double bottomBarWidth = 42;
-  double bottomBarBorderWidth = 5;
+  double bottomBarBorderWidth = 6;
 
   late List<Widget> pages;
 
@@ -43,7 +45,10 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       KategorijaScreen(
           userData: widget.userData, webSocketHandler: webSocketHandler),
       JeloScreen(userData: widget.userData, webSocketHandler: webSocketHandler),
+      ArchiveJeloScreen(
+          userData: widget.userData, webSocketHandler: webSocketHandler),
       NarudzbaScreen(userData: widget.userData),
+      ReportScreen(userData: widget.userData),
     ];
   }
 
@@ -122,7 +127,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
             label: '',
           ),
 
-          //NARUDZBA
+          //ARCHIVE JELO
           BottomNavigationBarItem(
             icon: Container(
               width: bottomBarWidth,
@@ -137,7 +142,49 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 ),
               ),
               child: const Icon(
+                Icons.archive_outlined,
+              ),
+            ),
+            label: '',
+          ),
+
+          //NARUDZBA
+          BottomNavigationBarItem(
+            icon: Container(
+              width: bottomBarWidth,
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: _page == 4
+                        ? GlobalVariables.selectedNavBarColor
+                        : GlobalVariables.unselectedNavBarColor,
+                    width: bottomBarBorderWidth,
+                  ),
+                ),
+              ),
+              child: const Icon(
                 Icons.list_alt_outlined,
+              ),
+            ),
+            label: '',
+          ),
+
+          //IZVJESTAJ
+          BottomNavigationBarItem(
+            icon: Container(
+              width: bottomBarWidth,
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: _page == 5
+                        ? GlobalVariables.selectedNavBarColor
+                        : GlobalVariables.unselectedNavBarColor,
+                    width: bottomBarBorderWidth,
+                  ),
+                ),
+              ),
+              child: const Icon(
+                Icons.view_comfortable_sharp,
               ),
             ),
             label: '',
