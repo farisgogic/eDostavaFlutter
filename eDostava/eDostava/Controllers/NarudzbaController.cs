@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace eDostava.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
+
     public class NarudzbaController : BaseCRUDController<Model.Narudzba, NarudzbaSearchObject, NarudzbaInsertRequest, NarudzbaUpdateRequest>
     {
         public NarudzbaController(INarudzbaService service, WebSocketHandler webSocketHandler)

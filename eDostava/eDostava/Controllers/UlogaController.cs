@@ -10,7 +10,7 @@ namespace eDostava.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
+    [Authorize]
     public class UlogaController : BaseCRUDController<Model.Uloga, UlogaSearchObject, UlogaUpsertRequest, UlogaUpsertRequest>
     {
         public UlogaController(IUlogaService ulogaService):base(ulogaService)

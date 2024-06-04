@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eDostava.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
+
     public class OmiljeniController : BaseCRUDController<Model.Favoriti, OmiljeniSearchObject, OmiljeniUpsertRequest, OmiljeniUpsertRequest>
     {
         public IOmiljeniService OmiljeniService { get; set; }

@@ -6,6 +6,7 @@ import 'package:edostavamobile/providers/omiljeni_provider.dart';
 import 'package:edostavamobile/providers/review_provider.dart';
 import 'package:edostavamobile/router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,8 @@ import 'providers/restaurant_provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = stripePublishableKey;
+
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
   runApp(
     MultiProvider(

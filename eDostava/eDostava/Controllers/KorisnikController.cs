@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eDostava.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
 
     public class KorisnikController : BaseCRUDController<Model.Korisnik, KorisnikSearchObject, KorisniciInsertRequest, KorisniciUpdateRequest>
     {
@@ -23,19 +23,17 @@ namespace eDostava.Controllers
             this.tokenService = tokenService;
         }
 
-        [AllowAnonymous]
         public override Korisnik Insert([FromBody] KorisniciInsertRequest insert)
         {
             return base.Insert(insert);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "uposlenik")]
         public override Korisnik Update(int id, [FromBody] KorisniciUpdateRequest update)
         {
             return base.Update(id, update);
         }
 
-        [AllowAnonymous]
         [HttpPost("login")]
         public ActionResult<Model.Korisnik> Login([FromBody] LoginRequest loginRequest)
         {

@@ -13,7 +13,8 @@ namespace eDostava.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
+    [Authorize]
+
     public class KategorijaController : BaseCRUDController<Model.Kategorija, KategorijaSearchObject, KategorijaUpsertRequest, KategorijaUpsertRequest>
     {
         public KategorijaController(IKategorijaService kategorijaService, WebSocketHandler webSocketHandler) : base(kategorijaService, webSocketHandler)

@@ -10,7 +10,8 @@ namespace eDostava.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
+    [Authorize]
+
     public class RestoranController : BaseCRUDController<Model.Restoran, RestoranSearchObject, RestoranInsertRequest, RestoranUpdateRequest>
     {
 

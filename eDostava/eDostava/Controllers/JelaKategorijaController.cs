@@ -12,7 +12,8 @@ using System.Collections.Generic;
 
 namespace eDostava.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
+
     public class JelaKategorijaController : BaseCRUDController<Model.JeloKategorija, JelaKategorijaSearchObject, JelaKategorijaUpsertRequest, JelaKategorijaUpsertRequest>
     {
         public IJelaKategorijaService JelaKategorijaService { get; set; }

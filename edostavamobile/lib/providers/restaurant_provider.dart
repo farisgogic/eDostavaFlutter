@@ -37,7 +37,6 @@ class RestaurantProvider with ChangeNotifier {
 
     var response = await http!.get(url);
 
-
     if (response.statusCode < 400) {
       var data = jsonDecode(response.body);
       List<Restaurant> list =

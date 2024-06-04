@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eDostava.Controllers
 {
-     [AllowAnonymous]
+    [Authorize]
+
     public class JeloController : BaseCRUDController<Model.Jelo, JeloSearchObject, JeloUpsertRequest, JeloUpsertRequest>
     {
         private readonly IJeloService jeloService;
@@ -21,7 +22,6 @@ namespace eDostava.Controllers
         }
 
 
-        [AllowAnonymous]
         [HttpGet("{kupacId}/{restoranId}/Recommend")]
         public List<Jelo> Recommend(int kupacId, int restoranId)
         {

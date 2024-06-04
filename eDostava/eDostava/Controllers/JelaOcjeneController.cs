@@ -13,7 +13,8 @@ using System.Collections.Generic;
 
 namespace eDostava.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
+
     public class JelaOcjeneController : BaseCRUDController<Model.JelaOcjene, JelaOcjeneSearchObject, JelaOcjeneUpsertRequest, JelaOcjeneUpsertRequest>
     {
         public IJelaOcjeneService JelaOcjeneService { get; set; }

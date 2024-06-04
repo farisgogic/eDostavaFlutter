@@ -11,7 +11,8 @@ using System.Text;
 
 namespace eDostava.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
+
     public class DostavljacController : BaseCRUDController<Model.Dostavljac, DostavljacSearchObject, DostavljacInsertRequest, DostavljacUpdateRequest>
     {
         private readonly IDostavljacService dostavljacService;

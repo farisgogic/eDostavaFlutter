@@ -10,7 +10,8 @@ using System.Text;
 
 namespace eDostava.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
+
     public class KupciController : BaseCRUDController<Model.Kupci, KupciSearchObject, KupciInsertRequest, KupciUpdateRequest>
     {
         private readonly IKupciService kupciService;
@@ -33,6 +34,7 @@ namespace eDostava.Controllers
             return base.Update(id, update);
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public ActionResult<Model.Kupci> Login([FromBody] LoginRequest loginRequest)
         {

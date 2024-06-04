@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eDostava.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController] 
-    [Authorize]
+    [ApiController]
 
     public class BaseController<T, TSearch> : ControllerBase where T : class where TSearch : class
     {
@@ -20,6 +19,7 @@ namespace eDostava.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IEnumerable<T> Get([FromQuery]TSearch search = null) 
         {
             return Service.Get(search);
