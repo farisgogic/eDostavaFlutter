@@ -1,7 +1,9 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'package:edostavaadmin/constants/global_variables.dart';
+import 'package:edostavaadmin/models/korisnik.dart';
 import 'package:edostavaadmin/providers/kategorija_providers.dart';
+import 'package:edostavaadmin/providers/korisnik_provider.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/websocket.dart';
@@ -29,6 +31,7 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
   final JeloKategorijaProvider jeloKategorijaProvider =
       JeloKategorijaProvider();
   final RestoranProvider restoranProvider = RestoranProvider();
+  final KorisnikProvider korisnikProvider = KorisnikProvider();
 
   final WebSocketHandler webSocketHandler;
 
@@ -36,12 +39,18 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
 
   List<Kategorija> kategorije = [];
   Restoran? restoran;
+  Korisnik? korisnik;
 
   @override
   void initState() {
     super.initState();
+    initializeData();
+  }
+
+  void initializeData() async {
+    await loadRestoranInfo();
+    await loadRestoran();
     getKategorije();
-    loadRestoranInfo();
   }
 
   @override
@@ -51,19 +60,46 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
   }
 
   loadRestoranInfo() async {
-    restoran = await restoranProvider.getById(widget.userData.korisnikId);
+    try {
+      korisnik = await korisnikProvider.getById(widget.userData.korisnikId);
+      print('korisnik id: ${korisnik!.korisnikId}');
+
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      print('Error loading restaurant info: $e');
+    }
+  }
+
+  loadRestoran() async {
+    try {
+      var searchObject = {'korisnikId': widget.userData.korisnikId};
+      List<Restoran> restaurantList = await restoranProvider.get(searchObject);
+      if (restaurantList.isNotEmpty) {
+        restoran = restaurantList.first;
+        print('restoran id: ${restoran!.restoranId}');
+      } else {
+        print(
+            'No restaurant found for korisnikId: ${widget.userData.korisnikId}');
+      }
+    } catch (e) {
+      print('Error loading restaurant info: $e');
+    }
   }
 
   Future<void> getKategorije() async {
-    var searchObject = {
-      'RestoranId': widget.userData.korisnikId,
-    };
-    final result = await kategorijaProvider.get(searchObject);
+    if (restoran != null) {
+      var searchObject = {
+        'RestoranId': restoran!.restoranId,
+      };
+      final result = await kategorijaProvider.get(searchObject);
 
-    if (mounted) {
-      setState(() {
-        kategorije = result;
-      });
+      if (mounted) {
+        setState(() {
+          kategorije = result;
+        });
+      }
     }
   }
 
@@ -74,7 +110,7 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
         backgroundColor: GlobalVariables.backgroundColor,
         title: Center(
           child: Text(
-            "Kategorije za restoran ${restoran?.naziv ?? ''}",
+            "Kategorije za restoran ${korisnik?.korisnickoIme ?? ''}",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -84,39 +120,49 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
         child: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                itemCount: kategorije.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 5,
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    child: ListTile(
-                      title: Text(
-                        kategorije[index].naziv,
-                        style: const TextStyle(fontWeight: FontWeight.w600),
+              child: kategorije.isEmpty
+                  ? Center(
+                      child: Image.asset(
+                        'assets/images/nothing-here.jpg',
+                        fit: BoxFit.cover,
                       ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () {
-                              _showEditKategorijaDialog(kategorije[index]);
-                            },
+                    )
+                  : ListView.builder(
+                      itemCount: kategorije.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          elevation: 5,
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          child: ListTile(
+                            title: Text(
+                              kategorije[index].naziv,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  onPressed: () {
+                                    _showEditKategorijaDialog(
+                                        kategorije[index]);
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete,
+                                      color: Colors.red),
+                                  onPressed: () {
+                                    _showDeleteConfirmationDialog(
+                                        kategorije[index].kategorijaId);
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              _showDeleteConfirmationDialog(
-                                  kategorije[index].kategorijaId);
-                            },
-                          ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
           ],
         ),
@@ -200,7 +246,7 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
   Future<void> _addNewKategorija(String newName) async {
     try {
       final newKategorija = await kategorijaProvider.insert(
-        Kategorija(naziv: newName, restoranId: widget.userData.korisnikId),
+        Kategorija(naziv: newName, restoranId: restoran!.restoranId),
       );
 
       setState(() {
@@ -210,7 +256,6 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
 
       webSocketHandler.sendToAllAsync("Novi podatak je dodan!");
     } catch (e) {
-      // ignore: avoid_print
       print('Error sending WebSocket message: $e');
     }
   }
@@ -285,7 +330,7 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
       if (newName.isNotEmpty) {
         final updatedKategorija = await kategorijaProvider.update(
           kategorijaId,
-          Kategorija(naziv: newName, restoranId: widget.userData.korisnikId),
+          Kategorija(naziv: newName, restoranId: restoran!.restoranId),
         );
 
         getKategorije();
@@ -320,7 +365,6 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
         );
       }
     } catch (e) {
-      // ignore: avoid_print
       print('Error updating Kategorija: $e');
     }
   }
@@ -359,7 +403,6 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
         });
       }
     } catch (e) {
-      // ignore: avoid_print
       print('Error deleting Kategorija: $e');
     }
   }

@@ -1,5 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
+import 'package:edostavaadmin/models/korisnik.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/global_variables.dart';
@@ -10,6 +13,7 @@ import '../../models/restoran.dart';
 import '../../providers/jelakategorija_provider.dart';
 import '../../providers/jelo_provider.dart';
 import '../../providers/kategorija_providers.dart';
+import '../../providers/korisnik_provider.dart';
 import '../../providers/restoran_provider.dart';
 
 class ArchiveJeloScreen extends StatefulWidget {
@@ -35,10 +39,12 @@ class _ArchiveJeloScreenState extends State<ArchiveJeloScreen> {
       JeloKategorijaProvider();
   final RestoranProvider restoranProvider = RestoranProvider();
   final WebSocketHandler webSocketHandler;
+  final KorisnikProvider korisnikProvider = KorisnikProvider();
 
   _ArchiveJeloScreenState({required this.webSocketHandler});
 
   Restoran? restoran;
+  Korisnik? korisnik;
 
   List<Jelo> jela = [];
   List<Kategorija> kategorije = [];
@@ -46,15 +52,43 @@ class _ArchiveJeloScreenState extends State<ArchiveJeloScreen> {
   int _selectedKategorijaIndex = -1;
 
   loadRestoranInfo() async {
-    restoran = await restoranProvider.getById(widget.userData.korisnikId);
+    try {
+      korisnik = await korisnikProvider.getById(widget.userData.korisnikId);
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      print('Error loading restaurant info: $e');
+    }
+  }
+
+  loadRestoran() async {
+    try {
+      var searchObject = {'korisnikId': widget.userData.korisnikId};
+      List<Restoran> restaurantList = await restoranProvider.get(searchObject);
+      if (restaurantList.isNotEmpty) {
+        restoran = restaurantList.first;
+        print('restoran id: ${restoran!.restoranId}');
+      } else {
+        print(
+            'No restaurant found for korisnikId: ${widget.userData.korisnikId}');
+      }
+    } catch (e) {
+      print('Error loading restaurant info: $e');
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    getJela();
+    initializeData();
+  }
+
+  void initializeData() async {
+    await loadRestoranInfo();
+    await loadRestoran();
     getKategorije();
-    loadRestoranInfo();
+    getJela();
   }
 
   @override
@@ -65,7 +99,7 @@ class _ArchiveJeloScreenState extends State<ArchiveJeloScreen> {
 
   Future<void> getJela() async {
     var searchObject = {
-      'RestoranId': widget.userData.korisnikId,
+      'RestoranId': restoran!.restoranId,
       'Arhivirano': true,
     };
 
@@ -79,7 +113,7 @@ class _ArchiveJeloScreenState extends State<ArchiveJeloScreen> {
 
   Future<void> getKategorije() async {
     var searchObject = {
-      'RestoranId': widget.userData.korisnikId,
+      'RestoranId': restoran!.restoranId,
     };
     final result = await _kategorijaProvider.get(searchObject);
     if (mounted) {
@@ -91,7 +125,7 @@ class _ArchiveJeloScreenState extends State<ArchiveJeloScreen> {
 
   Future<void> getJeloByKategorijaId(int kategorijaId) async {
     var searchObject = {
-      'RestoranId': widget.userData.korisnikId,
+      'RestoranId': restoran!.restoranId,
       'KategorijaId': kategorijaId,
     };
 
@@ -108,7 +142,7 @@ class _ArchiveJeloScreenState extends State<ArchiveJeloScreen> {
         backgroundColor: GlobalVariables.backgroundColor,
         title: Center(
           child: Text(
-            "Arhivirana jela za restoran ${restoran?.naziv ?? ''}",
+            "Arhivirana jela za restoran ${korisnik?.korisnickoIme ?? ''}",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -270,7 +304,6 @@ class _ArchiveJeloScreenState extends State<ArchiveJeloScreen> {
       getJela();
       webSocketHandler.sendToAllAsync("Podatak je editovan!");
     } catch (e) {
-      // ignore: avoid_print
       print("Error activating jelo: $e");
     }
   }

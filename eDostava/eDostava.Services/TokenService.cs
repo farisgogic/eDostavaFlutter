@@ -22,7 +22,7 @@ namespace eDostava.Services
         {
             _configuration = configuration;
         }
-        
+
 
         public string GenerateToken(Model.Kupci kupac)
         {
@@ -30,24 +30,26 @@ namespace eDostava.Services
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, kupac.KupacId.ToString()),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.Name, kupac.KorisnickoIme),
+            new Claim(ClaimTypes.Role, kupac.UlogaIme)
+        };
+
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                new Claim(JwtRegisteredClaimNames.Sub, kupac.KupacId.ToString()),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Name, kupac.KorisnickoIme),
-                new Claim(ClaimTypes.Role, kupac.UlogaIme)
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddMinutes(int.Parse(_configuration["Jwt:ExpirationMinutes"])),
+                SigningCredentials = credentials,
+                Issuer = _configuration["Jwt:Issuer"],
+                Audience = _configuration["Jwt:Audience"]
             };
 
-            var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(int.Parse(_configuration["Jwt:ExpirationMinutes"])),
-                signingCredentials: credentials
-            );
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return jwt;
+            return tokenHandler.WriteToken(token);
         }
 
         public string GenerateToken(Model.Dostavljac dostavljac)

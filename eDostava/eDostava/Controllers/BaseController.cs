@@ -9,7 +9,6 @@ namespace eDostava.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class BaseController<T, TSearch> : ControllerBase where T : class where TSearch : class
     {
         public IService<T, TSearch> Service { get; set; }
@@ -20,6 +19,7 @@ namespace eDostava.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = false)]
         public IEnumerable<T> Get([FromQuery]TSearch search = null) 
         {
             return Service.Get(search);
@@ -27,6 +27,7 @@ namespace eDostava.Controllers
 
         [HttpGet("{id}")]
         [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = false)]
         public T GetById(int id)
         {
             return Service.GetById(id);

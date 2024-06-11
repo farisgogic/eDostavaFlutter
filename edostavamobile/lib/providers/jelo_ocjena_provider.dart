@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/io_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/global_variables.dart';
 import '../models/JelaOcjene.dart';
 
@@ -14,12 +15,19 @@ class JeloOcjenaProvider with ChangeNotifier {
     http = IOClient(client);
   }
 
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwt');
+  }
+
   Future<JelaOcjene> insertReview(JelaOcjene review) async {
     try {
+      final token = await _getToken();
       final response = await http!.post(
         Uri.parse('${Constants.baseUrl}/JelaOcjene'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
         },
         body: jsonEncode(review.toJson()),
       );
@@ -60,10 +68,12 @@ class JeloOcjenaProvider with ChangeNotifier {
 
   Future<JelaOcjene> updateReview(int id, JelaOcjene update) async {
     try {
+      final token = await _getToken();
       final response = await http!.put(
         Uri.parse('${Constants.baseUrl}/JelaOcjene/$id'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
         },
         body: jsonEncode(update.toJson()),
       );

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -12,7 +14,9 @@ import '../../constants/global_variables.dart';
 import '../../constants/websocket.dart';
 import '../../models/jelokategorija.dart';
 import '../../models/kategorija.dart';
+import '../../models/korisnik.dart';
 import '../../models/restoran.dart';
+import '../../providers/korisnik_provider.dart';
 import '../../providers/restoran_provider.dart';
 
 class JeloScreen extends StatefulWidget {
@@ -40,8 +44,10 @@ class _JeloScreenState extends State<JeloScreen> {
   final JeloKategorijaProvider jeloKategorijaProvider =
       JeloKategorijaProvider();
   final RestoranProvider restoranProvider = RestoranProvider();
+  final KorisnikProvider korisnikProvider = KorisnikProvider();
 
   Restoran? restoran;
+  Korisnik? korisnik;
 
   List<Jelo> jela = [];
   List<Kategorija> kategorije = [];
@@ -49,15 +55,35 @@ class _JeloScreenState extends State<JeloScreen> {
   int _selectedKategorijaIndex = -1;
 
   loadRestoranInfo() async {
-    restoran = await restoranProvider.getById(widget.userData.korisnikId);
+    try {
+      korisnik = await korisnikProvider.getById(widget.userData.korisnikId);
+      var searchObject = {'korisnikId': widget.userData.korisnikId};
+      List<Restoran> restaurantList = await restoranProvider.get(searchObject);
+      if (restaurantList.isNotEmpty) {
+        restoran = restaurantList.first;
+        print('restoran id: ${restoran!.restoranId}');
+      } else {
+        print(
+            'No restaurant found for korisnikId: ${widget.userData.korisnikId}');
+      }
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      print('Error loading restaurant info: $e');
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    getJela();
-    getKategorije();
-    loadRestoranInfo();
+    initializeData();
+  }
+
+  void initializeData() async {
+    await loadRestoranInfo();
+    await getJela();
+    await getKategorije();
   }
 
   @override
@@ -68,7 +94,7 @@ class _JeloScreenState extends State<JeloScreen> {
 
   Future<void> getJela() async {
     var searchObject = {
-      'RestoranId': widget.userData.korisnikId,
+      'RestoranId': restoran!.restoranId,
       'Arhivirano': false,
     };
 
@@ -85,7 +111,6 @@ class _JeloScreenState extends State<JeloScreen> {
       final jelo = await jeloProvider.getById(jeloId);
       return jelo.slika;
     } catch (e) {
-      // ignore: avoid_print
       print('Error getting Jelo image: $e');
       rethrow;
     }
@@ -93,7 +118,7 @@ class _JeloScreenState extends State<JeloScreen> {
 
   Future<void> getKategorije() async {
     var searchObject = {
-      'RestoranId': widget.userData.korisnikId,
+      'RestoranId': restoran!.restoranId,
     };
     final result = await _kategorijaProvider.get(searchObject);
     if (mounted) {
@@ -105,7 +130,7 @@ class _JeloScreenState extends State<JeloScreen> {
 
   Future<void> getJeloByKategorijaId(int kategorijaId) async {
     var searchObject = {
-      'RestoranId': widget.userData.korisnikId,
+      'RestoranId': restoran!.restoranId,
       'KategorijaId': kategorijaId,
     };
 
@@ -122,7 +147,7 @@ class _JeloScreenState extends State<JeloScreen> {
         backgroundColor: GlobalVariables.backgroundColor,
         title: Center(
           child: Text(
-            "Jela za restoran ${restoran?.naziv ?? ''}",
+            "Jela za restoran ${korisnik?.korisnickoIme ?? ''}",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -166,76 +191,84 @@ class _JeloScreenState extends State<JeloScreen> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: jela.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Card(
-                    elevation: 5,
-                    child: SizedBox(
-                      height: 150,
-                      child: ListTile(
-                        title: Row(
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  jela[index].naziv,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(jela[index].opis),
-                                const SizedBox(height: 8),
-                                Text(
-                                    'Cijena: ${jela[index].cijena.toString()} KM'),
-                                const SizedBox(height: 8),
-                                Text(
-                                    'Ocjena: ${jela[index].ocjena.toString()}'),
-                              ],
-                            ),
-                            const Spacer(),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.edit),
-                                      onPressed: () {
-                                        _showEditJeloDialog(jela[index]);
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                      ),
-                                      onPressed: () {
-                                        _showDeleteConfirmationDialog(
-                                            jela[index].jeloId);
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                Image.memory(
-                                  base64Decode(jela[index].slika),
-                                  height: 90,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+            child: jela.isEmpty
+                ? Center(
+                    child: Image.asset(
+                      'assets/images/nothing-here.jpg',
+                      fit: BoxFit.cover,
                     ),
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: jela.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Card(
+                          elevation: 5,
+                          child: SizedBox(
+                            height: 150,
+                            child: ListTile(
+                              title: Row(
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        jela[index].naziv,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(jela[index].opis),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                          'Cijena: ${jela[index].cijena.toString()} KM'),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                          'Ocjena: ${jela[index].ocjena.toString()}'),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                            icon: const Icon(Icons.edit),
+                                            onPressed: () {
+                                              _showEditJeloDialog(jela[index]);
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                            ),
+                                            onPressed: () {
+                                              _showDeleteConfirmationDialog(
+                                                  jela[index].jeloId);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                      Image.memory(
+                                        base64Decode(jela[index].slika),
+                                        height: 90,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
         ],
       ),
@@ -426,7 +459,7 @@ class _JeloScreenState extends State<JeloScreen> {
           naziv: newName,
           opis: newOpis,
           cijena: newCijena,
-          restoranId: widget.userData.korisnikId,
+          restoranId: restoran!.restoranId,
           slika: newImagePath,
           kategorijaId: [selectedKategorijaId],
         ),
@@ -447,7 +480,6 @@ class _JeloScreenState extends State<JeloScreen> {
           kategorije.indexWhere((k) => k.kategorijaId == selectedKategorijaId);
       getJeloByKategorijaId(selectedKategorijaId);
     } catch (e) {
-      // ignore: avoid_print
       print('Error updating Jelo: $e');
     }
   }
@@ -689,7 +721,7 @@ class _JeloScreenState extends State<JeloScreen> {
           naziv: newJeloName,
           cijena: newJeloPrice,
           opis: newJeloDescription,
-          restoranId: widget.userData.korisnikId,
+          restoranId: restoran!.restoranId,
           slika: newJeloImageUrl,
           kategorijaId: [selectedKategorijaId],
         ),
@@ -708,7 +740,6 @@ class _JeloScreenState extends State<JeloScreen> {
       });
       webSocketHandler.sendToAllAsync("Novi podatak je dodan!");
     } catch (e) {
-      // ignore: avoid_print
       print('Error adding new Jelo: $e');
     }
     getJela();
@@ -725,7 +756,6 @@ class _JeloScreenState extends State<JeloScreen> {
         return null;
       }
     } catch (e) {
-      // ignore: avoid_print
       print('Error picking image: $e');
       return null;
     }
@@ -740,7 +770,6 @@ class _JeloScreenState extends State<JeloScreen> {
       getJela();
       webSocketHandler.sendToAllAsync("Podatak je arhiviran!");
     } catch (e) {
-      // ignore: avoid_print
       print('Greska prilikom arhiviranja jela: $e');
     }
   }
@@ -764,7 +793,7 @@ class _JeloScreenState extends State<JeloScreen> {
                 _deleteJelo(jeloId);
                 Navigator.of(context).pop();
               },
-              child: const Text('Delete'),
+              child: const Text('Archive'),
             ),
           ],
         );

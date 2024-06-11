@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/io_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/global_variables.dart';
 import '../models/kategorija.dart';
@@ -13,6 +14,11 @@ class KategorijaProvider with ChangeNotifier {
   KategorijaProvider() {
     client.badCertificateCallback = (cert, host, port) => true;
     http = IOClient(client);
+  }
+
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwt');
   }
 
   Future<List<Kategorija>> get(dynamic searchObject) async {
@@ -37,10 +43,14 @@ class KategorijaProvider with ChangeNotifier {
 
   Future<Kategorija> update(int kategorijaId, Kategorija updateData) async {
     var url = Uri.parse("${Constants.baseUrl}/Kategorija/$kategorijaId");
+    final token = await _getToken();
 
     var response = await http!.put(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
       body: json.encode(updateData.toJson()),
     );
 
@@ -54,10 +64,14 @@ class KategorijaProvider with ChangeNotifier {
 
   Future<Kategorija> insert(Kategorija insertData) async {
     var url = Uri.parse("${Constants.baseUrl}/Kategorija");
+    final token = await _getToken();
 
     var response = await http!.post(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
       body: json.encode(insertData.toJson()),
     );
 
@@ -71,7 +85,11 @@ class KategorijaProvider with ChangeNotifier {
 
   Future<void> deleteKategorija(int kategorijaId) async {
     final url = Uri.parse("${Constants.baseUrl}/Kategorija/$kategorijaId");
+    final token = await _getToken();
 
-    await http!.delete(url);
+    await http!.delete(url, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
   }
 }

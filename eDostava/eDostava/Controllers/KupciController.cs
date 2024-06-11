@@ -58,17 +58,7 @@ namespace eDostava.Controllers
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            var authHeader = HttpContext.Request.Headers["Authorization"].ToString();
-            if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Basic "))
-            {
-                var token = authHeader.Substring("Basic ".Length);
-                Response.Cookies.Delete("jwt");
-                return Ok();
-            }
-            else
-            {
-                return Unauthorized();
-            }
+           return Ok();
         }
 
     }

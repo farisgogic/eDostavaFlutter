@@ -23,17 +23,18 @@ namespace eDostava.Controllers
             this.tokenService = tokenService;
         }
 
+        [AllowAnonymous]
         public override Korisnik Insert([FromBody] KorisniciInsertRequest insert)
         {
             return base.Insert(insert);
         }
 
-        [Authorize(Roles = "uposlenik")]
         public override Korisnik Update(int id, [FromBody] KorisniciUpdateRequest update)
         {
             return base.Update(id, update);
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public ActionResult<Model.Korisnik> Login([FromBody] LoginRequest loginRequest)
         {
@@ -57,17 +58,8 @@ namespace eDostava.Controllers
         [HttpPost("logout")]
         public IActionResult Logout()
         {
-            var authHeader = HttpContext.Request.Headers["Authorization"].ToString();
-            if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Basic "))
-            {
-                var token = authHeader.Substring("Basic ".Length);
-                Response.Cookies.Delete("jwt");
                 return Ok();
-            }
-            else
-            {
-                return Unauthorized();
-            }
+            
         }
     }
 }

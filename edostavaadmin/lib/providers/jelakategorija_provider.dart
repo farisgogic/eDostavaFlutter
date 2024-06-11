@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/io_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/global_variables.dart';
 import '../models/jelokategorija.dart';
@@ -16,12 +17,23 @@ class JeloKategorijaProvider with ChangeNotifier {
     http = IOClient(client);
   }
 
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwt');
+  }
+
+
   Future<JeloKategorija> insert(JeloKategorija insertData) async {
     var url = Uri.parse("${Constants.baseUrl}/JelaKategorija");
 
+    final token = await _getToken();
+
     var response = await http!.post(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
       body: json.encode(insertData.toJson()),
     );
 
@@ -36,10 +48,14 @@ class JeloKategorijaProvider with ChangeNotifier {
   Future<JeloKategorija> update(
       int id, int jeloId, int newKategorijaIds) async {
     var url = Uri.parse("${Constants.baseUrl}/JelaKategorija/$id");
-
+    final token = await _getToken();
+    
     var response = await http!.put(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
       body: json.encode({
         'jeloId': jeloId,
         'kategorijaId': newKategorijaIds,

@@ -156,6 +156,10 @@ class _RegisterDostavljacScreen extends State<RegisterDostavljacScreen> {
                               showInvalidEmailAlertDialog(context);
                               return;
                             }
+                            if (_usernameController.text.length < 4) {
+                              showShortUsernameAlertDialog(context);
+                              return;
+                            }
                             final dostavljac = Dostavljac(
                               ime: _nameController.text,
                               prezime: _lastnameController.text,
@@ -205,6 +209,26 @@ class _RegisterDostavljacScreen extends State<RegisterDostavljacScreen> {
       ),
     );
   }
+}
+
+void showShortUsernameAlertDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Prekratko korisničko ime'),
+        content: const Text('Korisničko ime mora imati barem 4 znaka.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
 }
 
 void showInvalidEmailAlertDialog(BuildContext context) {

@@ -15,6 +15,11 @@ class KorisnikProvider with ChangeNotifier {
     http = IOClient(client);
   }
 
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwt');
+  }
+
   Future<Korisnik> getById(int id) async {
     try {
       final response =
@@ -32,12 +37,15 @@ class KorisnikProvider with ChangeNotifier {
   }
 
   Future<Korisnik> update(int id, Korisnik update) async {
+    final token = await _getToken();
     final response = await http!.put(
       Uri.parse('${Constants.baseUrl}/Korisnik/$id'),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
       body: json.encode(update.toJson()),
     );
-
     if (response.statusCode == 200) {
       final updatedKorisnik = Korisnik.fromJson(json.decode(response.body));
       return updatedKorisnik;
@@ -93,13 +101,10 @@ class KorisnikProvider with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final jwt = prefs.getString('jwt');
     if (jwt != null) {
-      final bytes = utf8.encode('jwt:$jwt');
-      final base64Str = base64.encode(bytes);
-      final authHeader = 'Basic $base64Str';
       final response = await http!.post(
         Uri.parse('${Constants.baseUrl}/Korisnik/logout'),
         headers: <String, String>{
-          'Authorization': authHeader,
+          'Authorization': 'Bearer $jwt',
         },
       );
       if (response.statusCode == 200) {

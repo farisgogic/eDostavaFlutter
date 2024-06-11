@@ -1,10 +1,14 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../constants/global_variables.dart';
 import '../../constants/websocket.dart';
 import '../../models/Narudzba.dart';
+import '../../models/korisnik.dart';
 import '../../models/restoran.dart';
+import '../../providers/korisnik_provider.dart';
 import '../../providers/narudzba_provider.dart';
 import '../../providers/restoran_provider.dart';
 
@@ -21,8 +25,11 @@ class _NarudzbaScreenState extends State<NarudzbaScreen> {
   final NarudzbaProvider narudzbaProvider = NarudzbaProvider();
 
   final RestoranProvider restoranProvider = RestoranProvider();
+  final KorisnikProvider korisnikProvider = KorisnikProvider();
 
   Restoran? restoran;
+  Korisnik? korisnik;
+
   List<Narudzba> narudzbe = [];
 
   WebSocketHandler webSocketHandler =
@@ -31,26 +38,52 @@ class _NarudzbaScreenState extends State<NarudzbaScreen> {
   @override
   void initState() {
     super.initState();
-    loadRestoranInfo();
-    getNarudzbe();
+    initializeData();
 
     webSocketHandler.onMessage.listen((message) {
-      // ignore: avoid_print
       print('Stigla poruka sa servera: $message');
       if (mounted) {
-        loadRestoranInfo();
-        getNarudzbe();
+        initializeData();
       }
     });
   }
 
+  void initializeData() async {
+    await loadRestoranInfo();
+    await loadRestoran();
+    getNarudzbe();
+  }
+
   loadRestoranInfo() async {
-    restoran = await restoranProvider.getById(widget.userData.korisnikId);
+    try {
+      korisnik = await korisnikProvider.getById(widget.userData.korisnikId);
+      if (mounted) {
+        setState(() {});
+      }
+    } catch (e) {
+      print('Error loading restaurant info: $e');
+    }
+  }
+
+  loadRestoran() async {
+    try {
+      var searchObject = {'korisnikId': widget.userData.korisnikId};
+      List<Restoran> restaurantList = await restoranProvider.get(searchObject);
+      if (restaurantList.isNotEmpty) {
+        restoran = restaurantList.first;
+        print('restoran id: ${restoran!.restoranId}');
+      } else {
+        print(
+            'No restaurant found for korisnikId: ${widget.userData.korisnikId}');
+      }
+    } catch (e) {
+      print('Error loading restaurant info: $e');
+    }
   }
 
   Future<void> getNarudzbe() async {
     var searchObject = {
-      'RestoranId': widget.userData.korisnikId,
+      'RestoranId': restoran!.restoranId,
     };
 
     final result = await narudzbaProvider.get(searchObject);
@@ -73,7 +106,6 @@ class _NarudzbaScreenState extends State<NarudzbaScreen> {
         await narudzbaProvider.updateNarudzba(narudzba.narudzbaId, 1);
         getNarudzbe();
       } catch (e) {
-        // ignore: avoid_print
         print('Failed to update order status: $e');
       }
     }
@@ -85,7 +117,6 @@ class _NarudzbaScreenState extends State<NarudzbaScreen> {
         await narudzbaProvider.updateNarudzba(narudzba.narudzbaId, 2);
         getNarudzbe();
       } catch (e) {
-        // ignore: avoid_print
         print('Failed to update order status: $e');
       }
     }

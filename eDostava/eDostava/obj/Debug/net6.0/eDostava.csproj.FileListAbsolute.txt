@@ -237,3 +237,7 @@ C:\Users\User\OneDrive\Desktop\eDostava\eDostavaFlutter\eDostava\eDostava\obj\De
 C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava\bin\Debug\net6.0\EasyNetQ.dll
 C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava\bin\Debug\net6.0\RabbitMQ.Client.dll
 C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava\bin\Debug\net6.0\System.Threading.Channels.dll
+C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava\bin\Debug\net6.0\Scrutor.dll
+C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
+C:\Users\User\OneDrive\Desktop\eDostava\eDostava\eDostava\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll

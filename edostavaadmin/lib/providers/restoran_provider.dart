@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/io_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/global_variables.dart';
 import '../models/restoran.dart';
@@ -13,6 +14,11 @@ class RestoranProvider with ChangeNotifier {
   RestoranProvider() {
     client.badCertificateCallback = (cert, host, port) => true;
     http = IOClient(client);
+  }
+
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwt');
   }
 
   Future<List<Restoran>> get(Map<String, dynamic> searchObject) async {
@@ -44,10 +50,13 @@ class RestoranProvider with ChangeNotifier {
 
   Future<Restoran> update(int restoranId, Restoran updateData) async {
     var url = Uri.parse("${Constants.baseUrl}/Restoran/$restoranId");
-
+    final token = await _getToken();
     var response = await http!.put(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
       body: json.encode(updateData.toJson()),
     );
 

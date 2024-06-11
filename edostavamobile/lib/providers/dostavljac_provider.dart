@@ -16,6 +16,11 @@ class DostavljacProvider with ChangeNotifier {
     client.badCertificateCallback = (cert, host, port) => true;
     http = IOClient(client);
   }
+ 
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwt');
+  }
 
   Future<Dostavljac> getById(int id) async {
     try {
@@ -34,9 +39,13 @@ class DostavljacProvider with ChangeNotifier {
   }
 
   Future<Dostavljac> update(int id, Dostavljac update) async {
+    final token = await _getToken();
     final response = await http!.put(
       Uri.parse('${Constants.baseUrl}/Dostavljac/$id'),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
       body: json.encode(update.toJson()),
     );
 
@@ -52,13 +61,10 @@ class DostavljacProvider with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final jwt = prefs.getString('jwt');
     if (jwt != null) {
-      final bytes = utf8.encode('jwt:$jwt');
-      final base64Str = base64.encode(bytes);
-      final authHeader = 'Basic $base64Str';
       final response = await http!.post(
         Uri.parse('${Constants.baseUrl}/Dostavljac/logout'),
         headers: <String, String>{
-          'Authorization': authHeader,
+          'Authorization': 'Bearer $jwt',
         },
       );
       if (response.statusCode == 200) {

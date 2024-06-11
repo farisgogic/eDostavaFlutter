@@ -143,104 +143,120 @@ class _NarudzbaDostavljacScreen extends State<NarudzbaDostavljacScreen> {
       ),
       body: Container(
         color: GlobalVariables.backgroundColor,
-        child: ListView.builder(
-          itemCount: narudzbe.length,
-          itemBuilder: (context, index) {
-            final narudzba = narudzbe[index];
-            return FutureBuilder<Restaurant>(
-              future: restoran.getById(narudzba.restoranId),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Text('Greska');
-                } else if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  final restaurant = snapshot.data!;
-                  return FutureBuilder<Kupci>(
-                    future: KupciProvider().getById(narudzba.kupacId),
+        child: narudzbe.isEmpty
+            ? Center(
+                child: Image.asset(
+                  'assets/images/nothing-here.jpg',
+                  fit: BoxFit.cover,
+                ),
+              )
+            : ListView.builder(
+                itemCount: narudzbe.length,
+                itemBuilder: (context, index) {
+                  final narudzba = narudzbe[index];
+                  return FutureBuilder<Restaurant>(
+                    future: restoran.getById(narudzba.restoranId),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
                         return const Text('Greska');
                       } else if (!snapshot.hasData) {
                         return const Center(child: CircularProgressIndicator());
                       } else {
-                        final kupac = snapshot.data!;
-                        return Card(
-                          margin: const EdgeInsets.all(8),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Broj narudžbe: ${narudzba.brojNarudzbe}',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 8),
-                                Text('Kupac: ${kupac.ime}'),
-                                Text('Adresa: ${kupac.adresa}'),
-                                Text('Restoran: ${restaurant.naziv}'),
-                                Text(
-                                    'Datum: ${DateFormat('dd-MM-yyyy hh:mm').format(narudzba.datum)}'),
-                                Text('Status: ${narudzba.stanjeTekst}'),
-                                const SizedBox(height: 8),
-                                const Text(
-                                  'Stavke narudžbe:',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: narudzba.narudzbaStavke.length,
-                                  itemBuilder: (context, index) {
-                                    final stavka =
-                                        narudzba.narudzbaStavke[index];
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 4),
-                                      child: Row(
-                                        children: [
-                                          Expanded(child: Text(stavka.naziv)),
-                                          Text('Količina: ${stavka.kolicina}'),
-                                          const SizedBox(width: 8),
-                                          Text(
-                                              'Ukupna cijena: ${stavka.cijena} KM'),
-                                        ],
+                        final restaurant = snapshot.data!;
+                        return FutureBuilder<Kupci>(
+                          future: KupciProvider().getById(narudzba.kupacId),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return const Text('Greska');
+                            } else if (!snapshot.hasData) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else {
+                              final kupac = snapshot.data!;
+                              return Card(
+                                margin: const EdgeInsets.all(8),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Broj narudžbe: ${narudzba.brojNarudzbe}',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                    );
-                                  },
+                                      const SizedBox(height: 8),
+                                      Text('Kupac: ${kupac.ime}'),
+                                      Text('Adresa: ${kupac.adresa}'),
+                                      Text('Restoran: ${restaurant.naziv}'),
+                                      Text(
+                                          'Datum: ${DateFormat('dd-MM-yyyy hh:mm').format(narudzba.datum)}'),
+                                      Text('Status: ${narudzba.stanjeTekst}'),
+                                      const SizedBox(height: 8),
+                                      const Text(
+                                        'Stavke narudžbe:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount:
+                                            narudzba.narudzbaStavke.length,
+                                        itemBuilder: (context, index) {
+                                          final stavka =
+                                              narudzba.narudzbaStavke[index];
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 4),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                    child: Text(stavka.naziv)),
+                                                Text(
+                                                    'Količina: ${stavka.kolicina}'),
+                                                const SizedBox(width: 8),
+                                                Text(
+                                                    'Ukupna cijena: ${stavka.cijena} KM'),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      const SizedBox(height: 10),
+                                      // ignore: unrelated_type_equality_checks
+                                      if (narudzba.stanje == 2)
+                                        CustomButton(
+                                          onTap: () {
+                                            acceptNarudzba(narudzba);
+                                          },
+                                          text: 'Prihvati narudžbu',
+                                          color: GlobalVariables.buttonColor,
+                                        ),
+                                      // ignore: unrelated_type_equality_checks
+                                      if (narudzba.stanje == 3 &&
+                                          narudzba.dostavljacId ==
+                                              widget.dostavljac)
+                                        CustomButton(
+                                          onTap: () =>
+                                              completeNarudzba(narudzba),
+                                          text: 'Dostavljeno',
+                                          color: GlobalVariables.buttonColor,
+                                        ),
+                                    ],
+                                  ),
                                 ),
-                                const SizedBox(height: 10),
-                                // ignore: unrelated_type_equality_checks
-                                if (narudzba.stanje == 2)
-                                  CustomButton(
-                                    onTap: () {
-                                      acceptNarudzba(narudzba);
-                                    },
-                                    text: 'Prihvati narudžbu',
-                                    color: GlobalVariables.buttonColor,
-                                  ),
-                                // ignore: unrelated_type_equality_checks
-                                if (narudzba.stanje == 3 &&
-                                    narudzba.dostavljacId == widget.dostavljac)
-                                  CustomButton(
-                                    onTap: () => completeNarudzba(narudzba),
-                                    text: 'Dostavljeno',
-                                    color: GlobalVariables.buttonColor,
-                                  ),
-                              ],
-                            ),
-                          ),
+                              );
+                            }
+                          },
                         );
                       }
                     },
                   );
-                }
-              },
-            );
-          },
-        ),
+                },
+              ),
       ),
     );
   }

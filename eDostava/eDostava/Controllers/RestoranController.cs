@@ -11,6 +11,7 @@ namespace eDostava.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [ApiExplorerSettings(IgnoreApi = true)]
 
     public class RestoranController : BaseCRUDController<Model.Restoran, RestoranSearchObject, RestoranInsertRequest, RestoranUpdateRequest>
     {

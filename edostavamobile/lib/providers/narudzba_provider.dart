@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/io_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/global_variables.dart';
 import '../models/Narudzba.dart';
@@ -15,11 +16,20 @@ class NarudzbaProvider with ChangeNotifier {
     http = IOClient(client);
   }
 
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwt');
+  }
+
   Future<Narudzba> insertNarudzba(NarudzbaInsertRequest insert) async {
-    final response = await http!.post(
-        Uri.parse('${Constants.baseUrl}/Narudzba'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(insert.toJson()));
+    final token = await _getToken();
+    final response =
+        await http!.post(Uri.parse('${Constants.baseUrl}/Narudzba'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+            body: json.encode(insert.toJson()));
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
@@ -33,9 +43,13 @@ class NarudzbaProvider with ChangeNotifier {
   Future<Narudzba> updateNarudzba(int id, int statusNarudzbeId,
       {required int dostavljacId}) async {
     final url = Uri.parse('${Constants.baseUrl}/Narudzba/$id');
+    final token = await _getToken();
     final response = await http!.put(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
       body: json.encode({
         'statusNarudzbeId': statusNarudzbeId,
         'dostavljacId': dostavljacId,

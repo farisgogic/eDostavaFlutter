@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/io_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/Review.dart';
 import '../constants/global_variables.dart';
@@ -15,12 +16,19 @@ class ReviewProvider with ChangeNotifier {
     http = IOClient(client);
   }
 
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwt');
+  }
+
   Future<Review> insertReview(Review review) async {
     try {
+      final token = await _getToken();
       final response = await http!.post(
         Uri.parse('${Constants.baseUrl}/Recenzija'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
         },
         body: jsonEncode(review.toJson()),
       );
@@ -61,10 +69,12 @@ class ReviewProvider with ChangeNotifier {
 
   Future<Review> updateReview(int id, Review update) async {
     try {
+      final token = await _getToken();
       final response = await http!.put(
         Uri.parse('${Constants.baseUrl}/Recenzija/$id'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
         },
         body: jsonEncode(update.toJson()),
       );

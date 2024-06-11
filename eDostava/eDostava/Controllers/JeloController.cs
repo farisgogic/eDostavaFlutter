@@ -21,7 +21,7 @@ namespace eDostava.Controllers
             this.jeloService = jeloService;
         }
 
-
+        [AllowAnonymous]
         [HttpGet("{kupacId}/{restoranId}/Recommend")]
         public List<Jelo> Recommend(int kupacId, int restoranId)
         {

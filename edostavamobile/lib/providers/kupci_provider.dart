@@ -17,6 +17,11 @@ class KupciProvider with ChangeNotifier {
     http = IOClient(client);
   }
 
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwt');
+  }
+
   Future<Kupci> getById(int id) async {
     try {
       final response =
@@ -34,9 +39,13 @@ class KupciProvider with ChangeNotifier {
   }
 
   Future<Kupci> update(int id, Kupci update) async {
+    final token = await _getToken();
     final response = await http!.put(
       Uri.parse('${Constants.baseUrl}/Kupci/$id'),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
       body: json.encode(update.toJson()),
     );
 
@@ -52,13 +61,10 @@ class KupciProvider with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final jwt = prefs.getString('jwt');
     if (jwt != null) {
-      final bytes = utf8.encode('jwt:$jwt');
-      final base64Str = base64.encode(bytes);
-      final authHeader = 'Basic $base64Str';
       final response = await http!.post(
         Uri.parse('${Constants.baseUrl}/Kupci/logout'),
         headers: <String, String>{
-          'Authorization': authHeader,
+          'Authorization': 'Bearer $jwt',
         },
       );
       if (response.statusCode == 200) {
@@ -134,7 +140,6 @@ class KupciProvider with ChangeNotifier {
     var body = jsonEncode(request);
 
     var response = await http!.post(url, headers: headers, body: body);
-
     if (response.statusCode == 200) {
     } else {
       throw Exception('Neuspjesna registracija');

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/io_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/global_variables.dart';
 
@@ -14,16 +15,24 @@ class OmiljeniProvider with ChangeNotifier {
     http = IOClient(client);
   }
 
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwt');
+  }
+
   Future addJeloToOmiljeniList(int kupacId, int jeloId, int restoranId) async {
     final requestBody = {
       'KupacId': kupacId,
       'JeloId': jeloId,
       'RestoranId': restoranId,
     };
-
+    final token = await _getToken();
     final response = await http!.post(
       Uri.parse('${Constants.baseUrl}/Omiljeni'),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
       body: json.encode(requestBody),
     );
 
@@ -59,10 +68,14 @@ class OmiljeniProvider with ChangeNotifier {
 
   Future<bool> removeJeloFromOmiljeniList(
       int kupacId, int jeloId, int restoranId) async {
+    final token = await _getToken();
     final response = await http!.delete(
       Uri.parse(
           '${Constants.baseUrl}/Omiljeni/RemoveJeloFromOmiljeniList/$kupacId/$jeloId/$restoranId'),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
     );
 
     if (response.statusCode == 200) {
