@@ -80,18 +80,18 @@ Aplikacija KLOPA je projekat rađen kao seminarski rad za predmet Razvoj softver
 - Uposlenik
 
     ```
-    Korisnicko ime: Intermezzo            
-    Lozinka: Intermezzo                                    
+    Korisnicko ime: Intermezzo
+    Lozinka: Intermezzo
     ```
 
     ```
-    Korisnicko ime: Divan            
-    Lozinka: Divan                                    
+    Korisnicko ime: Divan
+    Lozinka: Divan
     ``` 
 
     ```
-    Korisnicko ime: Kula            
-    Lozinka: Kula                                    
+    Korisnicko ime: Kula
+    Lozinka: Kula
     ```     
     
 ### Mobilna aplikacija
@@ -100,12 +100,12 @@ Aplikacija KLOPA je projekat rađen kao seminarski rad za predmet Razvoj softver
 
     ```
     Korisnicko ime: kupac
-    Lozinka: kupac  
+    Lozinka: kupac
     ```
     
     ```
     Korisnicko ime: proba
-    Lozinka: proba  
+    Lozinka: proba
     ```
     
     
@@ -113,12 +113,12 @@ Aplikacija KLOPA je projekat rađen kao seminarski rad za predmet Razvoj softver
 
     ```
     Korisnicko ime: dostavljac
-    Lozinka: dostavljac  
+    Lozinka: dostavljac
     ```   
     
     ```
     Korisnicko ime: test
-    Lozinka: test  
+    Lozinka: test
     ```
     
 ## KARTICA ZA NARUDŽBU
