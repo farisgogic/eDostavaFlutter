@@ -33,7 +33,7 @@ class _NarudzbaScreenState extends State<NarudzbaScreen> {
   List<Narudzba> narudzbe = [];
 
   WebSocketHandler webSocketHandler =
-      WebSocketHandler('ws://localhost:7068/api');
+      WebSocketHandler('ws://localhost:7037/api');
 
   @override
   void initState() {
@@ -71,7 +71,6 @@ class _NarudzbaScreenState extends State<NarudzbaScreen> {
       List<Restoran> restaurantList = await restoranProvider.get(searchObject);
       if (restaurantList.isNotEmpty) {
         restoran = restaurantList.first;
-        print('restoran id: ${restoran!.restoranId}');
       } else {
         print(
             'No restaurant found for korisnikId: ${widget.userData.korisnikId}');

@@ -13,12 +13,12 @@ class Constants {
   static String get baseUrl {
     if (Platform.isAndroid || Platform.isIOS) {
       return const String.fromEnvironment("baseUrl",
-          defaultValue: "http://10.0.2.2:7068/api");
+          defaultValue: "http://10.0.2.2:7037/api");
     } else if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
       return const String.fromEnvironment("baseUrl",
-          defaultValue: "http://localhost:7068/api");
+          defaultValue: "http://localhost:7037/api");
     } else {
-      return "http://localhost:7068/api";
+      return "http://localhost:7037/api";
     }
   }
 }

@@ -61,7 +61,6 @@ class _JeloScreenState extends State<JeloScreen> {
       List<Restoran> restaurantList = await restoranProvider.get(searchObject);
       if (restaurantList.isNotEmpty) {
         restoran = restaurantList.first;
-        print('restoran id: ${restoran!.restoranId}');
       } else {
         print(
             'No restaurant found for korisnikId: ${widget.userData.korisnikId}');
@@ -479,9 +478,8 @@ class _JeloScreenState extends State<JeloScreen> {
       _selectedKategorijaIndex =
           kategorije.indexWhere((k) => k.kategorijaId == selectedKategorijaId);
       getJeloByKategorijaId(selectedKategorijaId);
-    } catch (e) {
-      print('Error updating Jelo: $e');
-    }
+      // ignore: empty_catches
+    } catch (e) {}
   }
 
   void _showAddJeloDialog() async {
@@ -769,9 +767,8 @@ class _JeloScreenState extends State<JeloScreen> {
       });
       getJela();
       webSocketHandler.sendToAllAsync("Podatak je arhiviran!");
-    } catch (e) {
-      print('Greska prilikom arhiviranja jela: $e');
-    }
+      // ignore: empty_catches
+    } catch (e) {}
   }
 
   void _showDeleteConfirmationDialog(int jeloId) {

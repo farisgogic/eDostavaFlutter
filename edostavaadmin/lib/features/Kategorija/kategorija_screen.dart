@@ -62,7 +62,6 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
   loadRestoranInfo() async {
     try {
       korisnik = await korisnikProvider.getById(widget.userData.korisnikId);
-      print('korisnik id: ${korisnik!.korisnikId}');
 
       if (mounted) {
         setState(() {});
@@ -78,7 +77,6 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
       List<Restoran> restaurantList = await restoranProvider.get(searchObject);
       if (restaurantList.isNotEmpty) {
         restoran = restaurantList.first;
-        print('restoran id: ${restoran!.restoranId}');
       } else {
         print(
             'No restaurant found for korisnikId: ${widget.userData.korisnikId}');
@@ -255,9 +253,8 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
       getKategorije();
 
       webSocketHandler.sendToAllAsync("Novi podatak je dodan!");
-    } catch (e) {
-      print('Error sending WebSocket message: $e');
-    }
+      // ignore: empty_catches
+    } catch (e) {}
   }
 
   void _showEditKategorijaDialog(Kategorija kategorija) async {
@@ -364,8 +361,8 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
           },
         );
       }
+    // ignore: empty_catches
     } catch (e) {
-      print('Error updating Kategorija: $e');
     }
   }
 

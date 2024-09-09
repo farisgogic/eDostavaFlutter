@@ -68,7 +68,6 @@ class _ArchiveJeloScreenState extends State<ArchiveJeloScreen> {
       List<Restoran> restaurantList = await restoranProvider.get(searchObject);
       if (restaurantList.isNotEmpty) {
         restoran = restaurantList.first;
-        print('restoran id: ${restoran!.restoranId}');
       } else {
         print(
             'No restaurant found for korisnikId: ${widget.userData.korisnikId}');
@@ -303,8 +302,7 @@ class _ArchiveJeloScreenState extends State<ArchiveJeloScreen> {
 
       getJela();
       webSocketHandler.sendToAllAsync("Podatak je editovan!");
-    } catch (e) {
-      print("Error activating jelo: $e");
-    }
+      // ignore: empty_catches
+    } catch (e) {}
   }
 }

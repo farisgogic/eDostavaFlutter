@@ -34,7 +34,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   WebSocketHandler webSocketHandler =
-      WebSocketHandler('ws://localhost:7068/api');
+      WebSocketHandler('ws://localhost:7037/api');
 
   @override
   void initState() {

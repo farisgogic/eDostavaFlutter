@@ -76,7 +76,6 @@ class _ReportScreenState extends State<ReportScreen> {
       List<Restoran> restaurantList = await restoranProvider.get(searchObject);
       if (restaurantList.isNotEmpty) {
         restoran = restaurantList.first;
-        print('restoran id: ${restoran!.restoranId}');
       } else {
         print(
             'No restaurant found for korisnikId: ${widget.userData.korisnikId}');
