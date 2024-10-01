@@ -85,6 +85,9 @@ class _AccountScreenState extends State<AccountScreen> {
       imageBytes = base64Decode(restorani[0].slika);
     }
 
+    // ignore: no_leading_underscores_for_local_identifiers
+    final _formKey = GlobalKey<FormState>();
+
     // ignore: use_build_context_synchronously
     await showDialog(
       context: context,
@@ -94,140 +97,205 @@ class _AccountScreenState extends State<AccountScreen> {
             return AlertDialog(
               title: const Text('Edit informacije'),
               content: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 10),
-                    _buildTextFieldWithStar(
-                      label: 'Ime',
-                      onChanged: (value) {
-                        newIme = value;
-                      },
-                      initialValue: newIme,
-                    ),
-                    _buildTextFieldWithStar(
-                      label: 'Prezme',
-                      onChanged: (value) {
-                        newPrezime = value;
-                      },
-                      initialValue: newPrezime,
-                    ),
-                    _buildTextFieldWithStar(
-                      label: 'Email',
-                      onChanged: (value) {
-                        newEmail = value;
-                      },
-                      initialValue: newEmail,
-                    ),
-                    _buildTextFieldWithStar(
-                      label: 'Naziv restorana',
-                      onChanged: (value) {
-                        newName = value;
-                      },
-                      initialValue: newName,
-                    ),
-                    CustomTextField(
-                      label: 'Broj telefona*',
-                      controller: telefonRestoranaController,
-                      hintText: 'Broj telefona',
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        TextInputFormatter.withFunction((oldValue, newValue) {
-                          final maskedValue = (telefonRestoranaController.text
-                                  .startsWith('060'))
-                              ? applyMask(newValue.text, '###-###-####')
-                              : applyMask(newValue.text, '###-###-###');
-
-                          newTelefon = maskedValue;
-
-                          return TextEditingValue(
-                            text: maskedValue,
-                            selection: TextSelection.collapsed(
-                                offset: maskedValue.length),
-                          );
-                        }),
-                      ],
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Telefon ne može ostati prazan';
-                        }
-                        final phoneNumber = value.replaceAll(RegExp(r'\D'), '');
-
-                        if (!isNumeric(phoneNumber)) {
-                          return 'Telefon može sadržavati samo brojeve';
-                        }
-
-                        if ((phoneNumber.startsWith('036') ||
-                                phoneNumber.startsWith('061') ||
-                                phoneNumber.startsWith('062')) &&
-                            phoneNumber.length == 9) {
+                child: Form(
+                  // Form widget to manage validation
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: 10),
+                      _buildTextFieldWithStar(
+                        label: 'Ime',
+                        onChanged: (value) {
+                          newIme = value;
+                        },
+                        initialValue: newIme,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Ime je obavezno.';
+                          }
                           return null;
-                        } else if (phoneNumber.startsWith('060') &&
-                            phoneNumber.length == 10) {
+                        },
+                      ),
+                      _buildTextFieldWithStar(
+                        label: 'Prezime',
+                        onChanged: (value) {
+                          newPrezime = value;
+                        },
+                        initialValue: newPrezime,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Prezime je obavezno.';
+                          }
                           return null;
-                        } else {
-                          return 'Nevažeći broj telefona';
-                        }
-                      },
-                    ),
-                    _buildTextFieldWithStar(
-                      label: 'Adresa',
-                      onChanged: (value) {
-                        newAdresa = value;
-                      },
-                      initialValue: newAdresa,
-                    ),
-                    CustomTextField(
-                      label: 'Radno vrijeme*',
-                      controller: radnoVrijemeController,
-                      hintText: 'Radno vrijeme',
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        TextInputFormatter.withFunction((oldValue, newValue) {
-                          final maskedValue = applyMask(newValue.text, '##-##');
-                          newRadnoVrijeme = maskedValue;
+                        },
+                      ),
+                      _buildTextFieldWithStar(
+                        label: 'Email',
+                        onChanged: (value) {
+                          newEmail = value;
+                        },
+                        initialValue: newEmail,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Email je obavezan.';
+                          } else if (!isValidEmail(value)) {
+                            return 'Nevažeći email.';
+                          }
+                          return null;
+                        },
+                      ),
+                      _buildTextFieldWithStar(
+                        label: 'Naziv restorana',
+                        onChanged: (value) {
+                          newName = value;
+                        },
+                        initialValue: newName,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Naziv restorana je obavezan.';
+                          }
+                          return null;
+                        },
+                      ),
+                      CustomTextField(
+                        label: 'Broj telefona*',
+                        controller: telefonRestoranaController,
+                        hintText: 'Broj telefona',
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          TextInputFormatter.withFunction((oldValue, newValue) {
+                            // Maskiranje unosa na osnovu početnih cifara
+                            final maskedValue = (newValue.text
+                                    .startsWith('060'))
+                                ? applyMask(newValue.text,
+                                    '###-###-####') // Maskiraj 060 u formatu 060-XXX-XXXX
+                                : applyMask(newValue.text,
+                                    '###-###-###'); // Maskiraj ostale u formatu XXX-XXX-XXX
 
-                          return TextEditingValue(
-                            text: maskedValue,
-                            selection: TextSelection.collapsed(
-                                offset: maskedValue.length),
-                          );
-                        }),
-                      ],
-                    ),
-                    _buildTextFieldWithStar(
-                      label: 'Opis',
-                      onChanged: (value) {
-                        newOpis = value;
-                      },
-                      initialValue: newOpis,
-                    ),
-                    const SizedBox(height: 20),
-                    Column(
-                      children: [
-                        newImagePath.isNotEmpty
-                            ? Image.memory(
-                                base64Decode(newImagePath),
-                                height: 90,
-                              )
-                            : Image.asset(
-                                'assets/images/unknown.png',
-                                height: 90,
-                              ),
-                        ElevatedButton(
-                          onPressed: () async {
-                            var pickedImage = await _pickImage();
-                            if (pickedImage != null) {
-                              setState(() {
-                                newImagePath = pickedImage;
-                              });
-                            }
-                          },
-                          child: const Text('Zamijeni sliku'),
-                        ),
-                      ],
-                    ),
-                  ],
+                            newTelefon = maskedValue;
+
+                            return TextEditingValue(
+                              text: maskedValue,
+                              selection: TextSelection.collapsed(
+                                  offset: maskedValue.length),
+                            );
+                          }),
+                        ],
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Telefon ne može ostati prazan';
+                          }
+
+                          final phoneNumber = value.replaceAll(RegExp(r'\D'),
+                              ''); // Uklanja ne-numeričke karaktere
+
+                          if (!isNumeric(phoneNumber)) {
+                            return 'Telefon može sadržavati samo brojeve';
+                          }
+
+                          // Validacija za brojeve sa prefiksima 036, 061, 062 (9 cifara)
+                          if ((phoneNumber.startsWith('036') ||
+                                  phoneNumber.startsWith('061') ||
+                                  phoneNumber.startsWith('062')) &&
+                              phoneNumber.length == 9) {
+                            return null;
+                          }
+                          // Validacija za brojeve sa prefiksom 060 (10 cifara)
+                          else if (phoneNumber.startsWith('060') &&
+                              phoneNumber.length == 10) {
+                            return null;
+                          } else {
+                            return 'Nevažeći broj telefona';
+                          }
+                        },
+                      ),
+                      _buildTextFieldWithStar(
+                        label: 'Adresa',
+                        onChanged: (value) {
+                          newAdresa = value;
+                        },
+                        initialValue: newAdresa,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Adresa je obavezna.';
+                          }
+                          return null;
+                        },
+                      ),
+                      CustomTextField(
+                        label: 'Radno vrijeme*',
+                        controller: radnoVrijemeController,
+                        hintText: 'Radno vrijeme',
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          TextInputFormatter.withFunction((oldValue, newValue) {
+                            final maskedValue =
+                                applyMask(newValue.text, '##-##');
+                            newRadnoVrijeme = maskedValue;
+
+                            return TextEditingValue(
+                              text: maskedValue,
+                              selection: TextSelection.collapsed(
+                                  offset: maskedValue.length),
+                            );
+                          }),
+                        ],
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Radno vrijeme ne može ostati prazno';
+                          }
+
+                          // Regex za format XX-XX (npr. 08-20)
+                          final regExp = RegExp(r'^\d{2}-\d{2}$');
+                          if (!regExp.hasMatch(value)) {
+                            return 'Nevažeći format radnog vremena. Format treba biti HH-HH';
+                          }
+                          return null;
+                        },
+                      ),
+                      _buildTextFieldWithStar(
+                        label: 'Opis',
+                        onChanged: (value) {
+                          newOpis = value;
+                        },
+                        initialValue: newOpis,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Opis je obavezan.';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      Column(
+                        children: [
+                          newImagePath.isNotEmpty
+                              ? Image.memory(
+                                  base64Decode(newImagePath),
+                                  height: 90,
+                                  fit: BoxFit.contain,
+                                )
+                              : Image.asset(
+                                  'assets/images/unknown.png',
+                                  height: 90,
+                                  fit: BoxFit.contain,
+                                ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              var pickedImage = await _pickImage();
+                              if (pickedImage != null) {
+                                setState(() {
+                                  newImagePath = pickedImage;
+                                });
+                              }
+                            },
+                            child: const Text('Zamijeni sliku'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
               actions: [
@@ -239,65 +307,34 @@ class _AccountScreenState extends State<AccountScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    if (newName.isEmpty) {
-                      _showAlertDialog('Naziv restorana je obavezan.');
-                      return;
-                    } else if (newTelefon.isEmpty) {
-                      _showAlertDialog('Broj telefona restorana je obavezan.');
-                      return;
-                    } else if (newAdresa.isEmpty) {
-                      _showAlertDialog('Lokacija restorana je obavezna.');
-                      return;
-                    } else if (newRadnoVrijeme.isEmpty) {
-                      _showAlertDialog('Radno vrijeme restorana je obavezno.');
-                      return;
-                    } else if (newOpis.isEmpty) {
-                      _showAlertDialog('Opis restorana je obavezan.');
-                      return;
-                    } else if (newImagePath.isEmpty) {
-                      _showAlertDialog('Slika restorana je obavezna.');
-                      return;
-                    } else if (newIme.isEmpty) {
-                      _showAlertDialog('Ime je obavezno.');
-                      return;
-                    } else if (newPrezime.isEmpty) {
-                      _showAlertDialog('Prezime je obavezno.');
-                      return;
-                    } else if (newEmail.isEmpty) {
-                      _showAlertDialog('Email je obavezan.');
-                      return;
+                    if (_formKey.currentState!.validate()) {
+                      // Perform the saving operation if the form is valid
+                      await _updateRestoranDetails(
+                        restoran.restoranId,
+                        newName,
+                        newTelefon,
+                        newAdresa,
+                        newRadnoVrijeme,
+                        newOpis,
+                        newImagePath,
+                      );
+
+                      await _korisnikProvider.update(
+                        widget.userData.korisnikId,
+                        Korisnik(
+                          ime: newIme,
+                          prezime: newPrezime,
+                          email: newEmail,
+                          korisnickoIme: korisnik.korisnickoIme,
+                          ulogeIdList: korisnik.ulogeIdList,
+                        ),
+                      );
+
+                      loadUserData();
+
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
                     }
-
-                    if (!isValidEmail(newEmail)) {
-                      showInvalidEmailAlertDialog(context);
-                      return;
-                    }
-
-                    await _updateRestoranDetails(
-                      restoran.restoranId,
-                      newName,
-                      newTelefon,
-                      newAdresa,
-                      newRadnoVrijeme,
-                      newOpis,
-                      newImagePath,
-                    );
-
-                    await _korisnikProvider.update(
-                      widget.userData.korisnikId,
-                      Korisnik(
-                        ime: newIme,
-                        prezime: newPrezime,
-                        email: newEmail,
-                        korisnickoIme: korisnik.korisnickoIme,
-                        ulogeIdList: korisnik.ulogeIdList,
-                      ),
-                    );
-
-                    loadUserData();
-
-                    // ignore: use_build_context_synchronously
-                    Navigator.pop(context);
                   },
                   child: const Text('Sačuvaj'),
                 ),
@@ -309,40 +346,10 @@ class _AccountScreenState extends State<AccountScreen> {
     );
   }
 
-  void _handleLogout() async {
-    try {
-      await KorisnikProvider().logout();
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, '/login-admin-screen');
-    } catch (e) {
-      // ignore: avoid_print
-      print('Error during logout: $e');
-    }
-  }
-
-  void _showAlertDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Upozorenje'),
-          content: Text(message),
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Widget _buildTextFieldWithStar({
     required String label,
     required ValueChanged<String> onChanged,
+    required FormFieldValidator<String> validator, // Added validator parameter
     TextInputType? keyboardType,
     String initialValue = '',
   }) {
@@ -355,14 +362,26 @@ class _AccountScreenState extends State<AccountScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        TextField(
+        TextFormField(
           onChanged: onChanged,
           keyboardType: keyboardType,
-          controller: TextEditingController(text: initialValue),
+          initialValue: initialValue,
+          validator: validator, // Assign the validator to the field
           decoration: const InputDecoration(),
         ),
       ],
     );
+  }
+
+  void _handleLogout() async {
+    try {
+      await KorisnikProvider().logout();
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacementNamed(context, '/login-admin-screen');
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error during logout: $e');
+    }
   }
 
   Future<void> _updateRestoranDetails(
@@ -542,13 +561,13 @@ class _AccountScreenState extends State<AccountScreen> {
                           base64Decode(restorani[0].slika),
                           height: 200,
                           width: double.infinity,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                         )
                       : Image.asset(
                           'assets/images/unknown.png',
                           height: 200,
                           width: double.infinity,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                         ),
                 ],
               ),

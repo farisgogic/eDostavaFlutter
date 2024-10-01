@@ -178,24 +178,35 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
   }
 
   void _showAddKategorijaDialog() async {
+    final formKey = GlobalKey<FormState>();
     String newName = '';
-    bool isValid = true;
 
     await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Dodaj Kategoriju'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                onChanged: (value) {
-                  newName = value;
-                },
-                decoration: const InputDecoration(labelText: 'Naziv'),
-              ),
-            ],
+          content: Form(
+            key: formKey, 
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  onChanged: (value) {
+                    newName = value;
+                  },
+                  decoration: const InputDecoration(
+                    labelText: 'Naziv',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Naziv ne može biti prazan'; 
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
           ),
           actions: [
             ElevatedButton(
@@ -206,31 +217,9 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
-                setState(() {
-                  isValid = newName.isNotEmpty;
-                });
-
-                if (isValid) {
+                if (formKey.currentState!.validate()) {
                   await _addNewKategorija(newName);
                   Navigator.pop(context);
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('GREŠKA'),
-                        content: const Text('Naziv ne moze biti prazan.'),
-                        actions: <Widget>[
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
                 }
               },
               child: const Text('Save'),
@@ -258,25 +247,34 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
   }
 
   void _showEditKategorijaDialog(Kategorija kategorija) async {
+    final formKey = GlobalKey<FormState>();
     String newName = kategorija.naziv;
-    bool isValid = true;
 
     await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Edit Kategorija'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                onChanged: (value) {
-                  newName = value;
-                },
-                controller: TextEditingController(text: kategorija.naziv),
-                decoration: const InputDecoration(labelText: 'Naziv'),
-              ),
-            ],
+          content: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  onChanged: (value) {
+                    newName = value;
+                  },
+                  controller: TextEditingController(text: kategorija.naziv),
+                  decoration: const InputDecoration(labelText: 'Naziv'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Naziv ne može biti prazan'; 
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
           ),
           actions: [
             ElevatedButton(
@@ -287,31 +285,9 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
-                setState(() {
-                  isValid = newName.isNotEmpty;
-                });
-
-                if (isValid) {
+                if (formKey.currentState!.validate()) {
                   await _updateKategorijaName(kategorija.kategorijaId, newName);
                   Navigator.pop(context);
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Error'),
-                        content: const Text('Naziv ne moze biti prazan.'),
-                        actions: <Widget>[
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
                 }
               },
               child: const Text('Save'),
@@ -361,9 +337,8 @@ class _KategorijaScreenState extends State<KategorijaScreen> {
           },
         );
       }
-    // ignore: empty_catches
-    } catch (e) {
-    }
+      // ignore: empty_catches
+    } catch (e) {}
   }
 
   Future<void> _deleteKategorija(int kategorijaId) async {

@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:edostavamobile/features/Auth/models/dostavljac.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -63,10 +62,13 @@ class _HomeDostavljacScreen extends State<HomeDostavljacScreen> {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-                  const CircleAvatar(
-                    radius: 60,
-                    backgroundImage:
-                        AssetImage("assets/images/dostavljac_icon.png"),
+                  ClipOval(
+                    child: Image.asset(
+                      "assets/images/dostavljac_icon.png",
+                      width: 120,
+                      height: 120,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   const SizedBox(height: 30),
                   FutureBuilder<Dostavljac>(

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/io_client.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/global_variables.dart';
@@ -11,6 +12,7 @@ import '../models/Narudzba.dart';
 class NarudzbaProvider with ChangeNotifier {
   HttpClient client = HttpClient();
   IOClient? http;
+
   NarudzbaProvider() {
     client.badCertificateCallback = (cert, host, port) => true;
     http = IOClient(client);
@@ -70,5 +72,33 @@ class NarudzbaProvider with ChangeNotifier {
     } else {
       throw Exception("Greska");
     }
+  }
+
+  double calculateTotalRevenue(Narudzba narudzba) {
+    return narudzba.narudzbaStavke
+        .fold(0.0, (sum, stavka) => sum + (stavka.cijena * stavka.kolicina));
+  }
+
+  List<MonthlyFinancialReport> calculateMonthlyFinancialReport(
+      List<Narudzba> narudzbe) {
+    Map<String, double> revenueMap = {};
+
+    for (var narudzba in narudzbe) {
+      String month = DateFormat('MMMM yyyy').format(narudzba.datum);
+
+      double revenue = calculateTotalRevenue(narudzba);
+
+      revenueMap[month] = (revenueMap[month] ?? 0) + revenue;
+    }
+
+    List<MonthlyFinancialReport> reports = [];
+    revenueMap.forEach((month, revenue) {
+      reports.add(MonthlyFinancialReport(
+        month: month,
+        totalRevenue: revenue,
+      ));
+    });
+
+    return reports;
   }
 }

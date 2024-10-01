@@ -90,9 +90,13 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-                  const CircleAvatar(
-                    radius: 60,
-                    backgroundImage: AssetImage("assets/images/profile.png"),
+                  ClipOval(
+                    child: Image.asset(
+                      "assets/images/profile.png",
+                      width: 120,
+                      height: 120,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   CustomTextField(

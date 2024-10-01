@@ -147,7 +147,12 @@ class _ArchiveJeloScreenState extends State<ArchiveJeloScreen> {
         ),
       ),
       body: jela.isEmpty
-          ? Center(child: Image.asset('assets/images/nothing-here.jpg'))
+          ? Center(
+              child: Image.asset(
+                'assets/images/nothing-here.jpg',
+                fit: BoxFit.contain,
+              ),
+            )
           : Column(
               children: [
                 SizedBox(
@@ -224,20 +229,24 @@ class _ArchiveJeloScreenState extends State<ArchiveJeloScreen> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.check_circle_outline,
-                                          color: Colors.green,
+                                      Tooltip(
+                                        message: 'Obnoviti jelo',
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.check_circle_outline,
+                                            color: Colors.green,
+                                          ),
+                                          onPressed: () {
+                                            _showActivateConfirmationDialog(
+                                                jela[index].jeloId);
+                                          },
+                                          iconSize: 25,
                                         ),
-                                        onPressed: () {
-                                          _showActivateConfirmationDialog(
-                                              jela[index].jeloId);
-                                        },
-                                        iconSize: 25,
                                       ),
                                       Image.memory(
                                         base64Decode(jela[index].slika),
                                         height: 90,
+                                        fit: BoxFit.contain,
                                       ),
                                     ],
                                   ),

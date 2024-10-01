@@ -194,7 +194,7 @@ class _JeloScreenState extends State<JeloScreen> {
                 ? Center(
                     child: Image.asset(
                       'assets/images/nothing-here.jpg',
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                     ),
                   )
                 : ListView.builder(
@@ -242,21 +242,25 @@ class _JeloScreenState extends State<JeloScreen> {
                                               _showEditJeloDialog(jela[index]);
                                             },
                                           ),
-                                          IconButton(
-                                            icon: const Icon(
-                                              Icons.delete,
-                                              color: Colors.red,
+                                          Tooltip(
+                                            message: 'Arhiviraj jelo',
+                                            child: IconButton(
+                                              icon: const Icon(
+                                                Icons.archive_outlined,
+                                                color: Colors.red,
+                                              ),
+                                              onPressed: () {
+                                                _showDeleteConfirmationDialog(
+                                                    jela[index].jeloId);
+                                              },
                                             ),
-                                            onPressed: () {
-                                              _showDeleteConfirmationDialog(
-                                                  jela[index].jeloId);
-                                            },
                                           ),
                                         ],
                                       ),
                                       Image.memory(
                                         base64Decode(jela[index].slika),
                                         height: 90,
+                                        fit: BoxFit.contain,
                                       ),
                                     ],
                                   ),
@@ -297,6 +301,11 @@ class _JeloScreenState extends State<JeloScreen> {
     int selectedKategorijaId =
         kategorije.isNotEmpty ? jeloKategorije[0].kategorijaId : -1;
 
+    String nameError = '';
+    String cijenaError = '';
+    String opisError = '';
+    String imageError = '';
+
     // ignore: use_build_context_synchronously
     await showDialog(
       context: context,
@@ -314,6 +323,7 @@ class _JeloScreenState extends State<JeloScreen> {
                       newName = value;
                     },
                     initialValue: newName,
+                    errorMessage: nameError,
                   ),
                   _buildTextFieldWithStar(
                     label: 'Cijena*',
@@ -322,6 +332,7 @@ class _JeloScreenState extends State<JeloScreen> {
                     },
                     keyboardType: TextInputType.number,
                     initialValue: newCijena.toString(),
+                    errorMessage: cijenaError,
                   ),
                   _buildTextFieldWithStar(
                     label: 'Opis*',
@@ -330,6 +341,7 @@ class _JeloScreenState extends State<JeloScreen> {
                     },
                     maxLines: 3,
                     initialValue: newOpis,
+                    errorMessage: opisError,
                   ),
                   const SizedBox(height: 10),
                   DropdownButton<int>(
@@ -354,6 +366,7 @@ class _JeloScreenState extends State<JeloScreen> {
                       Image.memory(
                         base64Decode(newImagePath),
                         height: 90,
+                        fit: BoxFit.contain,
                       ),
                       ElevatedButton(
                         onPressed: () async {
@@ -365,6 +378,12 @@ class _JeloScreenState extends State<JeloScreen> {
                         },
                         child: const Text('Zamijeni sliku'),
                       ),
+                      imageError.isNotEmpty
+                          ? Text(
+                              imageError,
+                              style: const TextStyle(color: Colors.red),
+                            )
+                          : const SizedBox.shrink(),
                     ],
                   ),
                 ],
@@ -378,30 +397,37 @@ class _JeloScreenState extends State<JeloScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    if (newName.isEmpty) {
-                      _showAlertDialog('Naziv jela je obavezan.');
-                      return;
-                    } else if (newCijena <= 0) {
-                      _showAlertDialog('Unesite cijenu veću od 0 KM.');
-                      return;
-                    } else if (newImagePath.isEmpty) {
-                      _showAlertDialog('Slika jela je obavezna.');
-                      return;
-                    } else if (newOpis.isEmpty) {
-                      _showAlertDialog('Opis jela je obavezan.');
-                      return;
-                    }
+                    setState(() {
+                      nameError =
+                          newName.isEmpty ? 'Naziv jela je obavezan.' : '';
 
-                    await _updateJeloDetails(
-                      jelo.jeloId,
-                      newName,
-                      newOpis,
-                      newCijena,
-                      newImagePath,
-                      selectedKategorijaId,
-                    );
-                    // ignore: use_build_context_synchronously
-                    Navigator.pop(context);
+                      cijenaError = (newCijena.toString().isEmpty)
+                          ? 'Polje cijena je obavezno.'
+                          : (newCijena <= 0
+                              ? 'Unesite cijenu veću od 0 KM.'
+                              : '');
+
+                      opisError =
+                          newOpis.isEmpty ? 'Opis jela je obavezan.' : '';
+                      imageError =
+                          newImagePath.isEmpty ? 'Slika jela je obavezna.' : '';
+                    });
+
+                    if (nameError.isEmpty &&
+                        cijenaError.isEmpty &&
+                        opisError.isEmpty &&
+                        imageError.isEmpty) {
+                      await _updateJeloDetails(
+                        jelo.jeloId,
+                        newName,
+                        newOpis,
+                        newCijena,
+                        newImagePath,
+                        selectedKategorijaId,
+                      );
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
+                    }
                   },
                   child: const Text('Sačuvaj'),
                 ),
@@ -490,16 +516,18 @@ class _JeloScreenState extends State<JeloScreen> {
     int selectedKategorijaId =
         kategorije.isNotEmpty ? kategorije[0].kategorijaId : -1;
 
+    String nameError = '';
+    String cijenaError = '';
+    String opisError = '';
+    String imageError = '';
+
     await showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text(
-                'Dodaj Jelo',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+              title: const Text('Dodaj Jelo'),
               content: Column(
                 children: [
                   _buildTextFieldWithStar(
@@ -508,6 +536,7 @@ class _JeloScreenState extends State<JeloScreen> {
                       newJeloName = value;
                     },
                     initialValue: newJeloName,
+                    errorMessage: nameError,
                   ),
                   _buildTextFieldWithStar(
                     label: 'Cijena',
@@ -516,6 +545,7 @@ class _JeloScreenState extends State<JeloScreen> {
                     },
                     keyboardType: TextInputType.number,
                     initialValue: newJeloPrice.toString(),
+                    errorMessage: cijenaError,
                   ),
                   _buildTextFieldWithStar(
                     label: 'Opis',
@@ -524,15 +554,10 @@ class _JeloScreenState extends State<JeloScreen> {
                     },
                     maxLines: 2,
                     initialValue: newJeloDescription,
+                    errorMessage: opisError,
                   ),
                   const SizedBox(height: 30),
-                  const Text(
-                    'Izaberite kategoriju',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
+                  const Text('Izaberite kategoriju'),
                   DropdownButton<int>(
                     value: selectedKategorijaId,
                     onChanged: (int? value) {
@@ -550,11 +575,11 @@ class _JeloScreenState extends State<JeloScreen> {
                   const SizedBox(height: 10),
                   Column(
                     children: [
-                      const SizedBox(height: 16),
                       newJeloImageUrl.isNotEmpty
                           ? Image.memory(
                               base64Decode(newJeloImageUrl),
                               height: 90,
+                              fit: BoxFit.contain,
                             )
                           : Container(
                               height: 90,
@@ -571,6 +596,12 @@ class _JeloScreenState extends State<JeloScreen> {
                         },
                         child: const Text('Izaberite sliku'),
                       ),
+                      imageError.isNotEmpty
+                          ? Text(
+                              imageError,
+                              style: const TextStyle(color: Colors.red),
+                            )
+                          : const SizedBox.shrink(),
                     ],
                   ),
                 ],
@@ -583,30 +614,34 @@ class _JeloScreenState extends State<JeloScreen> {
                   child: const Text('Cancel'),
                 ),
                 ElevatedButton(
-                  onPressed: () async {
-                    if (newJeloName.isEmpty) {
-                      _showAlertDialog('Naziv jela je obavezan.');
-                      return;
-                    } else if (newJeloPrice <= 0) {
-                      _showAlertDialog('Unesite cijenu veću od 0 KM.');
-                      return;
-                    } else if (newJeloImageUrl.isEmpty) {
-                      _showAlertDialog('Slika jela je obavezna.');
-                      return;
-                    } else if (newJeloDescription.isEmpty) {
-                      _showAlertDialog('Opis jela je obavezan.');
-                      return;
-                    }
+                  onPressed: () {
+                    setState(() {
+                      nameError =
+                          newJeloName.isEmpty ? 'Naziv jela je obavezan.' : '';
+                      cijenaError = newJeloPrice <= 0
+                          ? 'Cijena mora biti veća od 0.'
+                          : '';
+                      opisError = newJeloDescription.isEmpty
+                          ? 'Opis jela je obavezan.'
+                          : '';
+                      imageError = newJeloImageUrl.isEmpty
+                          ? 'Slika jela je obavezna.'
+                          : '';
+                    });
 
-                    await _addNewJelo(
-                      newJeloName,
-                      newJeloPrice,
-                      newJeloDescription,
-                      newJeloImageUrl,
-                      selectedKategorijaId,
-                    );
-                    // ignore: use_build_context_synchronously
-                    Navigator.pop(context);
+                    if (nameError.isEmpty &&
+                        cijenaError.isEmpty &&
+                        opisError.isEmpty &&
+                        imageError.isEmpty) {
+                      _addNewJelo(
+                        newJeloName,
+                        newJeloPrice,
+                        newJeloDescription,
+                        newJeloImageUrl,
+                        selectedKategorijaId,
+                      );
+                      Navigator.pop(context);
+                    }
                   },
                   child: const Text('Save'),
                 ),
@@ -618,49 +653,34 @@ class _JeloScreenState extends State<JeloScreen> {
     );
   }
 
-  void _showAlertDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Upozorenje'),
-          content: Text(message),
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Widget _buildTextFieldWithStar({
     required String label,
     required ValueChanged<String> onChanged,
     int maxLines = 1,
     TextInputType? keyboardType,
     String initialValue = '',
+    String errorMessage = '',
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '$label*',
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        TextField(
-          onChanged: onChanged,
+        TextFormField(
+          initialValue: initialValue,
           maxLines: maxLines,
           keyboardType: keyboardType,
-          controller: TextEditingController(text: initialValue),
-          decoration: const InputDecoration(),
+          decoration: InputDecoration(
+            labelText: label,
+          ),
+          onChanged: onChanged,
         ),
+        if (errorMessage.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: Text(
+              errorMessage,
+              style: const TextStyle(color: Colors.red),
+            ),
+          ),
       ],
     );
   }

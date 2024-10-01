@@ -1,5 +1,4 @@
 import 'package:edostavamobile/common/widgets/custom_button.dart';
-import 'package:edostavamobile/common/widgets/custom_textfield.dart';
 import 'package:edostavamobile/constants/global_variables.dart';
 import 'package:edostavamobile/features/Home/home_screens.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +19,7 @@ class _LogInScreenState extends State<LogInScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   late KupciProvider _kupciProvider;
+  final _formKey = GlobalKey<FormState>(); 
 
   @override
   void dispose() {
@@ -29,52 +29,38 @@ class _LogInScreenState extends State<LogInScreen> {
   }
 
   void _handleLogin() async {
-    if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Greska'),
-          content: const Text('Korisnicko ime i lozinka su obavezni.'),
-          actions: [
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        ),
-      );
-      return;
-    }
-    try {
-      final kupac = await _kupciProvider.login(
-          _usernameController.text, _passwordController.text);
+    if (_formKey.currentState!.validate()) {
+      try {
+        final kupac = await _kupciProvider.login(
+            _usernameController.text, _passwordController.text);
 
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(
-        context,
-        HomeScreen.routeName,
-        arguments: kupac,
-      );
-    } on Exception {
-      // ignore: use_build_context_synchronously
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Greska'),
-            content: const Text('Pogresno korisnicko ime ili lozinka.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-      return;
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacementNamed(
+          context,
+          HomeScreen.routeName,
+          arguments: kupac,
+        );
+      } on Exception {
+        // ignore: use_build_context_synchronously
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Greska'),
+              content: const Text('Pogrešno korisničko ime ili lozinka.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+        return;
+      }
     }
   }
 
@@ -99,33 +85,49 @@ class _LogInScreenState extends State<LogInScreen> {
       ),
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(30),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 170),
-                    CustomTextField(
-                        controller: _usernameController,
-                        hintText: 'Korisnicko Ime'),
-                    const SizedBox(height: 30),
-                    CustomTextField(
-                      controller: _passwordController,
-                      hintText: 'Lozinka',
-                      obscureText: true,
+          child: Padding(
+            padding: const EdgeInsets.all(30),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  const SizedBox(height: 170),
+                  TextFormField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(
+                      hintText: 'Korisničko ime',
                     ),
-                    const SizedBox(height: 20),
-                    const SizedBox(height: 200),
-                    CustomButton(
-                      text: 'Login',
-                      onTap: _handleLogin,
-                      color: GlobalVariables.buttonColor,
-                    )
-                  ],
-                ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Korisničko ime je obavezno';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 30),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(
+                      hintText: 'Lozinka',
+                    ),
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Lozinka je obavezna';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  const SizedBox(height: 200),
+                  CustomButton(
+                    text: 'Login',
+                    onTap: _handleLogin,
+                    color: GlobalVariables.buttonColor,
+                  )
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

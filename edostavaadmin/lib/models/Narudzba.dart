@@ -128,3 +128,13 @@ class NarudzbaInsertRequest {
     };
   }
 }
+
+class MonthlyFinancialReport {
+  final String month;
+  final double totalRevenue;
+
+  MonthlyFinancialReport({
+    required this.month,
+    required this.totalRevenue,
+  });
+}

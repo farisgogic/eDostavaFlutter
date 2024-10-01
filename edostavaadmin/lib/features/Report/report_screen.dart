@@ -3,6 +3,7 @@
 import 'package:edostavaadmin/providers/kategorija_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/Narudzba.dart';
 import '../../models/jelo.dart';
@@ -141,24 +142,27 @@ class _ReportScreenState extends State<ReportScreen> {
               ? const CircularProgressIndicator()
               : hasError
                   ? const Text('Error loading data')
-                  : ReportContent(
-                      narudzbe: narudzbe,
-                      kategorije: kategorije,
-                      jela: jela,
-                      naziviJela: naziviJela,
-                      selectedCategoryId: _selectedCategoryId,
-                      onCategorySelected: (id) {
-                        setState(() {
-                          _selectedCategoryId = id;
-                        });
-                        if (id != -1) {
-                          getJeloByKategorijaId(id);
-                        } else {
-                          getNarudzbe();
-                        }
-                      },
-                      updateNarudzbe: getNarudzbe,
-                      getJeloByKategorijaId: getJeloByKategorijaId,
+                  : SingleChildScrollView(
+                      // <-- Add this
+                      child: ReportContent(
+                        narudzbe: narudzbe,
+                        kategorije: kategorije,
+                        jela: jela,
+                        naziviJela: naziviJela,
+                        selectedCategoryId: _selectedCategoryId,
+                        onCategorySelected: (id) {
+                          setState(() {
+                            _selectedCategoryId = id;
+                          });
+                          if (id != -1) {
+                            getJeloByKategorijaId(id);
+                          } else {
+                            getNarudzbe();
+                          }
+                        },
+                        updateNarudzbe: getNarudzbe,
+                        getJeloByKategorijaId: getJeloByKategorijaId,
+                      ),
                     ),
         ),
       ),
@@ -187,6 +191,42 @@ class ReportContent extends StatelessWidget {
     required this.updateNarudzbe,
     required this.getJeloByKategorijaId,
   }) : super(key: key);
+
+  double calculateTotalRevenue(Narudzba narudzba) {
+    return narudzba.narudzbaStavke
+        .fold(0.0, (sum, stavka) => sum + (stavka.cijena * stavka.kolicina));
+  }
+
+  List<MonthlyFinancialReport> calculateMonthlyFinancialReport(
+      List<Narudzba> narudzbe) {
+    Map<String, double> revenueMap = {};
+    Map<String, int> itemsSoldMap = {};
+
+    for (var narudzba in narudzbe) {
+      String month = DateFormat('MMMM yyyy').format(narudzba.datum);
+      double revenue = calculateTotalRevenue(narudzba);
+
+      revenueMap[month] = (revenueMap[month] ?? 0) + revenue;
+
+      for (var stavka in narudzba.narudzbaStavke) {
+        itemsSoldMap[month] = (itemsSoldMap[month] ?? 0) + stavka.kolicina;
+      }
+    }
+
+    List<MonthlyFinancialReport> reports = [];
+    revenueMap.forEach((month, revenue) {
+      reports.add(MonthlyFinancialReport(
+        month: month,
+        totalRevenue: revenue,
+      ));
+    });
+
+    itemsSoldMap.forEach((month, totalItemsSold) {
+      print("Month: $month, Total Items Sold: $totalItemsSold");
+    });
+
+    return reports;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -262,7 +302,11 @@ class ReportContent extends StatelessWidget {
             );
           }).toList();
 
+    List<MonthlyFinancialReport> monthlyReports =
+        calculateMonthlyFinancialReport(narudzbe);
+
     return Column(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Wrap(
@@ -282,9 +326,9 @@ class ReportContent extends StatelessWidget {
             );
           }).toList(),
         ),
-        const SizedBox(height: 40),
-        Expanded(
-          flex: 3,
+        const SizedBox(height: 20),
+        SizedBox(
+          height: 300,
           child: PieChart(
             PieChartData(
               sections: sections,
@@ -302,71 +346,112 @@ class ReportContent extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-        Expanded(
-          flex: 2,
-          child: ListView.builder(
-            itemCount: selectedCategoryId == -1
-                ? sortedJelaIKolicine.length
-                : jela.length,
-            itemBuilder: (context, index) {
-              int jeloId = selectedCategoryId == -1
-                  ? sortedJelaIKolicine[index].key
-                  : jela[index].jeloId;
-              int kolicina = selectedCategoryId == -1
-                  ? sortedJelaIKolicine[index].value
-                  : (jelaIKolicine.containsKey(jeloId)
-                      ? jelaIKolicine[jeloId]!
-                      : 0);
-              String jeloNaziv = naziviJela.containsKey(jeloId)
-                  ? naziviJela[jeloId]!
-                  : 'Nepoznato';
+        Column(
+          children: [
+            const Text(
+              'Ukupno prodatih proizvoda',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Column(
+              children: List.generate(
+                selectedCategoryId == -1
+                    ? sortedJelaIKolicine.length
+                    : jela.length,
+                (index) {
+                  int jeloId = selectedCategoryId == -1
+                      ? sortedJelaIKolicine[index].key
+                      : jela[index].jeloId;
+                  int kolicina = selectedCategoryId == -1
+                      ? sortedJelaIKolicine[index].value
+                      : (jelaIKolicine.containsKey(jeloId)
+                          ? jelaIKolicine[jeloId]!
+                          : 0);
+                  String jeloNaziv = naziviJela.containsKey(jeloId)
+                      ? naziviJela[jeloId]!
+                      : 'Nepoznato';
 
-              return Column(
-                children: [
-                  ListTile(
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
+                  return Column(
+                    children: [
+                      ListTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              width: 24,
-                              height: 24,
-                              decoration: BoxDecoration(
-                                color: boje[index % boje.length],
-                                border: Border.all(
-                                  color: Colors.black.withOpacity(0.5),
-                                  width: 1,
+                            Row(
+                              children: [
+                                Container(
+                                  width: 24,
+                                  height: 24,
+                                  decoration: BoxDecoration(
+                                    color: boje[index % boje.length],
+                                    border: Border.all(
+                                      color: Colors.black.withOpacity(0.5),
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
                                 ),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  jeloNaziv,
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 10),
                             Text(
-                              jeloNaziv,
+                              'Količina: $kolicina',
                               style: const TextStyle(fontSize: 16),
                             ),
                           ],
                         ),
-                        Text(
-                          'Količina: $kolicina',
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Divider(
-                    color: Colors.grey,
-                    thickness: 0.5,
-                    indent: 10,
-                    endIndent: 10,
-                  ),
-                ],
-              );
-            },
-          ),
+                      ),
+                      const Divider(
+                        color: Colors.grey,
+                        thickness: 0.5,
+                        indent: 10,
+                        endIndent: 10,
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 40),
+        const Text(
+          "Prihodi po mjesecima",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        Column(
+          children: monthlyReports.map((report) {
+            return ListTile(
+              title: Text(
+                report.month,
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              trailing: Text(
+                '${report.totalRevenue.toStringAsFixed(2)} KM',
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+            );
+          }).toList(),
         ),
       ],
     );
   }
+}
+
+class MonthlyFinancialReport {
+  final String month;
+  final double totalRevenue;
+
+  MonthlyFinancialReport({required this.month, required this.totalRevenue});
 }

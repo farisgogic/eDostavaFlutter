@@ -89,10 +89,13 @@ class _AccountSettingsDostavljacScreen
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-                  const CircleAvatar(
-                    radius: 60,
-                    backgroundImage:
-                        AssetImage("assets/images/dostavljac_icon.png"),
+                  ClipOval(
+                    child: Image.asset(
+                      "assets/images/dostavljac_icon.png",
+                      width: 120,
+                      height: 120,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   CustomTextField(

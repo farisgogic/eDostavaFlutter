@@ -56,7 +56,7 @@ namespace eDostava.Services.Migrations
 
                     b.HasKey("DostavljacId");
 
-                    b.ToTable("Dostavljac");
+                    b.ToTable("Dostavljac", (string)null);
 
                     b.HasData(
                         new
@@ -109,7 +109,7 @@ namespace eDostava.Services.Migrations
 
                     b.HasIndex("RestoranId");
 
-                    b.ToTable("Favoriti");
+                    b.ToTable("Favoriti", (string)null);
 
                     b.HasData(
                         new
@@ -154,7 +154,7 @@ namespace eDostava.Services.Migrations
 
                     b.HasIndex("KupacId");
 
-                    b.ToTable("JelaOcjene");
+                    b.ToTable("JelaOcjene", (string)null);
 
                     b.HasData(
                         new
@@ -225,7 +225,7 @@ namespace eDostava.Services.Migrations
 
                     b.HasIndex("RestoranId");
 
-                    b.ToTable("Jelo");
+                    b.ToTable("Jelo", (string)null);
 
                     b.HasData(
                         new
@@ -352,7 +352,7 @@ namespace eDostava.Services.Migrations
 
                     b.HasIndex("KategorijaId");
 
-                    b.ToTable("JeloKategorija");
+                    b.ToTable("JeloKategorija", (string)null);
 
                     b.HasData(
                         new
@@ -436,7 +436,7 @@ namespace eDostava.Services.Migrations
 
                     b.HasIndex("RestoranId");
 
-                    b.ToTable("Kategorija");
+                    b.ToTable("Kategorija", (string)null);
 
                     b.HasData(
                         new
@@ -536,7 +536,7 @@ namespace eDostava.Services.Migrations
 
                     b.HasKey("KorisnikId");
 
-                    b.ToTable("Korisnik");
+                    b.ToTable("Korisnik", (string)null);
 
                     b.HasData(
                         new
@@ -610,7 +610,7 @@ namespace eDostava.Services.Migrations
 
                     b.HasIndex("UlogaId");
 
-                    b.ToTable("KorisnikUloga");
+                    b.ToTable("KorisnikUloga", (string)null);
 
                     b.HasData(
                         new
@@ -702,7 +702,7 @@ namespace eDostava.Services.Migrations
 
                     b.HasKey("KupacId");
 
-                    b.ToTable("Kupci");
+                    b.ToTable("Kupci", (string)null);
 
                     b.HasData(
                         new
@@ -775,7 +775,7 @@ namespace eDostava.Services.Migrations
 
                     b.HasIndex("RestoranId");
 
-                    b.ToTable("Narudzba");
+                    b.ToTable("Narudzba", (string)null);
 
                     b.HasData(
                         new
@@ -836,7 +836,7 @@ namespace eDostava.Services.Migrations
 
                     b.HasIndex("NarudzbaId");
 
-                    b.ToTable("NarudzbaStavke");
+                    b.ToTable("NarudzbaStavke", (string)null);
 
                     b.HasData(
                         new
@@ -891,7 +891,7 @@ namespace eDostava.Services.Migrations
 
                     b.HasIndex("RestoranId");
 
-                    b.ToTable("Recenzija");
+                    b.ToTable("Recenzija", (string)null);
 
                     b.HasData(
                         new
@@ -974,7 +974,7 @@ namespace eDostava.Services.Migrations
                     b.HasIndex("KorisnikId")
                         .IsUnique();
 
-                    b.ToTable("Restoran");
+                    b.ToTable("Restoran", (string)null);
 
                     b.HasData(
                         new
@@ -1033,7 +1033,7 @@ namespace eDostava.Services.Migrations
 
                     b.HasKey("UlogaId");
 
-                    b.ToTable("Uloga");
+                    b.ToTable("Uloga", (string)null);
 
                     b.HasData(
                         new

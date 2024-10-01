@@ -155,6 +155,18 @@ namespace eDostava.Services.Database
                 Arhivirano = false,
             });
 
+            modelBuilder.Entity<Jelo>().HasData(new Jelo
+            {
+                JeloId = 11,
+                Naziv = "Pizza quattro formaggi",
+                Cijena = 12,
+                Ocjena = null,
+                Opis = "Pizza",
+                Slika = slika,
+                RestoranId = 1,
+                Arhivirano = true,
+            });
+
 
             modelBuilder.Entity<Kategorija>().HasData(new Kategorija
             {
@@ -580,6 +592,67 @@ namespace eDostava.Services.Database
                 DostavljacId = null,
             });
 
+            modelBuilder.Entity<Narudzba>().HasData(new Narudzba
+            {
+                NarudzbaId = 4,
+                BrojNarudzbe = "2",
+                Datum = DateTime.UtcNow.AddMinutes(-10), 
+                KupacId = 2,
+                RestoranId = 2,
+                Stanje = StanjeNarudzbe.Isporuceno,
+                Otkazano = false,
+                DostavljacId = 1,
+            });
+
+            modelBuilder.Entity<Narudzba>().HasData(new Narudzba
+            {
+                NarudzbaId = 5,
+                BrojNarudzbe = "3",
+                Datum = DateTime.UtcNow.AddHours(-1), 
+                KupacId = 1,
+                RestoranId = 1,
+                Stanje = StanjeNarudzbe.UPripremi,
+                Otkazano = false,
+                DostavljacId = 2,
+            });
+
+            modelBuilder.Entity<Narudzba>().HasData(new Narudzba
+            {
+                NarudzbaId = 6,
+                BrojNarudzbe = "3",
+                Datum = DateTime.UtcNow.AddDays(-1), 
+                KupacId = 3,
+                RestoranId = 2,
+                Stanje = StanjeNarudzbe.NaCekanju,
+                Otkazano = false, 
+                DostavljacId = null,
+            });
+
+            modelBuilder.Entity<Narudzba>().HasData(new Narudzba
+            {
+                NarudzbaId = 7,
+                BrojNarudzbe = "1",
+                Datum = DateTime.UtcNow.AddHours(-2),
+                KupacId = 1,
+                RestoranId = 3,
+                Stanje = StanjeNarudzbe.Spremna,
+                Otkazano = false,
+                DostavljacId = 3,
+            });
+
+            modelBuilder.Entity<Narudzba>().HasData(new Narudzba
+            {
+                NarudzbaId = 8,
+                BrojNarudzbe = "2",
+                Datum = DateTime.UtcNow.AddDays(-2),
+                KupacId = 2,
+                RestoranId = 3,
+                Stanje = StanjeNarudzbe.Isporuceno,
+                Otkazano = false,
+                DostavljacId = 1,
+            });
+
+            
 
             modelBuilder.Entity<NarudzbaStavke>().HasData(new NarudzbaStavke
             {
@@ -602,6 +675,46 @@ namespace eDostava.Services.Database
                 Kolicina = 3,
                 JeloId = 1,
             });
+            modelBuilder.Entity<NarudzbaStavke>().HasData(new NarudzbaStavke
+            {
+                NarudzbaStavkeId = 4,
+                NarudzbaId = 4,
+                Kolicina = 1,
+                JeloId = 6,
+            });
+
+            modelBuilder.Entity<NarudzbaStavke>().HasData(new NarudzbaStavke
+            {
+                NarudzbaStavkeId = 5,
+                NarudzbaId = 5,
+                Kolicina = 2,
+                JeloId = 11,
+            });
+
+            modelBuilder.Entity<NarudzbaStavke>().HasData(new NarudzbaStavke
+            {
+                NarudzbaStavkeId = 6,
+                NarudzbaId = 6,
+                Kolicina = 1,
+                JeloId = 7,
+            });
+
+            modelBuilder.Entity<NarudzbaStavke>().HasData(new NarudzbaStavke
+            {
+                NarudzbaStavkeId = 7,
+                NarudzbaId = 7,
+                Kolicina = 3,
+                JeloId = 9,
+            });
+
+            modelBuilder.Entity<NarudzbaStavke>().HasData(new NarudzbaStavke
+            {
+                NarudzbaStavkeId = 8,
+                NarudzbaId = 8,
+                Kolicina = 1,
+                JeloId = 10,
+            });
+
         }
     }
 }
