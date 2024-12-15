@@ -453,6 +453,12 @@ namespace eDostava.Services.Database
                 JeloId = 10,
                 KategorijaId = 9,
             });
+            modelBuilder.Entity<JeloKategorija>().HasData(new JeloKategorija
+            {
+                JeloKategorijaId = 11,
+                JeloId = 11,
+                KategorijaId = 2,
+            });
 
 
             modelBuilder.Entity<KorisnikUloga>().HasData(new KorisnikUloga
