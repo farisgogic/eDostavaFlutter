@@ -627,7 +627,7 @@ namespace eDostava.Services.Database
                 NarudzbaId = 6,
                 BrojNarudzbe = "3",
                 Datum = DateTime.UtcNow.AddDays(-1), 
-                KupacId = 3,
+                KupacId = 1,
                 RestoranId = 2,
                 Stanje = StanjeNarudzbe.NaCekanju,
                 Otkazano = false, 
@@ -643,7 +643,7 @@ namespace eDostava.Services.Database
                 RestoranId = 3,
                 Stanje = StanjeNarudzbe.Spremna,
                 Otkazano = false,
-                DostavljacId = 3,
+                DostavljacId = 1,
             });
 
             modelBuilder.Entity<Narudzba>().HasData(new Narudzba

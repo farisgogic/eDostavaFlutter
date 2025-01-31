@@ -69,6 +69,49 @@ namespace eDostava.Services.Database
                .OnDelete(DeleteBehavior.Cascade);
 
 
+            modelBuilder.Entity<Favoriti>()
+                .HasOne(f => f.Jelo)
+                .WithMany(j => j.Favoriti)
+                .HasForeignKey(f => f.JeloId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Favoriti>()
+                .HasOne(f => f.Restoran)
+                .WithMany(r => r.Favoriti)
+                .HasForeignKey(f => f.RestoranId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<JeloKategorija>()
+                .HasOne(jk => jk.Jelo)
+                .WithMany(j => j.JeloKategorijas)
+                .HasForeignKey(jk => jk.JeloId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<JeloKategorija>()
+                .HasOne(jk => jk.Kategorija)
+                .WithMany(k => k.JeloKategorijas)
+                .HasForeignKey(jk => jk.KategorijaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<NarudzbaStavke>()
+                .HasOne(ns => ns.Narudzba)
+                .WithMany(n => n.NarudzbaStavke)
+                .HasForeignKey(ns => ns.NarudzbaId)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+            modelBuilder.Entity<NarudzbaStavke>()
+                .HasOne(ns => ns.Jelo)
+                .WithMany(j => j.NarudzbaStavke)
+                .HasForeignKey(ns => ns.JeloId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Narudzba>()
+                .HasOne(n => n.Kupac)
+                .WithMany()
+                .HasForeignKey(n => n.KupacId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             onModelCreatingPartial(modelBuilder);
         }
 

@@ -25,7 +25,7 @@ namespace eDostava.Services.Database
         public int NarudzbaId { get; set; }
         public string BrojNarudzbe { get; set; }
         public DateTime Datum { get; set; }
-        public int KupacId { get; set; }
+        public int? KupacId { get; set; }
         public int? DostavljacId { get; set; }
         public int RestoranId { get; set; }
         public bool Status { get; set; }

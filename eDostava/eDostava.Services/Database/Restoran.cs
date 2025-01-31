@@ -14,6 +14,7 @@ namespace eDostava.Services.Database
             Jela = new HashSet<Jelo>();
             Kategorija = new HashSet<Kategorija>();
             Recenzije = new HashSet<Recenzija>();
+            Favoriti = new HashSet<Favoriti>();
         }
 
         public int RestoranId { get; set; }
@@ -31,6 +32,7 @@ namespace eDostava.Services.Database
         public ICollection<Jelo> Jela { get; set; }
         public ICollection<Kategorija> Kategorija { get; set; }
         public ICollection<Recenzija> Recenzije { get; set; }
+        public ICollection<Favoriti> Favoriti { get; set; }
 
     }
 }

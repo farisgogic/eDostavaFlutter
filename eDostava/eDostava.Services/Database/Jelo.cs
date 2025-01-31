@@ -14,6 +14,8 @@ namespace eDostava.Services.Database
         {
             JeloKategorijas = new HashSet<JeloKategorija>();
             JelaOcjene = new HashSet<JelaOcjene>();
+            Favoriti = new HashSet<Favoriti>();
+            NarudzbaStavke = new HashSet<NarudzbaStavke>();
         }
 
         public int JeloId { get; set; }
@@ -32,6 +34,7 @@ namespace eDostava.Services.Database
         public int RestoranId { get; set; }
         public Restoran Restoran { get; set; }
         public virtual ICollection<JelaOcjene> JelaOcjene { get; set; }
-
+        public virtual ICollection<Favoriti> Favoriti { get; set; }
+        public virtual ICollection<NarudzbaStavke> NarudzbaStavke { get; set; }
     }
 }
