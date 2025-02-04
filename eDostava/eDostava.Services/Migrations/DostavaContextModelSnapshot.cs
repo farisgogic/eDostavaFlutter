@@ -65,8 +65,8 @@ namespace eDostava.Services.Migrations
                             Email = "aner@hotmail.com",
                             Ime = "Aner",
                             KorisnickoIme = "aner",
-                            LozinkaHash = "UCfGLn30o+yzVFqt81+rZQ==",
-                            LozinkaSalt = "jNksB7bGPqOpACxB0Gdpei6gKaU=",
+                            LozinkaHash = "jNksB7bGPqOpACxB0Gdpei6gKaU=",
+                            LozinkaSalt = "UCfGLn30o+yzVFqt81+rZQ==",
                             Prezime = "Macic"
                         },
                         new
@@ -75,8 +75,8 @@ namespace eDostava.Services.Migrations
                             Email = "fare@hotmail.com",
                             Ime = "Faris",
                             KorisnickoIme = "fare",
-                            LozinkaHash = "TXOEmew25vY7u1fidKqHJA==",
-                            LozinkaSalt = "jR8ByPiRMoyYKUmKP1JsxO3R6Zc=",
+                            LozinkaHash = "jR8ByPiRMoyYKUmKP1JsxO3R6Zc=",
+                            LozinkaSalt = "TXOEmew25vY7u1fidKqHJA==",
                             Prezime = "Padalovic"
                         });
                 });
@@ -632,49 +632,49 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             KorisnikUlogaId = 1,
-                            DatumPromjene = new DateTime(2025, 2, 4, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6682),
+                            DatumPromjene = new DateTime(2025, 2, 4, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(675),
                             DostavljacId = 1,
                             UlogaId = 2
                         },
                         new
                         {
                             KorisnikUlogaId = 2,
-                            DatumPromjene = new DateTime(2025, 2, 4, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6697),
+                            DatumPromjene = new DateTime(2025, 2, 4, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(692),
                             DostavljacId = 2,
                             UlogaId = 2
                         },
                         new
                         {
                             KorisnikUlogaId = 3,
-                            DatumPromjene = new DateTime(2025, 2, 4, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6705),
+                            DatumPromjene = new DateTime(2025, 2, 4, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(705),
                             KorisnikId = 1,
                             UlogaId = 3
                         },
                         new
                         {
                             KorisnikUlogaId = 4,
-                            DatumPromjene = new DateTime(2025, 2, 4, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6713),
+                            DatumPromjene = new DateTime(2025, 2, 4, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(716),
                             KorisnikId = 2,
                             UlogaId = 3
                         },
                         new
                         {
                             KorisnikUlogaId = 5,
-                            DatumPromjene = new DateTime(2025, 2, 4, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6721),
+                            DatumPromjene = new DateTime(2025, 2, 4, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(734),
                             KorisnikId = 3,
                             UlogaId = 3
                         },
                         new
                         {
                             KorisnikUlogaId = 6,
-                            DatumPromjene = new DateTime(2025, 2, 4, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6733),
+                            DatumPromjene = new DateTime(2025, 2, 4, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(748),
                             KupciId = 1,
                             UlogaId = 1
                         },
                         new
                         {
                             KorisnikUlogaId = 7,
-                            DatumPromjene = new DateTime(2025, 2, 4, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6741),
+                            DatumPromjene = new DateTime(2025, 2, 4, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(759),
                             KupciId = 2,
                             UlogaId = 1
                         });
@@ -728,8 +728,8 @@ namespace eDostava.Services.Migrations
                             Email = "faris@gmail.com",
                             Ime = "Faris",
                             KorisnickoIme = "faris",
-                            LozinkaHash = "Eg5tYqXCYajt47+DFsEqkQ==",
-                            LozinkaSalt = "PLr5IyS8b5JOxMQkha8dstSXJDc=",
+                            LozinkaHash = "PLr5IyS8b5JOxMQkha8dstSXJDc=",
+                            LozinkaSalt = "Eg5tYqXCYajt47+DFsEqkQ==",
                             Prezime = "Gogic"
                         },
                         new
@@ -739,8 +739,8 @@ namespace eDostava.Services.Migrations
                             Email = "tarik@hotmail.com",
                             Ime = "Tarik",
                             KorisnickoIme = "tarik",
-                            LozinkaHash = "/E2+FSlzAxoL1Am5jjaMgQ==",
-                            LozinkaSalt = "pOjdDCvPMKOCPrd74IY6WYSJBDs=",
+                            LozinkaHash = "pOjdDCvPMKOCPrd74IY6WYSJBDs=",
+                            LozinkaSalt = "/E2+FSlzAxoL1Am5jjaMgQ==",
                             Prezime = "Memic"
                         });
                 });
@@ -804,7 +804,7 @@ namespace eDostava.Services.Migrations
                         {
                             NarudzbaId = 1,
                             BrojNarudzbe = "1",
-                            Datum = new DateTime(2025, 2, 4, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6802),
+                            Datum = new DateTime(2025, 2, 4, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(836),
                             KupacId = 1,
                             Otkazano = false,
                             RestoranId = 1,
@@ -815,7 +815,7 @@ namespace eDostava.Services.Migrations
                         {
                             NarudzbaId = 2,
                             BrojNarudzbe = "1",
-                            Datum = new DateTime(2025, 2, 4, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6815),
+                            Datum = new DateTime(2025, 2, 4, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(852),
                             KupacId = 1,
                             Otkazano = false,
                             RestoranId = 2,
@@ -826,7 +826,7 @@ namespace eDostava.Services.Migrations
                         {
                             NarudzbaId = 3,
                             BrojNarudzbe = "2",
-                            Datum = new DateTime(2025, 2, 4, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6825),
+                            Datum = new DateTime(2025, 2, 4, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(866),
                             KupacId = 2,
                             Otkazano = false,
                             RestoranId = 1,
@@ -837,7 +837,7 @@ namespace eDostava.Services.Migrations
                         {
                             NarudzbaId = 4,
                             BrojNarudzbe = "2",
-                            Datum = new DateTime(2025, 2, 4, 0, 27, 52, 115, DateTimeKind.Utc).AddTicks(6834),
+                            Datum = new DateTime(2025, 2, 4, 0, 45, 5, 463, DateTimeKind.Utc).AddTicks(878),
                             DostavljacId = 1,
                             KupacId = 2,
                             Otkazano = false,
@@ -849,7 +849,7 @@ namespace eDostava.Services.Migrations
                         {
                             NarudzbaId = 5,
                             BrojNarudzbe = "3",
-                            Datum = new DateTime(2025, 2, 3, 23, 37, 52, 115, DateTimeKind.Utc).AddTicks(6848),
+                            Datum = new DateTime(2025, 2, 3, 23, 55, 5, 463, DateTimeKind.Utc).AddTicks(896),
                             DostavljacId = 2,
                             KupacId = 1,
                             Otkazano = false,
@@ -861,7 +861,7 @@ namespace eDostava.Services.Migrations
                         {
                             NarudzbaId = 6,
                             BrojNarudzbe = "3",
-                            Datum = new DateTime(2025, 2, 3, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6859),
+                            Datum = new DateTime(2025, 2, 3, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(911),
                             KupacId = 1,
                             Otkazano = false,
                             RestoranId = 2,
@@ -872,7 +872,7 @@ namespace eDostava.Services.Migrations
                         {
                             NarudzbaId = 7,
                             BrojNarudzbe = "1",
-                            Datum = new DateTime(2025, 2, 3, 22, 37, 52, 115, DateTimeKind.Utc).AddTicks(6869),
+                            Datum = new DateTime(2025, 2, 3, 22, 55, 5, 463, DateTimeKind.Utc).AddTicks(925),
                             DostavljacId = 1,
                             KupacId = 1,
                             Otkazano = false,
@@ -884,7 +884,7 @@ namespace eDostava.Services.Migrations
                         {
                             NarudzbaId = 8,
                             BrojNarudzbe = "2",
-                            Datum = new DateTime(2025, 2, 2, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6877),
+                            Datum = new DateTime(2025, 2, 2, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(938),
                             DostavljacId = 1,
                             KupacId = 2,
                             Otkazano = false,
@@ -1013,7 +1013,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             RecenzijaId = 1,
-                            Datum = new DateTime(2025, 2, 4, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6753),
+                            Datum = new DateTime(2025, 2, 4, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(777),
                             Komentar = "Vrlo lijep restoran",
                             KupacId = 1,
                             Ocjena = 4,
@@ -1022,7 +1022,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             RecenzijaId = 2,
-                            Datum = new DateTime(2025, 2, 4, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6766),
+                            Datum = new DateTime(2025, 2, 4, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(794),
                             Komentar = "Odlican",
                             KupacId = 1,
                             Ocjena = 5,
@@ -1031,7 +1031,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             RecenzijaId = 3,
-                            Datum = new DateTime(2025, 2, 4, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6775),
+                            Datum = new DateTime(2025, 2, 4, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(807),
                             Komentar = "Ugodan ambijent",
                             KupacId = 2,
                             Ocjena = 4,
@@ -1040,7 +1040,7 @@ namespace eDostava.Services.Migrations
                         new
                         {
                             RecenzijaId = 4,
-                            Datum = new DateTime(2025, 2, 4, 0, 37, 52, 115, DateTimeKind.Utc).AddTicks(6784),
+                            Datum = new DateTime(2025, 2, 4, 0, 55, 5, 463, DateTimeKind.Utc).AddTicks(819),
                             Komentar = "Odlicno mjesto za uzivanje",
                             KupacId = 2,
                             Ocjena = 5,

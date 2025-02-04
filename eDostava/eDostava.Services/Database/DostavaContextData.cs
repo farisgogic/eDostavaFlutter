@@ -18,8 +18,8 @@ namespace eDostava.Services.Database
                 Prezime = "Macic",
                 Email = "aner@hotmail.com",
                 KorisnickoIme = "aner",
-                LozinkaHash = "UCfGLn30o+yzVFqt81+rZQ==",
-                LozinkaSalt = "jNksB7bGPqOpACxB0Gdpei6gKaU=",
+                LozinkaHash = "jNksB7bGPqOpACxB0Gdpei6gKaU=",
+                LozinkaSalt = "UCfGLn30o+yzVFqt81+rZQ==",
             });
 
             modelBuilder.Entity<Dostavljac>().HasData(new Dostavljac
@@ -29,8 +29,8 @@ namespace eDostava.Services.Database
                 Prezime = "Padalovic",
                 Email = "fare@hotmail.com",
                 KorisnickoIme = "fare",
-                LozinkaHash = "TXOEmew25vY7u1fidKqHJA==",
-                LozinkaSalt = "jR8ByPiRMoyYKUmKP1JsxO3R6Zc=",
+                LozinkaHash = "jR8ByPiRMoyYKUmKP1JsxO3R6Zc=",
+                LozinkaSalt = "TXOEmew25vY7u1fidKqHJA==",
             });
 
             var slika = Convert.FromBase64String("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");
@@ -318,8 +318,8 @@ namespace eDostava.Services.Database
                 Email = "faris@gmail.com",
                 Adresa = "Kolonija bb",
                 KorisnickoIme = "faris",
-                LozinkaHash = "Eg5tYqXCYajt47+DFsEqkQ==",
-                LozinkaSalt = "PLr5IyS8b5JOxMQkha8dstSXJDc=",
+                LozinkaHash = "PLr5IyS8b5JOxMQkha8dstSXJDc=",
+                LozinkaSalt = "Eg5tYqXCYajt47+DFsEqkQ==",
             });
             modelBuilder.Entity<Kupci>().HasData(new Kupci
             {
@@ -329,8 +329,8 @@ namespace eDostava.Services.Database
                 Email = "tarik@hotmail.com",
                 Adresa = "Radava bb",
                 KorisnickoIme = "tarik",
-                LozinkaHash = "/E2+FSlzAxoL1Am5jjaMgQ==",
-                LozinkaSalt = "pOjdDCvPMKOCPrd74IY6WYSJBDs=",
+                LozinkaHash = "pOjdDCvPMKOCPrd74IY6WYSJBDs=",
+                LozinkaSalt = "/E2+FSlzAxoL1Am5jjaMgQ==",
             });
 
             modelBuilder.Entity<Uloga>().HasData(new Uloga { UlogaId = 1, Naziv = "korisnik", Opis = "korisnik" });
