@@ -99,26 +99,26 @@ Aplikacija KLOPA je projekat rađen kao seminarski rad za predmet Razvoj softver
 - Kupac
 
     ```
-    Korisnicko ime: kupac
-    Lozinka: kupac
+    Korisnicko ime: faris
+    Lozinka: faris
     ```
     
     ```
-    Korisnicko ime: proba
-    Lozinka: proba
+    Korisnicko ime: tarik
+    Lozinka: tarik
     ```
     
     
 - Dostavljac
 
     ```
-    Korisnicko ime: dostavljac
-    Lozinka: dostavljac
+    Korisnicko ime: aner
+    Lozinka: aner
     ```   
     
     ```
-    Korisnicko ime: test
-    Lozinka: test
+    Korisnicko ime: fare
+    Lozinka: fare
     ```
     
 ## KARTICA ZA NARUDŽBU
